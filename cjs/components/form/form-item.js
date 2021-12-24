@@ -87,7 +87,7 @@ var FormItemLayout = function FormItemLayout(props) {
     prefix: layout === 'horizontal' && labelElement,
     extra: extra,
     description: descriptionElement,
-    className: (0, _classnames["default"])(classPrefix, className, (_classNames = {}, _classNames[classPrefix + "-hidden"] = hidden, _classNames[classPrefix + "-error"] = feedback !== undefined, _classNames)),
+    className: (0, _classnames["default"])(classPrefix, className, (_classNames = {}, _classNames[classPrefix + "-hidden"] = hidden, _classNames[classPrefix + "-error"] = feedback !== null, _classNames)),
     disabled: disabled,
     onClick: props.onClick
   }, children);
