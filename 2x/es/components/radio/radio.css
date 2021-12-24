@@ -1,0 +1,66 @@
+.adm-radio {
+  --icon-size: 44px;
+  --font-size: 34px;
+  --gap: 16px;
+  display: inline-flex;
+  vertical-align: text-bottom;
+  justify-content: flex-start;
+  align-items: center;
+  cursor: pointer;
+}
+
+.adm-radio input {
+  display: none;
+}
+
+.adm-radio .adm-radio-icon {
+  flex: none;
+  border: 2px solid #ccc;
+  border-radius: var(--icon-size);
+  box-sizing: border-box;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: var(--icon-size);
+  height: var(--icon-size);
+  color: #ffffff;
+}
+
+.adm-radio .adm-radio-icon-checked {
+  display: block;
+  width: 65%;
+  height: 65%;
+}
+
+.adm-radio.adm-radio-block {
+  display: flex;
+}
+
+.adm-radio.adm-radio-checked .adm-radio-icon {
+  border-color: var(--adm-color-primary);
+  background-color: var(--adm-color-primary);
+}
+
+.adm-radio.adm-radio-disabled {
+  cursor: not-allowed;
+}
+
+.adm-radio.adm-radio-disabled .adm-radio-content {
+  color: var(--adm-color-weak);
+}
+
+.adm-radio.adm-radio-disabled .adm-radio-icon {
+  color: #ccc;
+  border-color: #ccc;
+  background-color: #ebedf0;
+}
+
+.adm-radio .adm-radio-custom-icon {
+  font-size: var(--icon-size);
+}
+
+.adm-radio-content {
+  flex: none;
+  font-size: var(--font-size);
+  padding-left: var(--gap);
+}

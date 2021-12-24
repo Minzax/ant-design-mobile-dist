@@ -1,0 +1,43 @@
+.adm-form .adm-list {
+  --padding-left: 40px;
+}
+
+.adm-form .adm-form-footer {
+  padding: 24px;
+}
+
+.adm-form-item + .adm-form-item {
+  border-top: none;
+}
+
+.adm-form-item-label {
+  display: block;
+  height: 100%;
+  box-sizing: border-box;
+  color: #666;
+  position: relative;
+}
+
+.adm-form-item-label-required {
+  position: absolute;
+  left: -0.6em;
+  top: 0.2em;
+  color: var(--adm-color-danger);
+  user-select: none;
+}
+
+.adm-form-item-footer {
+  color: var(--adm-color-danger);
+}
+
+.adm-form-item.adm-form-item-hidden {
+  display: none;
+}
+
+.adm-form-vertical .adm-form-item-label {
+  margin-bottom: 8px;
+}
+
+.adm-form-vertical .adm-form-item-footer {
+  margin-top: 8px;
+}

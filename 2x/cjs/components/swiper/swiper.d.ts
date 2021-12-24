@@ -1,0 +1,40 @@
+import React, { ReactElement, ReactNode } from 'react';
+import { NativeProps } from '../../utils/native-props';
+import { PageIndicatorProps } from '../page-indicator';
+export declare type SwiperRef = {
+    swipeTo: (index: number) => void;
+    swipeNext: () => void;
+    swipePrev: () => void;
+};
+export declare type SwiperProps = {
+    defaultIndex?: number;
+    allowTouchMove?: boolean;
+    autoplay?: boolean;
+    autoplayInterval?: number;
+    loop?: boolean;
+    direction?: 'horizontal' | 'vertical';
+    onIndexChange?: (index: number) => void;
+    indicatorProps?: Pick<PageIndicatorProps, 'color' | 'style' | 'className'>;
+    indicator?: (total: number, current: number) => ReactNode;
+    slideSize?: number;
+    trackOffset?: number;
+    stuckAtBoundary?: boolean;
+    rubberband?: boolean;
+    children?: ReactElement | ReactElement[];
+} & NativeProps<'--height' | '--width' | '--border-radius' | '--track-padding'>;
+export declare const Swiper: React.ForwardRefExoticComponent<{
+    defaultIndex?: number | undefined;
+    allowTouchMove?: boolean | undefined;
+    autoplay?: boolean | undefined;
+    autoplayInterval?: number | undefined;
+    loop?: boolean | undefined;
+    direction?: "horizontal" | "vertical" | undefined;
+    onIndexChange?: ((index: number) => void) | undefined;
+    indicatorProps?: Pick<PageIndicatorProps, "style" | "color" | "className"> | undefined;
+    indicator?: ((total: number, current: number) => ReactNode) | undefined;
+    slideSize?: number | undefined;
+    trackOffset?: number | undefined;
+    stuckAtBoundary?: boolean | undefined;
+    rubberband?: boolean | undefined;
+    children?: React.ReactElement<any, string | ((props: any) => React.ReactElement<any, any> | null) | (new (props: any) => React.Component<any, any, any>)> | React.ReactElement<any, string | ((props: any) => React.ReactElement<any, any> | null) | (new (props: any) => React.Component<any, any, any>)>[] | undefined;
+} & NativeProps<"--border-radius" | "--height" | "--width" | "--track-padding"> & React.RefAttributes<SwiperRef>>;

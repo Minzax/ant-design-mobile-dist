@@ -1,0 +1,42 @@
+{
+  "name": "antd-mobile",
+  "version": "5.0.0-rc.7",
+  "dependencies": {
+    "@react-spring/web": "^9.3.1",
+    "@types/resize-observer-browser": "^0.1.6",
+    "@use-gesture/react": "^10.2.4",
+    "ahooks": "^2.10.14",
+    "antd-mobile-icons": "^0.2.2",
+    "antd-mobile-v5-count": "^1.0.1",
+    "classnames": "^2.3.1",
+    "dayjs": "^1.10.7",
+    "lodash": "^4.17.21",
+    "rc-field-form": "^1.22.0",
+    "rc-tooltip": "^5.1.1",
+    "staged-components": "^1.1.2",
+    "use-async-memo": "^1.2.3"
+  },
+  "peerDependencies": {
+    "react": "^16.8.0 || ^17.0.0"
+  },
+  "main": "./cjs/index.js",
+  "module": "./es/index.js",
+  "types": "./es/index.d.ts",
+  "typings": "./es/index.d.ts",
+  "unpkg": "./umd/antd-mobile.js",
+  "GravityCDN": "./umd/antd-mobile.js",
+  "sideEffects": [
+    "**/*.css",
+    "**/*.less",
+    "./es/index.js",
+    "./src/index.ts",
+    "./es/global/index.js",
+    "./src/global/index.ts"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ant-design/ant-design-mobile.git",
+    "branch": "master",
+    "platform": "github"
+  }
+}

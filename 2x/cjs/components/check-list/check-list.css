@@ -1,0 +1,8 @@
+.adm-check-list-item-extra {
+  font-size: 32px;
+  color: var(--adm-color-primary);
+}
+
+.adm-check-list-item-readonly {
+  cursor: unset;
+}

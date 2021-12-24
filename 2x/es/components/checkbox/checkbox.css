@@ -1,0 +1,87 @@
+.adm-checkbox {
+  --icon-size: 44px;
+  --font-size: 34px;
+  --gap: 16px;
+  display: inline-flex;
+  vertical-align: text-bottom;
+  justify-content: flex-start;
+  align-items: center;
+  cursor: pointer;
+}
+
+.adm-checkbox input {
+  display: none;
+}
+
+.adm-checkbox .adm-checkbox-icon {
+  flex: none;
+  border: 2px solid #ccc;
+  border-radius: var(--icon-size);
+  box-sizing: border-box;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: var(--icon-size);
+  height: var(--icon-size);
+  color: #ffffff;
+}
+
+.adm-checkbox .adm-checkbox-icon-checked {
+  width: 65%;
+  height: 65%;
+}
+
+.adm-checkbox.adm-checkbox-block {
+  display: flex;
+}
+
+.adm-checkbox.adm-checkbox-checked .adm-checkbox-icon {
+  border-color: var(--adm-color-primary);
+  background-color: var(--adm-color-primary);
+}
+
+.adm-checkbox.adm-checkbox-disabled {
+  cursor: not-allowed;
+}
+
+.adm-checkbox.adm-checkbox-disabled .adm-checkbox-content {
+  color: var(--adm-color-weak);
+}
+
+.adm-checkbox.adm-checkbox-disabled.adm-checkbox-indeterminate .adm-checkbox-icon {
+  color: #ccc;
+  border-color: #ccc;
+  background-color: #ebedf0;
+}
+
+.adm-checkbox.adm-checkbox-disabled.adm-checkbox-checked .adm-checkbox-icon {
+  color: #ccc;
+}
+
+.adm-checkbox.adm-checkbox-disabled .adm-checkbox-icon {
+  border-color: #ccc;
+  background-color: #ebedf0;
+}
+
+.adm-checkbox .adm-checkbox-custom-icon {
+  font-size: var(--icon-size);
+}
+
+.adm-checkbox.adm-checkbox-indeterminate .adm-checkbox-icon {
+  border-color: var(--adm-color-primary);
+  background-color: #ffffff;
+  color: var(--adm-color-primary);
+}
+
+.adm-checkbox.adm-checkbox-indeterminate .adm-checkbox-indeterminate-checked {
+  width: 60%;
+  height: 60%;
+  border-radius: 100%;
+  background-color: currentColor;
+}
+
+.adm-checkbox-content {
+  flex: none;
+  font-size: var(--font-size);
+  padding-left: var(--gap);
+}

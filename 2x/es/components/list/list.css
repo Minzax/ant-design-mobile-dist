@@ -1,0 +1,84 @@
+.adm-list {
+  --prefix-width: 'auto';
+  --align-items: center;
+  --active-background-color: var(--adm-border-color);
+  --border-inner: solid 2px var(--adm-border-color);
+  --border-top: solid 2px var(--adm-border-color);
+  --border-bottom: solid 2px var(--adm-border-color);
+  --padding-left: 24px;
+  background-color: #ffffff;
+  overflow: hidden;
+  font-size: 34px;
+}
+
+.adm-list-default {
+  border-top: var(--border-top);
+  border-bottom: var(--border-bottom);
+}
+
+.adm-list-card {
+  margin: 24px;
+  border-radius: 16px;
+}
+
+.adm-list-item {
+  margin-bottom: -2px;
+  display: block;
+  padding-left: var(--padding-left);
+}
+
+.adm-list-item:not(:first-child) {
+  padding-top: 2px;
+}
+
+.adm-list-item-title,
+.adm-list-item-description {
+  color: var(--adm-color-weak);
+  font-size: 30px;
+}
+
+.adm-list-item-content {
+  display: flex;
+  align-items: var(--align-items);
+  justify-content: flex-start;
+  padding: 24px 24px 24px 0;
+  border-bottom: var(--border-inner);
+}
+
+.adm-list-item-content-prefix {
+  width: var(--prefix-width);
+  flex: none;
+  padding-right: 24px;
+}
+
+.adm-list-item-content-main {
+  flex: auto;
+}
+
+.adm-list-item-content-extra {
+  flex: none;
+  padding-left: 24px;
+}
+
+.adm-list-item-content-arrow {
+  flex: none;
+  display: flex;
+  align-items: center;
+  padding-left: 24px;
+  color: var(--adm-color-weak);
+  font-size: 32px;
+}
+
+.adm-list-item-disabled.adm-list-item-disabled > .adm-list-item-content > * {
+  cursor: not-allowed;
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+a.adm-list-item:active {
+  background-color: var(--active-background-color);
+}
+
+a.adm-list-item.adm-list-item-disabled:active {
+  background-color: unset;
+}

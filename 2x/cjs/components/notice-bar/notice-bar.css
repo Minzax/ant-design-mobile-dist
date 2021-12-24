@@ -1,0 +1,67 @@
+.adm-notice-bar {
+  height: 60px;
+  box-sizing: border-box;
+  font-size: 28px;
+  line-height: 60px;
+  padding: 0 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  --background-color: #b2b2b2;
+  --border-color: #a0a0a0;
+  --text-color: #ffffff;
+  border: solid 2px var(--border-color);
+  border-left: none;
+  border-right: none;
+  background-color: var(--background-color);
+  color: var(--text-color);
+}
+
+.adm-notice-bar > span[role='img'] {
+  color: var(--text-color);
+}
+
+.adm-notice-bar.adm-notice-bar-alert {
+  --background-color: #fff9ed;
+  --border-color: #fff3e9;
+  --text-color: #ff6010;
+}
+
+.adm-notice-bar.adm-notice-bar-error {
+  --background-color: #ff3b30;
+  --border-color: #d9281e;
+  --text-color: #ffffff;
+}
+
+.adm-notice-bar.adm-notice-bar-info {
+  --background-color: #d0e4ff;
+  --border-color: #bcd8ff;
+  --text-color: #1677ff;
+}
+
+.adm-notice-bar .adm-notice-bar-left:not(:empty) {
+  flex-shrink: 0;
+  margin-right: 16px;
+}
+
+.adm-notice-bar .adm-notice-bar-content {
+  flex: 1;
+  overflow: hidden;
+  position: relative;
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
+
+.adm-notice-bar .adm-notice-bar-content .adm-notice-bar-content-inner {
+  width: auto;
+  transition-timing-function: linear;
+  position: absolute;
+  padding: 0 8px;
+  white-space: nowrap;
+}
+
+.adm-notice-bar .adm-notice-bar-right {
+  flex-shrink: 0;
+  margin-left: 24px;
+}

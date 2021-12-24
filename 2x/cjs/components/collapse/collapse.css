@@ -1,0 +1,23 @@
+.adm-collapse-panel-header-disabled {
+  color: var(--adm-color-light);
+  cursor: not-allowed;
+}
+
+.adm-collapse-panel-header-disabled .adm-collapse-arrow {
+  color: var(--adm-color-light);
+}
+
+.adm-collapse-arrow {
+  transform: rotate(0deg);
+  transition: all ease 0.2s;
+}
+
+.adm-collapse-arrow-active {
+  transform: rotate(90deg);
+}
+
+.adm-collapse-panel-content {
+  font-size: var(--adm-font-size-main);
+  color: var(--adm-color-weak);
+  overflow: hidden;
+}
