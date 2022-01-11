@@ -107,11 +107,6 @@ var Slide = function Slide(props) {
       }
     },
     pinch: {
-      transform: function transform(_ref) {
-        var d = _ref[0],
-            a = _ref[1];
-        return [d < 0 ? d * 0.5 : d * 2, 0];
-      },
       from: function from() {
         return [zoom.get(), 0];
       }

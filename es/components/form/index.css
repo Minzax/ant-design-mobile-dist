@@ -1,4 +1,4 @@
-.adm-form .adm-list {
+.adm-form .adm-list.adm-list {
   --padding-left: 20px;
 }
 .adm-form .adm-form-footer {
@@ -10,8 +10,8 @@
 .adm-form-item-label {
   display: block;
   height: 100%;
+  line-height: 1.5;
   box-sizing: border-box;
-  color: #666;
   position: relative;
 }
 .adm-form-item-label-required {
@@ -29,7 +29,11 @@
 }
 .adm-form-vertical .adm-form-item-label {
   margin-bottom: 4px;
+  font-size: 15px;
 }
 .adm-form-vertical .adm-form-item-footer {
   margin-top: 4px;
+}
+.adm-form-item-label {
+  color: #666666;
 }

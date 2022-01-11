@@ -26,8 +26,6 @@ function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && 
 var classPrefix = "adm-check-list-item";
 
 var CheckListItem = function CheckListItem(props) {
-  var _classNames;
-
   var context = (0, _react.useContext)(_context.CheckListContext);
 
   if (context === null) {
@@ -44,7 +42,7 @@ var CheckListItem = function CheckListItem(props) {
 
   return (0, _nativeProps.withNativeProps)(props, /*#__PURE__*/_react["default"].createElement(_list["default"].Item, {
     title: props.title,
-    className: (0, _classnames["default"])((_classNames = {}, _classNames[classPrefix + "-readonly"] = readOnly, _classNames)),
+    className: (0, _classnames["default"])(classPrefix, readOnly && classPrefix + "-readonly"),
     description: props.description,
     prefix: props.prefix,
     onClick: function onClick(e) {

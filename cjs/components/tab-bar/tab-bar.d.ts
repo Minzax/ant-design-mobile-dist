@@ -11,5 +11,6 @@ export declare type TabBarProps = {
     activeKey?: string | null;
     defaultActiveKey?: string | null;
     onChange?: (key: string) => void;
+    safeArea?: boolean;
 } & NativeProps;
 export declare const TabBar: FC<TabBarProps>;

@@ -1,6 +1,6 @@
 import { mergeProps } from '../../utils/with-default-props';
 import React, { useEffect, useRef } from 'react';
-import { useLockFn, usePersistFn } from 'ahooks';
+import { useLockFn, useMemoizedFn } from 'ahooks';
 import { withNativeProps } from '../../utils/native-props';
 import { getScrollParent } from '../../utils/get-scroll-parent';
 import Loading from '../loading';
@@ -25,7 +25,7 @@ export var InfiniteScroll = function InfiniteScroll(p) {
   });
   var elementRef = useRef(null);
   var checkTimeoutRef = useRef();
-  var check = usePersistFn(function () {
+  var check = useMemoizedFn(function () {
     window.clearTimeout(checkTimeoutRef.current);
     checkTimeoutRef.current = window.setTimeout(function () {
       if (!props.hasMore) return;

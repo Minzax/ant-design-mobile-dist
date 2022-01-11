@@ -10,5 +10,11 @@ export var List = function List(p) {
   var props = mergeProps(defaultProps, p);
   return withNativeProps(props, /*#__PURE__*/React.createElement("div", {
     className: classNames(classPrefix, classPrefix + "-" + props.mode)
-  }, props.children));
+  }, props.header && /*#__PURE__*/React.createElement("div", {
+    className: classPrefix + "-header"
+  }, props.header), /*#__PURE__*/React.createElement("div", {
+    className: classPrefix + "-body"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: classPrefix + "-body-inner"
+  }, props.children))));
 };

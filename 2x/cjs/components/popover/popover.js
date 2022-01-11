@@ -59,6 +59,9 @@ var Popover = /*#__PURE__*/(0, _react.forwardRef)(function (p, ref) {
       return document.body;
     },
     visible: visible,
+    arrowContent: /*#__PURE__*/_react["default"].createElement("span", {
+      className: classPrefix + "-arrow-content"
+    }),
     onVisibleChange: setVisible,
     trigger: props.trigger,
     motion: {

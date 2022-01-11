@@ -3,6 +3,10 @@ declare const zhCN: {
         confirm: string;
         cancel: string;
     };
+    Calendar: {
+        markItems: string[];
+        renderYearAndMonth: (year: number, month: number) => string;
+    };
     Cascader: {
         placeholder: string;
     };

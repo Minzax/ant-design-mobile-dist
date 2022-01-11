@@ -1,6 +1,7 @@
 import React, { useState, useRef, forwardRef, useImperativeHandle } from 'react';
 import classNames from 'classnames';
 import Input from '../input';
+import Button from '../button';
 import { withNativeProps } from '../../utils/native-props';
 import { mergeProps } from '../../utils/with-default-props';
 import { SearchOutline } from 'antd-mobile-icons';
@@ -63,14 +64,16 @@ export var SearchBar = /*#__PURE__*/forwardRef(function (p, ref) {
     }
 
     return isShowCancel && /*#__PURE__*/React.createElement("div", {
-      className: classPrefix + "-suffix"
-    }, /*#__PURE__*/React.createElement("a", {
+      className: classPrefix + "-suffix",
       onMouseDown: function onMouseDown(e) {
         e.preventDefault();
       },
       onTouchStart: function onTouchStart(e) {
         e.preventDefault();
-      },
+      }
+    }, /*#__PURE__*/React.createElement(Button, {
+      fill: 'none',
+      className: classPrefix + "-cancel-button",
       onClick: function onClick() {
         var _a, _b, _c;
 

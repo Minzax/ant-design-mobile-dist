@@ -12,7 +12,7 @@
   display: inline-block;
   box-sizing: border-box;
   height: auto;
-  padding: 7px 16px;
+  padding: 8px 12px;
   margin: 0;
   font-size: 15px;
   line-height: 1.4;
@@ -33,7 +33,6 @@
   width: 100%;
   height: 100%;
   background-color: #000;
-  border: inherit;
   border-color: #000;
   border-radius: inherit;
   transform: translate(-50%, -50%);
@@ -42,7 +41,7 @@
   box-sizing: content-box;
 }
 .adm-button:active::before {
-  opacity: 0.1;
+  opacity: 0.08;
 }
 .adm-button-default.adm-button-fill-outline {
   --background-color: transparent;
@@ -90,7 +89,8 @@
   display: none;
 }
 .adm-button.adm-button-mini {
-  padding: 3px 7px;
+  padding-top: 3px;
+  padding-bottom: 3px;
   font-size: 13px;
 }
 .adm-button.adm-button-mini.adm-button-shape-rounded {
@@ -98,11 +98,13 @@
   padding-right: 9px;
 }
 .adm-button.adm-button-small {
-  padding: 3px 11px;
+  padding-top: 3px;
+  padding-bottom: 3px;
   font-size: 15px;
 }
 .adm-button.adm-button-large {
-  padding: 11px 22px;
+  padding-top: 11px;
+  padding-bottom: 11px;
   font-size: 18px;
 }
 .adm-button.adm-button-shape-rounded {

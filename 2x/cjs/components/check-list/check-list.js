@@ -21,6 +21,7 @@ var _antdMobileIcons = require("antd-mobile-icons");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
+var classPrefix = 'adm-check-list';
 var defaultProps = {
   multiple: false,
   defaultValue: [],
@@ -61,7 +62,8 @@ var CheckList = function CheckList(p) {
       readOnly: readOnly
     }
   }, (0, _nativeProps.withNativeProps)(props, /*#__PURE__*/_react["default"].createElement(_list["default"], {
-    mode: props.mode
+    mode: props.mode,
+    className: classPrefix
   }, props.children)));
 };
 

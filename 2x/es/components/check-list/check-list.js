@@ -5,6 +5,7 @@ import { mergeProps } from '../../utils/with-default-props';
 import { CheckListContext } from './context';
 import { usePropsValue } from '../../utils/use-props-value';
 import { CheckOutline } from 'antd-mobile-icons';
+var classPrefix = 'adm-check-list';
 var defaultProps = {
   multiple: false,
   defaultValue: [],
@@ -44,6 +45,7 @@ export var CheckList = function CheckList(p) {
       readOnly: readOnly
     }
   }, withNativeProps(props, /*#__PURE__*/React.createElement(List, {
-    mode: props.mode
+    mode: props.mode,
+    className: classPrefix
   }, props.children)));
 };

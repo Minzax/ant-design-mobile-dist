@@ -11,6 +11,8 @@ var _classnames = _interopRequireDefault(require("classnames"));
 
 var _input = _interopRequireDefault(require("../input"));
 
+var _button = _interopRequireDefault(require("../button"));
+
 var _nativeProps = require("../../utils/native-props");
 
 var _withDefaultProps = require("../../utils/with-default-props");
@@ -84,14 +86,16 @@ var SearchBar = /*#__PURE__*/(0, _react.forwardRef)(function (p, ref) {
     }
 
     return isShowCancel && /*#__PURE__*/_react["default"].createElement("div", {
-      className: classPrefix + "-suffix"
-    }, /*#__PURE__*/_react["default"].createElement("a", {
+      className: classPrefix + "-suffix",
       onMouseDown: function onMouseDown(e) {
         e.preventDefault();
       },
       onTouchStart: function onTouchStart(e) {
         e.preventDefault();
-      },
+      }
+    }, /*#__PURE__*/_react["default"].createElement(_button["default"], {
+      fill: 'none',
+      className: classPrefix + "-cancel-button",
       onClick: function onClick() {
         var _a, _b, _c;
 

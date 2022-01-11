@@ -25,6 +25,8 @@ var _usePickerValueExtend = require("../picker-view/use-picker-value-extend");
 
 var _ahooks = require("ahooks");
 
+var _safeArea = _interopRequireDefault(require("../safe-area"));
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function _getRequireWildcardCache(nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
@@ -74,7 +76,7 @@ var Picker = /*#__PURE__*/(0, _react.memo)(function (p) {
       setInnerValue(value);
     }
   }, [value]);
-  var onChange = (0, _ahooks.usePersistFn)(function (val, ext) {
+  var onChange = (0, _ahooks.useMemoizedFn)(function (val, ext) {
     var _a;
 
     setInnerValue(val);
@@ -129,7 +131,9 @@ var Picker = /*#__PURE__*/(0, _react.memo)(function (p) {
     onClick: props.onClick,
     forceRender: true,
     stopPropagation: props.stopPropagation
-  }, pickerElement);
+  }, pickerElement, /*#__PURE__*/_react["default"].createElement(_safeArea["default"], {
+    position: 'bottom'
+  }));
 
   return /*#__PURE__*/_react["default"].createElement(_react["default"].Fragment, null, popupElement, (_a = props.children) === null || _a === void 0 ? void 0 : _a.call(props, generateValueExtend(value).items));
 });

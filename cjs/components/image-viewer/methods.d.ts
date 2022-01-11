@@ -1,4 +1,7 @@
 import { ImageViewerProps, MultiImageViewerProps } from './image-viewer';
+export declare type ImageViewerHandler = {
+    close: () => void;
+};
 export declare function showImageViewer(props: Omit<ImageViewerProps, 'visible'>): {
     close: () => void;
 };

@@ -1,5 +1,5 @@
 import { useRef } from 'react';
-import { usePersistFn, useUpdate } from 'ahooks';
+import { useMemoizedFn, useUpdate } from 'ahooks';
 export function usePropsValue(options) {
   var value = options.value,
       defaultValue = options.defaultValue,
@@ -11,7 +11,7 @@ export function usePropsValue(options) {
     stateRef.current = value;
   }
 
-  var setState = usePersistFn(function (v) {
+  var setState = useMemoizedFn(function (v) {
     if (value === undefined) {
       stateRef.current = v;
       update();

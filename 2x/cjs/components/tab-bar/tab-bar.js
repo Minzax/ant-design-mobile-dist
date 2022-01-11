@@ -11,7 +11,11 @@ var _classnames = _interopRequireDefault(require("classnames"));
 
 var _nativeProps = require("../../utils/native-props");
 
+var _withDefaultProps = require("../../utils/with-default-props");
+
 var _badge = _interopRequireDefault(require("../badge"));
+
+var _safeArea = _interopRequireDefault(require("../safe-area"));
 
 var _usePropsValue2 = require("../../utils/use-props-value");
 
@@ -22,10 +26,15 @@ var TabBarItem = function TabBarItem() {
 };
 
 exports.TabBarItem = TabBarItem;
+var classPrefix = "adm-tab-bar";
+var defaultProps = {
+  safeArea: false
+};
 
-var TabBar = function TabBar(props) {
+var TabBar = function TabBar(p) {
   var _a;
 
+  var props = (0, _withDefaultProps.mergeProps)(defaultProps, p);
   var firstActiveKey = null;
   var items = [];
 
@@ -50,29 +59,33 @@ var TabBar = function TabBar(props) {
       setActiveKey = _usePropsValue[1];
 
   return (0, _nativeProps.withNativeProps)(props, /*#__PURE__*/_react["default"].createElement("div", {
-    className: 'adm-tab-bar'
+    className: classPrefix
+  }, /*#__PURE__*/_react["default"].createElement("div", {
+    className: classPrefix + "-wrap"
   }, items.map(function (item) {
+    var _classNames;
+
     var active = item.key === activeKey;
 
     function renderContent() {
       var iconElement = item.props.icon && /*#__PURE__*/_react["default"].createElement("div", {
-        className: 'adm-tab-bar-item-icon'
+        className: classPrefix + "-item-icon"
       }, typeof item.props.icon === 'function' ? item.props.icon(active) : item.props.icon);
 
       var titleElement = item.props.title && /*#__PURE__*/_react["default"].createElement("div", {
-        className: 'adm-tab-bar-item-title'
+        className: classPrefix + "-item-title"
       }, item.props.title);
 
       if (iconElement) {
         return /*#__PURE__*/_react["default"].createElement(_react["default"].Fragment, null, /*#__PURE__*/_react["default"].createElement(_badge["default"], {
           content: item.props.badge,
-          className: 'adm-tab-bar-icon-badge'
+          className: classPrefix + "-icon-badge"
         }, iconElement), titleElement);
       } else if (titleElement) {
-        return /*#__PURE__*/_react["default"].createElement(_react["default"].Fragment, null, /*#__PURE__*/_react["default"].createElement(_badge["default"], {
+        return /*#__PURE__*/_react["default"].createElement(_badge["default"], {
           content: item.props.badge,
-          className: 'adm-tab-bar-title-badge'
-        }, titleElement));
+          className: classPrefix + "-title-badge"
+        }, titleElement);
       }
 
       return null;
@@ -85,10 +98,10 @@ var TabBar = function TabBar(props) {
         if (key === undefined || key === null) return;
         setActiveKey(key.toString());
       },
-      className: (0, _classnames["default"])('adm-tab-bar-item', {
-        'adm-tab-bar-item-active': active
-      })
+      className: (0, _classnames["default"])(classPrefix + "-item", (_classNames = {}, _classNames[classPrefix + "-item-active"] = active, _classNames))
     }, renderContent()));
+  })), props.safeArea && /*#__PURE__*/_react["default"].createElement(_safeArea["default"], {
+    position: 'bottom'
   })));
 };
 

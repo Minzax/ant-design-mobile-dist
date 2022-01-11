@@ -80,6 +80,7 @@ export var Input = /*#__PURE__*/forwardRef(function (p, ref) {
       (_a = props.onBlur) === null || _a === void 0 ? void 0 : _a.call(props, e);
     },
     id: props.id,
+    onClick: props.onClick,
     placeholder: props.placeholder,
     disabled: props.disabled,
     readOnly: props.readOnly,

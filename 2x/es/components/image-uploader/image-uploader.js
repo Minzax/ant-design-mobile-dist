@@ -36,7 +36,7 @@ import { mergeProps } from '../../utils/with-default-props';
 import ImageViewer from '../image-viewer';
 import PreviewItem from './preview-item';
 import { usePropsValue } from '../../utils/use-props-value';
-import { usePersistFn } from 'ahooks';
+import { useMemoizedFn, useUnmount } from 'ahooks';
 import Space from '../space';
 import { withNativeProps } from '../../utils/native-props';
 var classPrefix = "adm-image-uploader";
@@ -47,7 +47,8 @@ var defaultProps = {
   multiple: false,
   maxCount: 0,
   defaultValue: [],
-  accept: 'image/*'
+  accept: 'image/*',
+  preview: true
 };
 export var ImageUploader = function ImageUploader(p) {
   var props = mergeProps(defaultProps, p);
@@ -56,7 +57,7 @@ export var ImageUploader = function ImageUploader(p) {
       value = _usePropsValue[0],
       setValue = _usePropsValue[1];
 
-  var updateValue = usePersistFn(function (updater) {
+  var updateValue = useMemoizedFn(function (updater) {
     setValue(updater(value));
   });
 
@@ -167,9 +168,8 @@ export var ImageUploader = function ImageUploader(p) {
                             });
                           });
                           updateValue(function (prev) {
-                            return [].concat(prev, [{
-                              url: result.url
-                            }]);
+                            var newVal = Object.assign({}, result);
+                            return [].concat(prev, [newVal]);
                           });
                           _context.next = 12;
                           break;
@@ -213,16 +213,25 @@ export var ImageUploader = function ImageUploader(p) {
     }));
   }
 
+  var imageViewerHandlerRef = useRef(null);
+
   function previewImage(index) {
-    ImageViewer.Multi.show({
+    imageViewerHandlerRef.current = ImageViewer.Multi.show({
       images: value.map(function (fileItem) {
         return fileItem.url;
       }),
-      defaultIndex: index
+      defaultIndex: index,
+      onClose: function onClose() {
+        imageViewerHandlerRef.current = null;
+      }
     });
-    onPreview && onPreview(index);
   }
 
+  useUnmount(function () {
+    var _a;
+
+    (_a = imageViewerHandlerRef.current) === null || _a === void 0 ? void 0 : _a.close();
+  });
   var showUpload = props.showUpload && (maxCount === 0 || value.length + tasks.length < maxCount);
   return withNativeProps(props, /*#__PURE__*/React.createElement("div", {
     className: classPrefix
@@ -237,7 +246,11 @@ export var ImageUploader = function ImageUploader(p) {
       url: (_b = fileItem.thumbnailUrl) !== null && _b !== void 0 ? _b : fileItem.url,
       deletable: props.deletable,
       onClick: function onClick() {
-        return previewImage(index);
+        if (props.preview) {
+          previewImage(index);
+        }
+
+        onPreview && onPreview(index);
       },
       onDelete: function onDelete() {
         return __awaiter(void 0, void 0, void 0, /*#__PURE__*/regeneratorRuntime.mark(function _callee3() {

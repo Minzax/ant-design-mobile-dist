@@ -17,6 +17,8 @@ var _context = require("./context");
 
 var _withDefaultProps = require("../../utils/with-default-props");
 
+var _header = require("./header");
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function _getRequireWildcardCache(nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
@@ -53,22 +55,46 @@ var Form = /*#__PURE__*/(0, _react.forwardRef)(function (p, ref) {
       mode = props.mode,
       formProps = __rest(props, ["className", "style", "hasFeedback", "children", "layout", "footer", "mode"]);
 
+  var lists = [];
+  var currentHeader = null;
+  var items = [];
+  var count = 0;
+
+  function collect() {
+    if (items.length === 0) return;
+    count += 1;
+    lists.push( /*#__PURE__*/_react["default"].createElement(_list["default"], {
+      header: currentHeader,
+      key: count,
+      mode: mode,
+      style: {
+        '--prefix-width': '6em',
+        '--align-items': 'stretch'
+      }
+    }, items));
+    items = [];
+  }
+
+  _react["default"].Children.forEach(props.children, function (child, index) {
+    if ( /*#__PURE__*/ /*#__PURE__*/_react["default"].isValidElement(child) && child.type === _header.Header) {
+      collect();
+      currentHeader = child.props.children;
+    } else {
+      items.push(child);
+    }
+  });
+
+  collect();
   return /*#__PURE__*/_react["default"].createElement(_rcFieldForm["default"], Object.assign({
     className: (0, _classnames["default"])(classPrefix, classPrefix + "-" + layout, className),
     style: style,
     ref: ref
-  }, formProps), /*#__PURE__*/_react["default"].createElement(_list["default"], {
-    mode: mode,
-    style: {
-      '--prefix-width': '6em',
-      '--align-items': 'stretch'
-    }
-  }, /*#__PURE__*/_react["default"].createElement(_context.FormContext.Provider, {
+  }, formProps), /*#__PURE__*/_react["default"].createElement(_context.FormContext.Provider, {
     value: {
       hasFeedback: hasFeedback,
       layout: layout
     }
-  }, children)), footer && /*#__PURE__*/_react["default"].createElement("div", {
+  }, lists), footer && /*#__PURE__*/_react["default"].createElement("div", {
     className: classPrefix + "-footer"
   }, footer));
 });

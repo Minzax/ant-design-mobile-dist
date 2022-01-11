@@ -27,6 +27,12 @@ Object.defineProperty(exports, "Button", {
     return _button["default"];
   }
 });
+Object.defineProperty(exports, "Calendar", {
+  enumerable: true,
+  get: function get() {
+    return _calendar["default"];
+  }
+});
 Object.defineProperty(exports, "CapsuleTabs", {
   enumerable: true,
   get: function get() {
@@ -351,6 +357,12 @@ Object.defineProperty(exports, "SideBar", {
     return _sideBar["default"];
   }
 });
+Object.defineProperty(exports, "Skeleton", {
+  enumerable: true,
+  get: function get() {
+    return _skeleton["default"];
+  }
+});
 Object.defineProperty(exports, "Slider", {
   enumerable: true,
   get: function get() {
@@ -460,6 +472,8 @@ var _badge = _interopRequireDefault(require("./components/badge"));
 
 var _button = _interopRequireDefault(require("./components/button"));
 
+var _calendar = _interopRequireDefault(require("./components/calendar"));
+
 var _capsuleTabs = _interopRequireDefault(require("./components/capsule-tabs"));
 
 var _card = _interopRequireDefault(require("./components/card"));
@@ -532,6 +546,8 @@ var _numberKeyboard = _interopRequireDefault(require("./components/number-keyboa
 
 var _pageIndicator = _interopRequireDefault(require("./components/page-indicator"));
 
+var _passcodeInput = _interopRequireDefault(require("./components/passcode-input"));
+
 var _picker = _interopRequireDefault(require("./components/picker"));
 
 var _pickerView = _interopRequireDefault(require("./components/picker-view"));
@@ -562,6 +578,8 @@ var _selector = _interopRequireDefault(require("./components/selector"));
 
 var _sideBar = _interopRequireDefault(require("./components/side-bar"));
 
+var _skeleton = _interopRequireDefault(require("./components/skeleton"));
+
 var _slider = _interopRequireDefault(require("./components/slider"));
 
 var _space = _interopRequireDefault(require("./components/space"));
@@ -591,8 +609,6 @@ var _treeSelect = _interopRequireDefault(require("./components/tree-select"));
 var _virtualInput = _interopRequireDefault(require("./components/virtual-input"));
 
 var _waterMark = _interopRequireDefault(require("./components/water-mark"));
-
-var _passcodeInput = _interopRequireDefault(require("./components/passcode-input"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 

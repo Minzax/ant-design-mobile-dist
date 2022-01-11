@@ -77,9 +77,10 @@ export var Mask = function Mask(p) {
   var node = withStopPropagation(props.stopPropagation, withNativeProps(props, /*#__PURE__*/React.createElement(animated.div, {
     className: classPrefix,
     ref: ref,
-    style: Object.assign(Object.assign({}, props.style), {
+    style: Object.assign(Object.assign({
       background: background,
-      opacity: opacity,
+      opacity: opacity
+    }, props.style), {
       display: active ? 'unset' : 'none'
     })
   }, props.onMaskClick && /*#__PURE__*/React.createElement("div", {

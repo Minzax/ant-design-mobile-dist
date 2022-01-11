@@ -21,7 +21,6 @@
 .adm-action-sheet-button-item {
   padding: 14px;
   text-align: center;
-  border-radius: 0;
 }
 .adm-action-sheet-button-item-name {
   color: var(--adm-color-text);

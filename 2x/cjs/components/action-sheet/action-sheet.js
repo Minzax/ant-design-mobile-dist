@@ -69,6 +69,7 @@ var ActionSheet = function ActionSheet(p) {
     }, /*#__PURE__*/_react["default"].createElement(_button["default"], {
       block: true,
       fill: 'none',
+      shape: 'rectangular',
       disabled: action.disabled,
       onClick: function onClick() {
         var _a, _b, _c;
@@ -93,6 +94,7 @@ var ActionSheet = function ActionSheet(p) {
   }, /*#__PURE__*/_react["default"].createElement(_button["default"], {
     block: true,
     fill: 'none',
+    shape: 'rectangular',
     className: classPrefix + "-button-item",
     onClick: function onClick() {
       var _a;

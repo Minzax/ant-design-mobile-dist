@@ -46,6 +46,7 @@ export var defaultProps = {
   refreshingText: '加载中……',
   completeText: '刷新成功',
   completeDelay: 500,
+  disabled: false,
   onRefresh: function onRefresh() {}
 };
 export var PullToRefresh = function PullToRefresh(p) {
@@ -222,6 +223,7 @@ export var PullToRefresh = function PullToRefresh(p) {
     },
     axis: 'y',
     target: elementRef,
+    enabled: !props.disabled,
     eventOptions: supportsPassive ? {
       passive: false
     } : false

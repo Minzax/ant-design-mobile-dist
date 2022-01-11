@@ -47,9 +47,14 @@
 
 .adm-search-bar .adm-search-bar-suffix {
   flex: none;
-  margin-left: 32px;
+  margin-left: 8px;
+}
+
+.adm-search-bar .adm-search-bar-cancel-button.adm-button {
+  padding: 6px 24px;
 }
 
 .adm-search-bar-active .adm-search-bar-input-box {
   border-color: var(--adm-color-primary);
+  background: var(--adm-color-white);
 }

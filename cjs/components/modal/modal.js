@@ -21,6 +21,8 @@ var _image = _interopRequireDefault(require("../image"));
 
 var _space = _interopRequireDefault(require("../space"));
 
+var _renderToContainer = require("../../utils/render-to-container");
+
 var _withStopPropagation = require("../../utils/with-stop-propagation");
 
 var _autoCenter = _interopRequireDefault(require("../auto-center"));
@@ -76,7 +78,8 @@ var defaultProps = {
   closeOnAction: false,
   closeOnMaskClick: false,
   stopPropagation: ['click'],
-  showCloseButton: false
+  showCloseButton: false,
+  getContainer: null
 };
 
 var Modal = function Modal(p) {
@@ -112,14 +115,13 @@ var Modal = function Modal(p) {
       active = _useState[0],
       setActive = _useState[1];
 
-  return (0, _withStopPropagation.withStopPropagation)(props.stopPropagation, (0, _nativeProps.withNativeProps)(props, /*#__PURE__*/_react["default"].createElement("div", {
+  var node = (0, _withStopPropagation.withStopPropagation)(props.stopPropagation, (0, _nativeProps.withNativeProps)(props, /*#__PURE__*/_react["default"].createElement("div", {
     className: classPrefix,
     style: {
       display: active ? 'unset' : 'none'
     }
   }, /*#__PURE__*/_react["default"].createElement(_mask["default"], {
     visible: props.visible,
-    getContainer: props.getContainer,
     onMaskClick: props.closeOnMaskClick ? props.onClose : undefined,
     style: props.maskStyle,
     className: (0, _classnames["default"])(classPrefix + "-mask", props.maskClassName)
@@ -190,6 +192,7 @@ var Modal = function Modal(p) {
       }
     });
   }))))))));
+  return (0, _renderToContainer.renderToContainer)(props.getContainer, node);
 };
 
 exports.Modal = Modal;

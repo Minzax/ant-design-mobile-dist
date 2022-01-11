@@ -5,7 +5,7 @@ export function useCascadePickerOptions(options) {
     var subOptionsRecord = {};
 
     function traverse(option, currentDepth) {
-      if (!option.children || option.children.length === 0) {
+      if (!option.children) {
         return;
       }
 

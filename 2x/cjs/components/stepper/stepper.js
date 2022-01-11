@@ -43,7 +43,8 @@ var Stepper = function Stepper(p) {
   var disabled = props.disabled,
       step = props.step,
       max = props.max,
-      min = props.min;
+      min = props.min,
+      inputReadOnly = props.inputReadOnly;
 
   var _usePropsValue = (0, _usePropsValue2.usePropsValue)(props),
       value = _usePropsValue[0],
@@ -118,7 +119,9 @@ var Stepper = function Stepper(p) {
     disabled: minusDisabled(),
     fill: 'none',
     color: 'primary'
-  }, /*#__PURE__*/_react["default"].createElement(_antdMobileIcons.MinusOutline, null)), /*#__PURE__*/_react["default"].createElement(_input["default"], {
+  }, /*#__PURE__*/_react["default"].createElement(_antdMobileIcons.MinusOutline, null)), /*#__PURE__*/_react["default"].createElement("div", {
+    className: classPrefix + "-middle"
+  }, /*#__PURE__*/_react["default"].createElement(_input["default"], {
     className: classPrefix + "-input",
     onFocus: function onFocus(e) {
       var _a;
@@ -136,8 +139,9 @@ var Stepper = function Stepper(p) {
 
       setHasFocus(false);
       (_a = props.onBlur) === null || _a === void 0 ? void 0 : _a.call(props, e);
-    }
-  }), /*#__PURE__*/_react["default"].createElement(_button["default"], {
+    },
+    readOnly: inputReadOnly
+  })), /*#__PURE__*/_react["default"].createElement(_button["default"], {
     className: classPrefix + "-plus",
     onClick: handlePlus,
     disabled: plusDisabled(),

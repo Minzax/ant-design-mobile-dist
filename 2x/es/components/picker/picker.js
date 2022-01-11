@@ -7,7 +7,8 @@ import PickerView from '../picker-view';
 import { useColumns } from '../picker-view/use-columns';
 import { useConfig } from '../config-provider';
 import { usePickerValueExtend } from '../picker-view/use-picker-value-extend';
-import { usePersistFn } from 'ahooks';
+import { useMemoizedFn } from 'ahooks';
+import SafeArea from '../safe-area';
 var classPrefix = "adm-picker";
 var defaultProps = {
   defaultValue: []
@@ -51,7 +52,7 @@ export var Picker = /*#__PURE__*/memo(function (p) {
       setInnerValue(value);
     }
   }, [value]);
-  var onChange = usePersistFn(function (val, ext) {
+  var onChange = useMemoizedFn(function (val, ext) {
     var _a;
 
     setInnerValue(val);
@@ -105,7 +106,9 @@ export var Picker = /*#__PURE__*/memo(function (p) {
     onClick: props.onClick,
     forceRender: true,
     stopPropagation: props.stopPropagation
-  }, pickerElement);
+  }, pickerElement, /*#__PURE__*/React.createElement(SafeArea, {
+    position: 'bottom'
+  }));
   return /*#__PURE__*/React.createElement(React.Fragment, null, popupElement, (_a = props.children) === null || _a === void 0 ? void 0 : _a.call(props, generateValueExtend(value).items));
 });
 Picker.displayName = 'Picker';

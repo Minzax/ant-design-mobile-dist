@@ -66,7 +66,7 @@ var NumberKeyboard = function NumberKeyboard(p) {
   }, [customKey, confirmText, randomOrder, randomOrder && visible]);
   var timeoutRef = (0, _react.useRef)(-1);
   var intervalRef = (0, _react.useRef)(-1);
-  var onDelete = (0, _ahooks.usePersistFn)(function () {
+  var onDelete = (0, _ahooks.useMemoizedFn)(function () {
     var _a;
 
     (_a = props.onDelete) === null || _a === void 0 ? void 0 : _a.call(props);

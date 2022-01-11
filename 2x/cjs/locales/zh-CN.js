@@ -14,6 +14,12 @@ var zhCN = (0, _mergeLocale.mergeLocale)(_base.base, {
     confirm: '确定',
     cancel: '取消'
   },
+  Calendar: {
+    markItems: ['一', '二', '三', '四', '五', '六', '日'],
+    renderYearAndMonth: function renderYearAndMonth(year, month) {
+      return year + "\u5E74" + month + "\u6708";
+    }
+  },
   Cascader: {
     placeholder: '请选择'
   },

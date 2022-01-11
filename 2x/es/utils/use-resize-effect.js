@@ -1,7 +1,7 @@
 import { useLayoutEffect } from 'react';
-import { usePersistFn } from 'ahooks';
+import { useMemoizedFn } from 'ahooks';
 export function useResizeEffect(effect, targetRef) {
-  var fn = usePersistFn(effect);
+  var fn = useMemoizedFn(effect);
   useLayoutEffect(function () {
     var target = targetRef.current;
     if (!target) return;

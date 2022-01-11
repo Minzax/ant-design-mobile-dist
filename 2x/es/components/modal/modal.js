@@ -38,6 +38,7 @@ import Mask from '../mask';
 import { ModalActionButton } from './modal-action-button';
 import Image from '../image';
 import Space from '../space';
+import { renderToContainer } from '../../utils/render-to-container';
 import { withStopPropagation } from '../../utils/with-stop-propagation';
 import AutoCenter from '../auto-center';
 import { useSpring, animated } from '@react-spring/web';
@@ -50,7 +51,8 @@ var defaultProps = {
   closeOnAction: false,
   closeOnMaskClick: false,
   stopPropagation: ['click'],
-  showCloseButton: false
+  showCloseButton: false,
+  getContainer: null
 };
 export var Modal = function Modal(p) {
   var props = mergeProps(defaultProps, p);
@@ -85,14 +87,13 @@ export var Modal = function Modal(p) {
       active = _useState[0],
       setActive = _useState[1];
 
-  return withStopPropagation(props.stopPropagation, withNativeProps(props, /*#__PURE__*/React.createElement("div", {
+  var node = withStopPropagation(props.stopPropagation, withNativeProps(props, /*#__PURE__*/React.createElement("div", {
     className: classPrefix,
     style: {
       display: active ? 'unset' : 'none'
     }
   }, /*#__PURE__*/React.createElement(Mask, {
     visible: props.visible,
-    getContainer: props.getContainer,
     onMaskClick: props.closeOnMaskClick ? props.onClose : undefined,
     style: props.maskStyle,
     className: classNames(classPrefix + "-mask", props.maskClassName)
@@ -163,4 +164,5 @@ export var Modal = function Modal(p) {
       }
     });
   }))))))));
+  return renderToContainer(props.getContainer, node);
 };

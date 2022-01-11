@@ -82,13 +82,15 @@ var InternalToast = function InternalToast(p) {
     className: (0, _classnames["default"])(classPrefix + "-mask", props.maskClassName),
     stopPropagation: props.stopPropagation
   }, /*#__PURE__*/_react["default"].createElement("div", {
+    className: (0, _classnames["default"])(classPrefix + "-wrap")
+  }, /*#__PURE__*/_react["default"].createElement("div", {
     style: {
       top: top
     },
-    className: (0, _classnames["default"])(classPrefix + "-wrap", icon ? classPrefix + "-wrap-icon" : classPrefix + "-wrap-text")
+    className: (0, _classnames["default"])(classPrefix + "-main", icon ? classPrefix + "-main-icon" : classPrefix + "-main-text")
   }, iconElement && /*#__PURE__*/_react["default"].createElement("div", {
     className: classPrefix + "-icon"
-  }, iconElement), /*#__PURE__*/_react["default"].createElement(_autoCenter["default"], null, content)));
+  }, iconElement), /*#__PURE__*/_react["default"].createElement(_autoCenter["default"], null, content))));
 };
 
 exports.InternalToast = InternalToast;

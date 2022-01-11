@@ -43,7 +43,7 @@ var InfiniteScroll = function InfiniteScroll(p) {
   });
   var elementRef = (0, _react.useRef)(null);
   var checkTimeoutRef = (0, _react.useRef)();
-  var check = (0, _ahooks.usePersistFn)(function () {
+  var check = (0, _ahooks.useMemoizedFn)(function () {
     window.clearTimeout(checkTimeoutRef.current);
     checkTimeoutRef.current = window.setTimeout(function () {
       if (!props.hasMore) return;

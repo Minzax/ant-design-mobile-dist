@@ -58,7 +58,12 @@
 }
 
 .adm-steps {
+  --title-font-size: 26px;
+  --description-font-size: 24px;
+  --indicator-margin-right: 0;
+  --icon-size: 36px;
   width: 100%;
+  box-sizing: border-box;
 }
 
 .adm-steps-horizontal {
@@ -92,8 +97,12 @@
 
 .adm-steps-horizontal .adm-step-content {
   text-align: center;
-  font-size: 24px;
+  font-size: var(--description-font-size);
   padding-top: 4px;
+}
+
+.adm-steps-horizontal .adm-step-content .adm-step-title {
+  font-size: var(--title-font-size);
 }
 
 .adm-steps-horizontal .adm-step-content .adm-step-description {
@@ -103,7 +112,6 @@
 
 .adm-steps-vertical {
   padding: 16px 32px;
-  --title-font-size: 34px;
 }
 
 .adm-steps-vertical .adm-step {
@@ -114,7 +122,7 @@
 .adm-steps-vertical .adm-step .adm-step-indicator {
   flex: none;
   width: 48px;
-  margin-right: 16px;
+  margin-right: var(--indicator-margin-right);
 }
 
 .adm-steps-vertical .adm-step .adm-step-indicator::after {
@@ -147,12 +155,12 @@
 
 .adm-steps-vertical .adm-step .adm-step-content .adm-step-description {
   padding-top: 4px;
-  font-size: 30px;
+  font-size: var(--description-font-size);
   color: var(--adm-color-weak);
 }
 
 .adm-step-icon-container {
-  font-size: 36px;
+  font-size: var(--icon-size);
 }
 
 .adm-step-icon-dot {

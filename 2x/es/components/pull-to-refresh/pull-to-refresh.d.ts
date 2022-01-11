@@ -9,6 +9,7 @@ export declare type PullToRefreshProps = {
     completeDelay?: number;
     headHeight?: number;
     threshold?: number;
+    disabled?: boolean;
     renderText?: (status: PullStatus) => ReactNode;
 };
 export declare const defaultProps: {
@@ -17,6 +18,7 @@ export declare const defaultProps: {
     refreshingText: string;
     completeText: string;
     completeDelay: number;
+    disabled: boolean;
     onRefresh: () => void;
 };
 export declare const PullToRefresh: FC<PullToRefreshProps>;

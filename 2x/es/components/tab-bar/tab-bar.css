@@ -1,4 +1,4 @@
-.adm-tab-bar {
+.adm-tab-bar-wrap {
   display: flex;
   flex-wrap: nowrap;
   justify-content: flex-start;

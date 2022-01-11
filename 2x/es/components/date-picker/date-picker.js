@@ -1,5 +1,5 @@
 import React, { useCallback, useMemo } from 'react';
-import { usePersistFn } from 'ahooks';
+import { useMemoizedFn } from 'ahooks';
 import Picker from '../picker';
 import { withNativeProps } from '../../utils/native-props';
 import { mergeProps } from '../../utils/with-default-props';
@@ -31,7 +31,7 @@ export var DatePicker = function DatePicker(p) {
   var onConfirm = useCallback(function (val) {
     setValue(convertStringArrayToDate(val, props.precision));
   }, [setValue, props.precision]);
-  var onSelect = usePersistFn(function (val) {
+  var onSelect = useMemoizedFn(function (val) {
     var _a;
 
     var date = convertStringArrayToDate(val, props.precision);

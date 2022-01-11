@@ -52,7 +52,7 @@ var DatePicker = function DatePicker(p) {
   var onConfirm = (0, _react.useCallback)(function (val) {
     setValue((0, _datePickerUtils.convertStringArrayToDate)(val, props.precision));
   }, [setValue, props.precision]);
-  var onSelect = (0, _ahooks.usePersistFn)(function (val) {
+  var onSelect = (0, _ahooks.useMemoizedFn)(function (val) {
     var _a;
 
     var date = (0, _datePickerUtils.convertStringArrayToDate)(val, props.precision);

@@ -9,7 +9,7 @@ var _react = _interopRequireWildcard(require("react"));
 
 var _withDefaultProps = require("../../utils/with-default-props");
 
-var _column = require("./column");
+var _wheel = require("./wheel");
 
 var _useColumns = require("./use-columns");
 
@@ -74,7 +74,7 @@ var PickerView = /*#__PURE__*/(0, _react.memo)(function (p) {
   return (0, _nativeProps.withNativeProps)(props, /*#__PURE__*/_react["default"].createElement("div", {
     className: "" + classPrefix
   }, columns.map(function (column, index) {
-    return /*#__PURE__*/_react["default"].createElement(_column.Column, {
+    return /*#__PURE__*/_react["default"].createElement(_wheel.Wheel, {
       key: index,
       index: index,
       column: column,

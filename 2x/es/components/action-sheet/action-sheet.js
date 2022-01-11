@@ -46,6 +46,7 @@ export var ActionSheet = function ActionSheet(p) {
     }, /*#__PURE__*/React.createElement(Button, {
       block: true,
       fill: 'none',
+      shape: 'rectangular',
       disabled: action.disabled,
       onClick: function onClick() {
         var _a, _b, _c;
@@ -70,6 +71,7 @@ export var ActionSheet = function ActionSheet(p) {
   }, /*#__PURE__*/React.createElement(Button, {
     block: true,
     fill: 'none',
+    shape: 'rectangular',
     className: classPrefix + "-button-item",
     onClick: function onClick() {
       var _a;

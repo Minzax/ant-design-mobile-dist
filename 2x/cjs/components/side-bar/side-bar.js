@@ -69,7 +69,9 @@ var SideBar = function SideBar(props) {
       content: item.props.badge
     }, /*#__PURE__*/_react["default"].createElement("div", {
       className: classPrefix + "-item-title"
-    }, item.props.title))));
+    }, active && /*#__PURE__*/_react["default"].createElement("div", {
+      className: classPrefix + "-item-highlight"
+    }), item.props.title))));
   })));
 };
 

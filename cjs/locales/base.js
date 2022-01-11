@@ -9,6 +9,12 @@ var base = {
     confirm: 'Confirm',
     cancel: 'Cancel'
   },
+  Calendar: {
+    markItems: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+    renderYearAndMonth: function renderYearAndMonth(year, month) {
+      return year + "/" + month;
+    }
+  },
   Cascader: {
     placeholder: 'Selecting'
   },

@@ -41,6 +41,8 @@ var Slides = function Slides(props) {
   var count = props.images.length;
   var dragLockRef = (0, _react.useRef)(false);
   var bind = (0, _react2.useDrag)(function (state) {
+    var _a;
+
     if (dragLockRef.current) return;
     var _state$offset = state.offset,
         offsetX = _state$offset[0];
@@ -50,6 +52,7 @@ var Slides = function Slides(props) {
       var maxIndex = minIndex + 1;
       var velocityOffset = Math.min(state.velocity[0] * 2000, slideWidth) * state.direction[0];
       var index = (0, _bound.bound)((0, _bound.bound)(Math.round((offsetX + velocityOffset) / slideWidth), minIndex, maxIndex), 0, count - 1);
+      (_a = props.onIndexChange) === null || _a === void 0 ? void 0 : _a.call(props, index);
       api.start({
         x: index * slideWidth
       });

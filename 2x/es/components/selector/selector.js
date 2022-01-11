@@ -5,8 +5,8 @@ import { mergeProps } from '../../utils/with-default-props';
 import Space from '../space';
 import Grid from '../grid';
 import { convertPx } from '../../utils/convert-px';
-import selectorCheckMarkImg from '../../assets/selector-check-mark.svg';
 import { usePropsValue } from '../../utils/use-props-value';
+import { CheckMark } from './check-mark';
 var classPrefix = "adm-selector";
 var defaultProps = {
   multiple: false,
@@ -60,11 +60,11 @@ export var Selector = function Selector(p) {
           setValue(_val);
         }
       }
-    }, option.label, active && props.multiple && /*#__PURE__*/React.createElement("div", {
+    }, option.label, option.description && /*#__PURE__*/React.createElement("div", {
+      className: classPrefix + "-item-description"
+    }, option.description), active && /*#__PURE__*/React.createElement("div", {
       className: classPrefix + "-check-mark-wrapper"
-    }, /*#__PURE__*/React.createElement("img", {
-      src: selectorCheckMarkImg
-    })));
+    }, /*#__PURE__*/React.createElement(CheckMark, null)));
   });
   return withNativeProps(props, /*#__PURE__*/React.createElement("div", {
     className: classPrefix

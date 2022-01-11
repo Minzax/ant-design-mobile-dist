@@ -1,14 +1,21 @@
 import React from 'react';
 import classNames from 'classnames';
 import { withNativeProps } from '../../utils/native-props';
+import { mergeProps } from '../../utils/with-default-props';
 import Badge from '../badge';
+import SafeArea from '../safe-area';
 import { usePropsValue } from '../../utils/use-props-value';
 export var TabBarItem = function TabBarItem() {
   return null;
 };
-export var TabBar = function TabBar(props) {
+var classPrefix = "adm-tab-bar";
+var defaultProps = {
+  safeArea: false
+};
+export var TabBar = function TabBar(p) {
   var _a;
 
+  var props = mergeProps(defaultProps, p);
   var firstActiveKey = null;
   var items = [];
   React.Children.forEach(props.children, function (child, index) {
@@ -32,28 +39,32 @@ export var TabBar = function TabBar(props) {
       setActiveKey = _usePropsValue[1];
 
   return withNativeProps(props, /*#__PURE__*/React.createElement("div", {
-    className: 'adm-tab-bar'
+    className: classPrefix
+  }, /*#__PURE__*/React.createElement("div", {
+    className: classPrefix + "-wrap"
   }, items.map(function (item) {
+    var _classNames;
+
     var active = item.key === activeKey;
 
     function renderContent() {
       var iconElement = item.props.icon && /*#__PURE__*/React.createElement("div", {
-        className: 'adm-tab-bar-item-icon'
+        className: classPrefix + "-item-icon"
       }, typeof item.props.icon === 'function' ? item.props.icon(active) : item.props.icon);
       var titleElement = item.props.title && /*#__PURE__*/React.createElement("div", {
-        className: 'adm-tab-bar-item-title'
+        className: classPrefix + "-item-title"
       }, item.props.title);
 
       if (iconElement) {
         return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(Badge, {
           content: item.props.badge,
-          className: 'adm-tab-bar-icon-badge'
+          className: classPrefix + "-icon-badge"
         }, iconElement), titleElement);
       } else if (titleElement) {
-        return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(Badge, {
+        return /*#__PURE__*/React.createElement(Badge, {
           content: item.props.badge,
-          className: 'adm-tab-bar-title-badge'
-        }, titleElement));
+          className: classPrefix + "-title-badge"
+        }, titleElement);
       }
 
       return null;
@@ -66,9 +77,9 @@ export var TabBar = function TabBar(props) {
         if (key === undefined || key === null) return;
         setActiveKey(key.toString());
       },
-      className: classNames('adm-tab-bar-item', {
-        'adm-tab-bar-item-active': active
-      })
+      className: classNames(classPrefix + "-item", (_classNames = {}, _classNames[classPrefix + "-item-active"] = active, _classNames))
     }, renderContent()));
+  })), props.safeArea && /*#__PURE__*/React.createElement(SafeArea, {
+    position: 'bottom'
   })));
 };

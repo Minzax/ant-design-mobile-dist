@@ -16,15 +16,14 @@
 
 .adm-cascader-view-content {
   height: var(--height);
-  padding-top: 8px;
+  overflow-y: auto;
   box-sizing: border-box;
 }
 
-.adm-cascader-view-content.adm-list {
+.adm-cascader-view-content.adm-check-list {
   --border-inner: none;
   --border-bottom: none;
   --border-top: none;
-  overflow-y: auto;
 }
 
 .adm-cascader-view-item {

@@ -1,17 +1,17 @@
 {
   "name": "antd-mobile",
-  "version": "5.0.0-rc.7",
+  "version": "5.0.0-rc.16",
   "dependencies": {
-    "@react-spring/web": "^9.3.1",
+    "@react-spring/web": "^9.4.1",
     "@types/resize-observer-browser": "^0.1.6",
     "@use-gesture/react": "^10.2.4",
-    "ahooks": "^2.10.14",
+    "ahooks": "^3.1.4",
     "antd-mobile-icons": "^0.2.2",
     "antd-mobile-v5-count": "^1.0.1",
     "classnames": "^2.3.1",
     "dayjs": "^1.10.7",
     "lodash": "^4.17.21",
-    "rc-field-form": "^1.22.0",
+    "rc-field-form": "^1.22.1",
     "rc-tooltip": "^5.1.1",
     "staged-components": "^1.1.2",
     "use-async-memo": "^1.2.3"

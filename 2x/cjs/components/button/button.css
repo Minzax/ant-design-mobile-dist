@@ -12,7 +12,7 @@
   display: inline-block;
   box-sizing: border-box;
   height: auto;
-  padding: 14px 32px;
+  padding: 16px 24px;
   margin: 0;
   font-size: 30px;
   line-height: 1.4;
@@ -35,7 +35,6 @@
   width: 100%;
   height: 100%;
   background-color: #000;
-  border: inherit;
   border-color: #000;
   border-radius: inherit;
   transform: translate(-50%, -50%);
@@ -45,7 +44,7 @@
 }
 
 .adm-button:active::before {
-  opacity: 0.1;
+  opacity: 0.08;
 }
 
 .adm-button-default.adm-button-fill-outline {
@@ -106,7 +105,8 @@
 }
 
 .adm-button.adm-button-mini {
-  padding: 6px 14px;
+  padding-top: 6px;
+  padding-bottom: 6px;
   font-size: 26px;
 }
 
@@ -116,12 +116,14 @@
 }
 
 .adm-button.adm-button-small {
-  padding: 6px 22px;
+  padding-top: 6px;
+  padding-bottom: 6px;
   font-size: 30px;
 }
 
 .adm-button.adm-button-large {
-  padding: 22px 44px;
+  padding-top: 22px;
+  padding-bottom: 22px;
   font-size: 36px;
 }
 

@@ -13,10 +13,13 @@ var _attachPropertiesToComponent = require("../../utils/attach-properties-to-com
 
 var _formItem = require("./form-item");
 
+var _header = require("./header");
+
 var _rcFieldForm = require("rc-field-form");
 
 var _default = (0, _attachPropertiesToComponent.attachPropertiesToComponent)(_form.Form, {
   Item: _formItem.FormItem,
+  Header: _header.Header,
   useForm: _rcFieldForm.useForm
 });
 

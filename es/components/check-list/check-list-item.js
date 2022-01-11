@@ -6,8 +6,6 @@ import { devWarning } from '../../utils/dev-log';
 import classNames from 'classnames';
 var classPrefix = "adm-check-list-item";
 export var CheckListItem = function CheckListItem(props) {
-  var _classNames;
-
   var context = useContext(CheckListContext);
 
   if (context === null) {
@@ -22,7 +20,7 @@ export var CheckListItem = function CheckListItem(props) {
   }, active ? context.activeIcon : null);
   return withNativeProps(props, /*#__PURE__*/React.createElement(List.Item, {
     title: props.title,
-    className: classNames((_classNames = {}, _classNames[classPrefix + "-readonly"] = readOnly, _classNames)),
+    className: classNames(classPrefix, readOnly && classPrefix + "-readonly"),
     description: props.description,
     prefix: props.prefix,
     onClick: function onClick(e) {

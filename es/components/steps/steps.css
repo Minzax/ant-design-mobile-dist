@@ -45,7 +45,12 @@
   color: var(--adm-color-danger);
 }
 .adm-steps {
+  --title-font-size: 13px;
+  --description-font-size: 12px;
+  --indicator-margin-right: 0;
+  --icon-size: 18px;
   width: 100%;
+  box-sizing: border-box;
 }
 .adm-steps-horizontal {
   display: flex;
@@ -73,8 +78,11 @@
 }
 .adm-steps-horizontal .adm-step-content {
   text-align: center;
-  font-size: 12px;
+  font-size: var(--description-font-size);
   padding-top: 2px;
+}
+.adm-steps-horizontal .adm-step-content .adm-step-title {
+  font-size: var(--title-font-size);
 }
 .adm-steps-horizontal .adm-step-content .adm-step-description {
   margin-top: 2px;
@@ -82,7 +90,6 @@
 }
 .adm-steps-vertical {
   padding: 8px 16px;
-  --title-font-size: 17px;
 }
 .adm-steps-vertical .adm-step {
   display: flex;
@@ -91,7 +98,7 @@
 .adm-steps-vertical .adm-step .adm-step-indicator {
   flex: none;
   width: 24px;
-  margin-right: 8px;
+  margin-right: var(--indicator-margin-right);
 }
 .adm-steps-vertical .adm-step .adm-step-indicator::after {
   left: 50%;
@@ -118,11 +125,11 @@
 }
 .adm-steps-vertical .adm-step .adm-step-content .adm-step-description {
   padding-top: 2px;
-  font-size: 15px;
+  font-size: var(--description-font-size);
   color: var(--adm-color-weak);
 }
 .adm-step-icon-container {
-  font-size: 18px;
+  font-size: var(--icon-size);
 }
 .adm-step-icon-dot {
   display: block;

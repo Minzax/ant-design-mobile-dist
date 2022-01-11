@@ -12,5 +12,5 @@ export declare type TabsProps = {
     activeLineMode?: 'auto' | 'full' | 'fixed';
     stretch?: boolean;
     onChange?: (key: string) => void;
-} & NativeProps<'--fixed-active-line-width' | '--title-font-size' | '--content-padding'>;
+} & NativeProps<'--fixed-active-line-width' | '--active-line-height' | '--active-line-border-radius' | '--title-font-size' | '--content-padding'>;
 export declare const Tabs: FC<TabsProps>;

@@ -19,9 +19,9 @@ var _grid = _interopRequireDefault(require("../grid"));
 
 var _convertPx = require("../../utils/convert-px");
 
-var _selectorCheckMark = _interopRequireDefault(require("../../assets/selector-check-mark.svg"));
-
 var _usePropsValue2 = require("../../utils/use-props-value");
+
+var _checkMark = require("./check-mark");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
@@ -79,11 +79,11 @@ var Selector = function Selector(p) {
           setValue(_val);
         }
       }
-    }, option.label, active && props.multiple && /*#__PURE__*/_react["default"].createElement("div", {
+    }, option.label, option.description && /*#__PURE__*/_react["default"].createElement("div", {
+      className: classPrefix + "-item-description"
+    }, option.description), active && /*#__PURE__*/_react["default"].createElement("div", {
       className: classPrefix + "-check-mark-wrapper"
-    }, /*#__PURE__*/_react["default"].createElement("img", {
-      src: _selectorCheckMark["default"]
-    })));
+    }, /*#__PURE__*/_react["default"].createElement(_checkMark.CheckMark, null)));
   });
   return (0, _nativeProps.withNativeProps)(props, /*#__PURE__*/_react["default"].createElement("div", {
     className: classPrefix

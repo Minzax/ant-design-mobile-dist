@@ -12,8 +12,8 @@ export declare type PickerProps = {
     onClose?: () => void;
     visible?: boolean;
     title?: ReactNode;
-    confirmText?: string;
-    cancelText?: string;
+    confirmText?: ReactNode;
+    cancelText?: ReactNode;
     children?: (items: (PickerColumnItem | null)[]) => ReactNode;
 } & Pick<PopupProps, 'getContainer' | 'afterShow' | 'afterClose' | 'onClick' | 'stopPropagation'> & NativeProps;
 export declare const Picker: React.NamedExoticComponent<PickerProps>;

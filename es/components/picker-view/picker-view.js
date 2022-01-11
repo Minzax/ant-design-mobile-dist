@@ -1,6 +1,6 @@
 import React, { memo, useCallback, useEffect, useState } from 'react';
 import { mergeProps } from '../../utils/with-default-props';
-import { Column } from './column';
+import { Wheel } from './wheel';
 import { useColumns } from './use-columns';
 import { withNativeProps } from '../../utils/native-props';
 import { usePickerValueExtend } from './use-picker-value-extend';
@@ -56,7 +56,7 @@ export var PickerView = /*#__PURE__*/memo(function (p) {
   return withNativeProps(props, /*#__PURE__*/React.createElement("div", {
     className: "" + classPrefix
   }, columns.map(function (column, index) {
-    return /*#__PURE__*/React.createElement(Column, {
+    return /*#__PURE__*/React.createElement(Wheel, {
       key: index,
       index: index,
       column: column,

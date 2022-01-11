@@ -20,7 +20,7 @@ function usePropsValue(options) {
     stateRef.current = value;
   }
 
-  var setState = (0, _ahooks.usePersistFn)(function (v) {
+  var setState = (0, _ahooks.useMemoizedFn)(function (v) {
     if (value === undefined) {
       stateRef.current = v;
       update();

@@ -1,7 +1,7 @@
 import React from 'react';
 import { NativeProps } from '../../utils/native-props';
 declare type NativeInputProps = React.DetailedHTMLProps<React.InputHTMLAttributes<HTMLInputElement>, HTMLInputElement>;
-export declare type InputProps = Pick<NativeInputProps, 'maxLength' | 'minLength' | 'max' | 'min' | 'autoComplete' | 'pattern' | 'inputMode' | 'type' | 'onFocus' | 'onBlur' | 'autoCapitalize' | 'autoCorrect' | 'onKeyDown' | 'onKeyUp'> & {
+export declare type InputProps = Pick<NativeInputProps, 'maxLength' | 'minLength' | 'max' | 'min' | 'autoComplete' | 'pattern' | 'inputMode' | 'type' | 'onFocus' | 'onBlur' | 'autoCapitalize' | 'autoCorrect' | 'onKeyDown' | 'onKeyUp' | 'onClick'> & {
     value?: string;
     defaultValue?: string;
     onChange?: (val: string) => void;
@@ -19,7 +19,7 @@ export declare type InputRef = {
     focus: () => void;
     blur: () => void;
 };
-export declare const Input: React.ForwardRefExoticComponent<Pick<React.DetailedHTMLProps<React.InputHTMLAttributes<HTMLInputElement>, HTMLInputElement>, "pattern" | "max" | "min" | "type" | "onFocus" | "onBlur" | "onKeyDown" | "onKeyUp" | "autoCapitalize" | "autoCorrect" | "inputMode" | "autoComplete" | "maxLength" | "minLength"> & {
+export declare const Input: React.ForwardRefExoticComponent<Pick<React.DetailedHTMLProps<React.InputHTMLAttributes<HTMLInputElement>, HTMLInputElement>, "pattern" | "onClick" | "max" | "min" | "type" | "onFocus" | "onBlur" | "onKeyDown" | "onKeyUp" | "autoCapitalize" | "autoCorrect" | "inputMode" | "autoComplete" | "maxLength" | "minLength"> & {
     value?: string | undefined;
     defaultValue?: string | undefined;
     onChange?: ((val: string) => void) | undefined;

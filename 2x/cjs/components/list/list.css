@@ -6,35 +6,47 @@
   --border-top: solid 2px var(--adm-border-color);
   --border-bottom: solid 2px var(--adm-border-color);
   --padding-left: 24px;
+}
+
+.adm-list-header {
+  color: var(--adm-color-weak);
+  font-size: 28px;
+  padding-left: 24px;
+  margin: 32px 0 8px;
+}
+
+.adm-list-body {
   background-color: #ffffff;
   overflow: hidden;
   font-size: 34px;
 }
 
-.adm-list-default {
+.adm-list-body-inner {
+  margin-bottom: -2px;
+}
+
+.adm-list-default .adm-list-body {
   border-top: var(--border-top);
   border-bottom: var(--border-bottom);
 }
 
 .adm-list-card {
   margin: 24px;
+}
+
+.adm-list-card .adm-list-body {
   border-radius: 16px;
 }
 
 .adm-list-item {
-  margin-bottom: -2px;
   display: block;
   padding-left: var(--padding-left);
-}
-
-.adm-list-item:not(:first-child) {
-  padding-top: 2px;
 }
 
 .adm-list-item-title,
 .adm-list-item-description {
   color: var(--adm-color-weak);
-  font-size: 30px;
+  font-size: 26px;
 }
 
 .adm-list-item-content {
@@ -58,20 +70,25 @@
 .adm-list-item-content-extra {
   flex: none;
   padding-left: 24px;
+  font-size: 30px;
+  color: var(--adm-color-weak);
 }
 
 .adm-list-item-content-arrow {
   flex: none;
   display: flex;
   align-items: center;
-  padding-left: 24px;
-  color: var(--adm-color-weak);
-  font-size: 32px;
+  margin-left: 8px;
+  color: var(--adm-color-light);
+  font-size: 36px;
+}
+
+.adm-list-item-disabled {
+  cursor: not-allowed;
 }
 
 .adm-list-item-disabled.adm-list-item-disabled > .adm-list-item-content > * {
-  cursor: not-allowed;
-  opacity: 0.6;
+  opacity: 0.4;
   pointer-events: none;
 }
 

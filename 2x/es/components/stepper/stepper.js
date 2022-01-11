@@ -20,7 +20,8 @@ export var Stepper = function Stepper(p) {
   var disabled = props.disabled,
       step = props.step,
       max = props.max,
-      min = props.min;
+      min = props.min,
+      inputReadOnly = props.inputReadOnly;
 
   var _usePropsValue = usePropsValue(props),
       value = _usePropsValue[0],
@@ -95,7 +96,9 @@ export var Stepper = function Stepper(p) {
     disabled: minusDisabled(),
     fill: 'none',
     color: 'primary'
-  }, /*#__PURE__*/React.createElement(MinusOutline, null)), /*#__PURE__*/React.createElement(Input, {
+  }, /*#__PURE__*/React.createElement(MinusOutline, null)), /*#__PURE__*/React.createElement("div", {
+    className: classPrefix + "-middle"
+  }, /*#__PURE__*/React.createElement(Input, {
     className: classPrefix + "-input",
     onFocus: function onFocus(e) {
       var _a;
@@ -113,8 +116,9 @@ export var Stepper = function Stepper(p) {
 
       setHasFocus(false);
       (_a = props.onBlur) === null || _a === void 0 ? void 0 : _a.call(props, e);
-    }
-  }), /*#__PURE__*/React.createElement(Button, {
+    },
+    readOnly: inputReadOnly
+  })), /*#__PURE__*/React.createElement(Button, {
     className: classPrefix + "-plus",
     onClick: handlePlus,
     disabled: plusDisabled(),

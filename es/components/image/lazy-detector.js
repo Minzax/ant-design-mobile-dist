@@ -2,7 +2,10 @@ import React, { useEffect, useRef } from 'react';
 import { useInViewport } from 'ahooks';
 export var LazyDetector = function LazyDetector(props) {
   var ref = useRef(null);
-  var inViewport = useInViewport(ref);
+
+  var _useInViewport = useInViewport(ref),
+      inViewport = _useInViewport[0];
+
   useEffect(function () {
     if (inViewport) {
       props.onActive();

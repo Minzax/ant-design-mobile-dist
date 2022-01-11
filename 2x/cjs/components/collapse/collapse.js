@@ -158,7 +158,7 @@ var Collapse = function Collapse(props) {
     var renderArrow = function renderArrow() {
       var _classNames;
 
-      var arrow = /*#__PURE__*/_react["default"].createElement(_antdMobileIcons.RightOutline, null);
+      var arrow = /*#__PURE__*/_react["default"].createElement(_antdMobileIcons.DownOutline, null);
 
       if (props.arrow !== undefined) {
         arrow = props.arrow;

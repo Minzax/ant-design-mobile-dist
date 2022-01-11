@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
-import { usePersistFn } from 'ahooks';
+import { useMemoizedFn } from 'ahooks';
 export function useMutationEffect(effect, targetRef, options) {
-  var fn = usePersistFn(effect);
+  var fn = useMemoizedFn(effect);
   useEffect(function () {
     var observer = new MutationObserver(function () {
       fn();

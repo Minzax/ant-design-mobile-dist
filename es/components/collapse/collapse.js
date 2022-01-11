@@ -1,7 +1,7 @@
 import React, { useRef } from 'react';
 import { withNativeProps } from '../../utils/native-props';
 import List from '../list';
-import { RightOutline } from 'antd-mobile-icons';
+import { DownOutline } from 'antd-mobile-icons';
 import classNames from 'classnames';
 import { useSpring, animated } from '@react-spring/web';
 import { usePropsValue } from '../../utils/use-props-value';
@@ -132,7 +132,7 @@ export var Collapse = function Collapse(props) {
     var renderArrow = function renderArrow() {
       var _classNames;
 
-      var arrow = /*#__PURE__*/React.createElement(RightOutline, null);
+      var arrow = /*#__PURE__*/React.createElement(DownOutline, null);
 
       if (props.arrow !== undefined) {
         arrow = props.arrow;

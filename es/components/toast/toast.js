@@ -61,11 +61,13 @@ export var InternalToast = function InternalToast(p) {
     className: classNames(classPrefix + "-mask", props.maskClassName),
     stopPropagation: props.stopPropagation
   }, /*#__PURE__*/React.createElement("div", {
+    className: classNames(classPrefix + "-wrap")
+  }, /*#__PURE__*/React.createElement("div", {
     style: {
       top: top
     },
-    className: classNames(classPrefix + "-wrap", icon ? classPrefix + "-wrap-icon" : classPrefix + "-wrap-text")
+    className: classNames(classPrefix + "-main", icon ? classPrefix + "-main-icon" : classPrefix + "-main-text")
   }, iconElement && /*#__PURE__*/React.createElement("div", {
     className: classPrefix + "-icon"
-  }, iconElement), /*#__PURE__*/React.createElement(AutoCenter, null, content)));
+  }, iconElement), /*#__PURE__*/React.createElement(AutoCenter, null, content))));
 };

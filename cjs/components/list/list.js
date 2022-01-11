@@ -24,7 +24,13 @@ var List = function List(p) {
   var props = (0, _withDefaultProps.mergeProps)(defaultProps, p);
   return (0, _nativeProps.withNativeProps)(props, /*#__PURE__*/_react["default"].createElement("div", {
     className: (0, _classnames["default"])(classPrefix, classPrefix + "-" + props.mode)
-  }, props.children));
+  }, props.header && /*#__PURE__*/_react["default"].createElement("div", {
+    className: classPrefix + "-header"
+  }, props.header), /*#__PURE__*/_react["default"].createElement("div", {
+    className: classPrefix + "-body"
+  }, /*#__PURE__*/_react["default"].createElement("div", {
+    className: classPrefix + "-body-inner"
+  }, props.children))));
 };
 
 exports.List = List;

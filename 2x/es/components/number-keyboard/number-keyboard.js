@@ -6,7 +6,7 @@ import { shuffle } from '../../utils/shuffle';
 import Popup from '../popup';
 import { withNativeProps } from '../../utils/native-props';
 import SafeArea from '../safe-area';
-import { usePersistFn } from 'ahooks';
+import { useMemoizedFn } from 'ahooks';
 var classPrefix = 'adm-number-keyboard';
 var defaultProps = {
   defaultVisible: false,
@@ -43,7 +43,7 @@ export var NumberKeyboard = function NumberKeyboard(p) {
   }, [customKey, confirmText, randomOrder, randomOrder && visible]);
   var timeoutRef = useRef(-1);
   var intervalRef = useRef(-1);
-  var onDelete = usePersistFn(function () {
+  var onDelete = useMemoizedFn(function () {
     var _a;
 
     (_a = props.onDelete) === null || _a === void 0 ? void 0 : _a.call(props);

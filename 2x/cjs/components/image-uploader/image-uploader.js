@@ -69,7 +69,8 @@ var defaultProps = {
   multiple: false,
   maxCount: 0,
   defaultValue: [],
-  accept: 'image/*'
+  accept: 'image/*',
+  preview: true
 };
 
 var ImageUploader = function ImageUploader(p) {
@@ -79,7 +80,7 @@ var ImageUploader = function ImageUploader(p) {
       value = _usePropsValue[0],
       setValue = _usePropsValue[1];
 
-  var updateValue = (0, _ahooks.usePersistFn)(function (updater) {
+  var updateValue = (0, _ahooks.useMemoizedFn)(function (updater) {
     setValue(updater(value));
   });
 
@@ -190,9 +191,8 @@ var ImageUploader = function ImageUploader(p) {
                             });
                           });
                           updateValue(function (prev) {
-                            return [].concat(prev, [{
-                              url: result.url
-                            }]);
+                            var newVal = Object.assign({}, result);
+                            return [].concat(prev, [newVal]);
                           });
                           _context.next = 12;
                           break;
@@ -237,17 +237,25 @@ var ImageUploader = function ImageUploader(p) {
     }));
   }
 
+  var imageViewerHandlerRef = (0, _react.useRef)(null);
+
   function previewImage(index) {
-    _imageViewer["default"].Multi.show({
+    imageViewerHandlerRef.current = _imageViewer["default"].Multi.show({
       images: value.map(function (fileItem) {
         return fileItem.url;
       }),
-      defaultIndex: index
+      defaultIndex: index,
+      onClose: function onClose() {
+        imageViewerHandlerRef.current = null;
+      }
     });
-
-    onPreview && onPreview(index);
   }
 
+  (0, _ahooks.useUnmount)(function () {
+    var _a;
+
+    (_a = imageViewerHandlerRef.current) === null || _a === void 0 ? void 0 : _a.close();
+  });
   var showUpload = props.showUpload && (maxCount === 0 || value.length + tasks.length < maxCount);
   return (0, _nativeProps.withNativeProps)(props, /*#__PURE__*/_react["default"].createElement("div", {
     className: classPrefix
@@ -262,7 +270,11 @@ var ImageUploader = function ImageUploader(p) {
       url: (_b = fileItem.thumbnailUrl) !== null && _b !== void 0 ? _b : fileItem.url,
       deletable: props.deletable,
       onClick: function onClick() {
-        return previewImage(index);
+        if (props.preview) {
+          previewImage(index);
+        }
+
+        onPreview && onPreview(index);
       },
       onDelete: function onDelete() {
         return __awaiter(void 0, void 0, void 0, /*#__PURE__*/regeneratorRuntime.mark(function _callee3() {

@@ -10,6 +10,7 @@ declare const _default: import("react").ForwardRefExoticComponent<import("rc-fie
     mode?: "default" | "card" | undefined;
 } & import("react").RefAttributes<import("rc-field-form").FormInstance<any>>> & {
     Item: import("react").FC<import("./form-item").FormItemProps>;
+    Header: import("react").FC<{}>;
     useForm: typeof useForm;
 };
 export default _default;

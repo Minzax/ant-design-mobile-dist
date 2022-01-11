@@ -15,7 +15,10 @@ function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && 
 
 var LazyDetector = function LazyDetector(props) {
   var ref = (0, _react.useRef)(null);
-  var inViewport = (0, _ahooks.useInViewport)(ref);
+
+  var _useInViewport = (0, _ahooks.useInViewport)(ref),
+      inViewport = _useInViewport[0];
+
   (0, _react.useEffect)(function () {
     if (inViewport) {
       props.onActive();

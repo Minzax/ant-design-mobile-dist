@@ -23,5 +23,6 @@ export declare type ImageUploaderProps = {
     beforeUpload?: (file: File[]) => Promise<File[]> | File[];
     upload: (file: File) => Promise<ImageUploadItem>;
     onDelete?: (item: ImageUploadItem) => boolean | Promise<boolean> | void;
+    preview?: boolean;
 } & NativeProps<'--cell-size'>;
 export declare const ImageUploader: FC<ImageUploaderProps>;

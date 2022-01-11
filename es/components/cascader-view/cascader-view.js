@@ -55,7 +55,7 @@ export var CascaderView = function CascaderView(p) {
         options: currentOptions
       });
 
-      if (!target || !target.children || target.children.length === 0) {
+      if (!target || !target.children) {
         reachedEnd = true;
         return "break";
       }

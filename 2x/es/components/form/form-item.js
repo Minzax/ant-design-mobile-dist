@@ -43,7 +43,7 @@ var FormItemLayout = function FormItemLayout(props) {
       hidden = props.hidden,
       errors = props.errors;
   var context = useContext(FormContext);
-  var hasFeedback = props.hasFeedback || context.hasFeedback;
+  var hasFeedback = props.hasFeedback !== undefined ? props.hasFeedback : context.hasFeedback;
   var layout = props.layout || context.layout;
   var feedback = hasFeedback && errors && errors.length > 0 ? errors[0] : null;
   var labelElement = label ? /*#__PURE__*/React.createElement("label", {

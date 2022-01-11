@@ -2,6 +2,7 @@ import React, { ReactNode } from 'react';
 import { NativeProps } from '../../utils/native-props';
 export interface SelectorOption<V> {
     label: ReactNode;
+    description?: ReactNode;
     value: V;
     disabled?: boolean;
 }
