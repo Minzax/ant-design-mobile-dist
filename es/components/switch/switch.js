@@ -1,130 +1,64 @@
-var __awaiter = this && this.__awaiter || function (thisArg, _arguments, P, generator) {
-  function adopt(value) {
-    return value instanceof P ? value : new P(function (resolve) {
-      resolve(value);
-    });
-  }
-
-  return new (P || (P = Promise))(function (resolve, reject) {
-    function fulfilled(value) {
-      try {
-        step(generator.next(value));
-      } catch (e) {
-        reject(e);
-      }
-    }
-
-    function rejected(value) {
-      try {
-        step(generator["throw"](value));
-      } catch (e) {
-        reject(e);
-      }
-    }
-
-    function step(result) {
-      result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected);
-    }
-
-    step((generator = generator.apply(thisArg, _arguments || [])).next());
-  });
-};
-
+import { __awaiter } from "tslib";
 import classNames from 'classnames';
 import React, { useState } from 'react';
 import SpinIcon from '../../assets/spin.svg';
 import { withNativeProps } from '../../utils/native-props';
 import { usePropsValue } from '../../utils/use-props-value';
 import { mergeProps } from '../../utils/with-default-props';
-var classPrefix = "adm-switch";
-var defaultProps = {
+const classPrefix = `adm-switch`;
+const defaultProps = {
   defaultChecked: false
 };
-export var Switch = function Switch(p) {
-  var _classNames;
-
-  var props = mergeProps(defaultProps, p);
-  var disabled = props.disabled || props.loading || false;
-
-  var _useState = useState(false),
-      changing = _useState[0],
-      setChanging = _useState[1];
-
-  var _usePropsValue = usePropsValue({
+export const Switch = p => {
+  const props = mergeProps(defaultProps, p);
+  const disabled = props.disabled || props.loading || false;
+  const [changing, setChanging] = useState(false);
+  const [checked, setChecked] = usePropsValue({
     value: props.checked,
     defaultValue: props.defaultChecked,
     onChange: props.onChange
-  }),
-      checked = _usePropsValue[0],
-      setChecked = _usePropsValue[1];
+  });
 
   function onClick() {
-    return __awaiter(this, void 0, void 0, /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
-      var nextChecked;
-      return regeneratorRuntime.wrap(function _callee$(_context) {
-        while (1) {
-          switch (_context.prev = _context.next) {
-            case 0:
-              if (!(disabled || props.loading || changing)) {
-                _context.next = 2;
-                break;
-              }
+    return __awaiter(this, void 0, void 0, function* () {
+      if (disabled || props.loading || changing) {
+        return;
+      }
 
-              return _context.abrupt("return");
+      const nextChecked = !checked;
 
-            case 2:
-              nextChecked = !checked;
+      if (props.beforeChange) {
+        setChanging(true);
 
-              if (!props.beforeChange) {
-                _context.next = 18;
-                break;
-              }
-
-              setChanging(true);
-              _context.prev = 5;
-              _context.next = 8;
-              return props.beforeChange(nextChecked);
-
-            case 8:
-              setChecked(nextChecked);
-              setChanging(false);
-              _context.next = 16;
-              break;
-
-            case 12:
-              _context.prev = 12;
-              _context.t0 = _context["catch"](5);
-              setChanging(false);
-              throw _context.t0;
-
-            case 16:
-              _context.next = 19;
-              break;
-
-            case 18:
-              setChecked(nextChecked);
-
-            case 19:
-            case "end":
-              return _context.stop();
-          }
+        try {
+          yield props.beforeChange(nextChecked);
+          setChecked(nextChecked);
+          setChanging(false);
+        } catch (e) {
+          setChanging(false);
+          throw e;
         }
-      }, _callee, null, [[5, 12]]);
-    }));
+      } else {
+        setChecked(nextChecked);
+      }
+    });
   }
 
-  return withNativeProps(props, /*#__PURE__*/React.createElement("div", {
+  return withNativeProps(props, React.createElement("div", {
     onClick: onClick,
-    className: classNames(classPrefix, (_classNames = {}, _classNames[classPrefix + "-checked"] = checked, _classNames[classPrefix + "-disabled"] = disabled || changing, _classNames))
-  }, /*#__PURE__*/React.createElement("div", {
-    className: classPrefix + "-checkbox"
-  }, /*#__PURE__*/React.createElement("div", {
-    className: classPrefix + "-handle"
-  }, (props.loading || changing) && /*#__PURE__*/React.createElement("img", {
+    className: classNames(classPrefix, {
+      [`${classPrefix}-checked`]: checked,
+      [`${classPrefix}-disabled`]: disabled || changing
+    })
+  }, React.createElement("div", {
+    className: `${classPrefix}-checkbox`
+  }, React.createElement("div", {
+    className: `${classPrefix}-handle`
+  }, (props.loading || changing) && React.createElement("img", {
     src: SpinIcon,
-    className: classPrefix + "-icon",
+    className: `${classPrefix}-icon`,
     alt: 'switch-handle'
-  })), /*#__PURE__*/React.createElement("div", {
-    className: classPrefix + "-inner"
+  })), React.createElement("div", {
+    className: `${classPrefix}-inner`
   }, checked ? props.checkedText : props.uncheckedText))));
 };

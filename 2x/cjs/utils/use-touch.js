@@ -7,7 +7,7 @@ exports.useTouch = useTouch;
 
 var _react = require("react");
 
-var MIN_DISTANCE = 10;
+const MIN_DISTANCE = 10;
 
 function getDirection(x, y) {
   if (x > y && x > MIN_DISTANCE) {
@@ -22,23 +22,19 @@ function getDirection(x, y) {
 }
 
 function useTouch() {
-  var startX = (0, _react.useRef)(0);
-  var startY = (0, _react.useRef)(0);
-  var deltaX = (0, _react.useRef)(0);
-  var deltaY = (0, _react.useRef)(0);
-  var offsetX = (0, _react.useRef)(0);
-  var offsetY = (0, _react.useRef)(0);
-  var direction = (0, _react.useRef)('');
+  const startX = (0, _react.useRef)(0);
+  const startY = (0, _react.useRef)(0);
+  const deltaX = (0, _react.useRef)(0);
+  const deltaY = (0, _react.useRef)(0);
+  const offsetX = (0, _react.useRef)(0);
+  const offsetY = (0, _react.useRef)(0);
+  const direction = (0, _react.useRef)('');
 
-  var isVertical = function isVertical() {
-    return direction.current === 'vertical';
-  };
+  const isVertical = () => direction.current === 'vertical';
 
-  var isHorizontal = function isHorizontal() {
-    return direction.current === 'horizontal';
-  };
+  const isHorizontal = () => direction.current === 'horizontal';
 
-  var reset = function reset() {
+  const reset = () => {
     deltaX.current = 0;
     deltaY.current = 0;
     offsetX.current = 0;
@@ -46,14 +42,14 @@ function useTouch() {
     direction.current = '';
   };
 
-  var start = function start(event) {
+  const start = event => {
     reset();
     startX.current = event.touches[0].clientX;
     startY.current = event.touches[0].clientY;
   };
 
-  var move = function move(event) {
-    var touch = event.touches[0]; // Fix: Safari back will set clientX to negative number
+  const move = event => {
+    const touch = event.touches[0]; // Fix: Safari back will set clientX to negative number
 
     deltaX.current = touch.clientX < 0 ? 0 : touch.clientX - startX.current;
     deltaY.current = touch.clientY - startY.current;
@@ -66,17 +62,17 @@ function useTouch() {
   };
 
   return {
-    move: move,
-    start: start,
-    reset: reset,
-    startX: startX,
-    startY: startY,
-    deltaX: deltaX,
-    deltaY: deltaY,
-    offsetX: offsetX,
-    offsetY: offsetY,
-    direction: direction,
-    isVertical: isVertical,
-    isHorizontal: isHorizontal
+    move,
+    start,
+    reset,
+    startX,
+    startY,
+    deltaX,
+    deltaY,
+    offsetX,
+    offsetY,
+    direction,
+    isVertical,
+    isHorizontal
   };
 }

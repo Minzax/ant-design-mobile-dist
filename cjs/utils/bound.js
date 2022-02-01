@@ -6,7 +6,7 @@ Object.defineProperty(exports, "__esModule", {
 exports.bound = bound;
 
 function bound(position, min, max) {
-  var ret = position;
+  let ret = position;
 
   if (min !== undefined) {
     ret = Math.max(position, min);

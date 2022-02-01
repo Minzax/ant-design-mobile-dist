@@ -1,10 +1,14 @@
 /// <reference types="react" />
 import './image-viewer.less';
 import { showMultiImageViewer, showImageViewer, clearImageViewer } from './methods';
-export type { ImageViewerProps, MultiImageViewerProps } from './image-viewer';
+export type { ImageViewerProps, MultiImageViewerProps, MultiImageViewerRef, } from './image-viewer';
 export type { ImageViewerHandler } from './methods';
 declare const _default: import("react").FC<import("./image-viewer").ImageViewerProps> & {
-    Multi: import("react").FC<import("./image-viewer").MultiImageViewerProps> & {
+    Multi: import("react").ForwardRefExoticComponent<Pick<import("./image-viewer").ImageViewerProps, "visible" | "onClose" | "afterClose" | "getContainer" | "maxZoom"> & {
+        images?: string[] | undefined;
+        defaultIndex?: number | undefined;
+        onIndexChange?: ((index: number) => void) | undefined;
+    } & import("react").RefAttributes<import("./slides").SlidesRef>> & {
         show: typeof showMultiImageViewer;
     };
     show: typeof showImageViewer;

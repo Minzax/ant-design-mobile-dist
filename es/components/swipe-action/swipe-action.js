@@ -5,20 +5,20 @@ import { useDrag } from '@use-gesture/react';
 import Button from '../button';
 import { nearest } from '../../utils/nearest';
 import { withNativeProps } from '../../utils/native-props';
-var defaultProps = {
+const defaultProps = {
   rightActions: [],
   leftActions: [],
   closeOnTouchOutside: true,
   closeOnAction: true
 };
-export var SwipeAction = /*#__PURE__*/forwardRef(function (p, ref) {
-  var props = mergeProps(defaultProps, p);
-  var rootRef = useRef(null);
-  var leftRef = useRef(null);
-  var rightRef = useRef(null);
+export const SwipeAction = forwardRef((p, ref) => {
+  const props = mergeProps(defaultProps, p);
+  const rootRef = useRef(null);
+  const leftRef = useRef(null);
+  const rightRef = useRef(null);
 
   function getWidth(ref) {
-    var element = ref.current;
+    const element = ref.current;
     if (!element) return 0;
     return element.offsetWidth;
   }
@@ -31,28 +31,24 @@ export var SwipeAction = /*#__PURE__*/forwardRef(function (p, ref) {
     return getWidth(rightRef);
   }
 
-  var _useSpring = useSpring(function () {
-    return {
-      x: 0,
-      config: {
-        tension: 200,
-        friction: 30
-      }
-    };
-  }, []),
-      x = _useSpring[0].x,
-      api = _useSpring[1];
-
-  var draggingRef = useRef(false);
-  var bind = useDrag(function (state) {
+  const [{
+    x
+  }, api] = useSpring(() => ({
+    x: 0,
+    config: {
+      tension: 200,
+      friction: 30
+    }
+  }), []);
+  const draggingRef = useRef(false);
+  const bind = useDrag(state => {
     draggingRef.current = true;
-    var _state$offset = state.offset,
-        offsetX = _state$offset[0];
+    const [offsetX] = state.offset;
 
     if (state.last) {
-      var leftWidth = getLeftWidth();
-      var rightWidth = getRightWidth();
-      var position = offsetX + state.velocity[0] * state.direction[0] * 50;
+      const leftWidth = getLeftWidth();
+      const rightWidth = getRightWidth();
+      let position = offsetX + state.velocity[0] * state.direction[0] * 50;
 
       if (offsetX > 0) {
         position = Math.max(0, position);
@@ -65,7 +61,7 @@ export var SwipeAction = /*#__PURE__*/forwardRef(function (p, ref) {
       api.start({
         x: nearest([-rightWidth, 0, leftWidth], position)
       });
-      window.setTimeout(function () {
+      window.setTimeout(() => {
         draggingRef.current = false;
       });
     } else {
@@ -75,12 +71,10 @@ export var SwipeAction = /*#__PURE__*/forwardRef(function (p, ref) {
       });
     }
   }, {
-    from: function from() {
-      return [x.get(), 0];
-    },
-    bounds: function bounds() {
-      var leftWidth = getLeftWidth();
-      var rightWidth = getRightWidth();
+    from: () => [x.get(), 0],
+    bounds: () => {
+      const leftWidth = getLeftWidth();
+      const rightWidth = getRightWidth();
       return {
         left: -rightWidth,
         right: leftWidth
@@ -100,27 +94,21 @@ export var SwipeAction = /*#__PURE__*/forwardRef(function (p, ref) {
     });
   }
 
-  useImperativeHandle(ref, function () {
-    return {
-      show: function show(side) {
-        if (side === void 0) {
-          side = 'right';
-        }
-
-        if (side === 'right') {
-          api.start({
-            x: -getRightWidth()
-          });
-        } else if (side === 'left') {
-          api.start({
-            x: getLeftWidth()
-          });
-        }
-      },
-      close: close
-    };
-  });
-  useEffect(function () {
+  useImperativeHandle(ref, () => ({
+    show: (side = 'right') => {
+      if (side === 'right') {
+        api.start({
+          x: -getRightWidth()
+        });
+      } else if (side === 'left') {
+        api.start({
+          x: getLeftWidth()
+        });
+      }
+    },
+    close
+  }));
+  useEffect(() => {
     if (!props.closeOnTouchOutside) return;
 
     function handle(e) {
@@ -128,7 +116,7 @@ export var SwipeAction = /*#__PURE__*/forwardRef(function (p, ref) {
         return;
       }
 
-      var root = rootRef.current;
+      const root = rootRef.current;
 
       if (root && !root.contains(e.target)) {
         close();
@@ -136,7 +124,7 @@ export var SwipeAction = /*#__PURE__*/forwardRef(function (p, ref) {
     }
 
     document.addEventListener('touchstart', handle);
-    return function () {
+    return () => {
       document.removeEventListener('touchstart', handle);
     };
   }, [props.closeOnTouchOutside]);
@@ -144,14 +132,14 @@ export var SwipeAction = /*#__PURE__*/forwardRef(function (p, ref) {
   function renderAction(action) {
     var _a, _b;
 
-    var color = (_a = action.color) !== null && _a !== void 0 ? _a : 'light';
-    return /*#__PURE__*/React.createElement(Button, {
+    const color = (_a = action.color) !== null && _a !== void 0 ? _a : 'light';
+    return React.createElement(Button, {
       key: action.key,
       className: 'adm-swipe-action-action-button',
       style: {
         '--background-color': (_b = colorRecord[color]) !== null && _b !== void 0 ? _b : color
       },
-      onClick: function onClick(e) {
+      onClick: e => {
         var _a, _b;
 
         if (props.closeOnAction) {
@@ -159,32 +147,32 @@ export var SwipeAction = /*#__PURE__*/forwardRef(function (p, ref) {
         }
 
         (_a = action.onClick) === null || _a === void 0 ? void 0 : _a.call(action, e);
-        (_b = props.onAction) === null || _b === void 0 ? void 0 : _b.call(props, action);
+        (_b = props.onAction) === null || _b === void 0 ? void 0 : _b.call(props, action, e);
       }
     }, action.text);
   }
 
-  return withNativeProps(props, /*#__PURE__*/React.createElement("div", Object.assign({
+  return withNativeProps(props, React.createElement("div", Object.assign({
     className: 'adm-swipe-action'
   }, bind(), {
     ref: rootRef,
-    onClickCapture: function onClickCapture(e) {
+    onClickCapture: e => {
       if (draggingRef.current) {
         e.stopPropagation();
         e.preventDefault();
       }
     }
-  }), /*#__PURE__*/React.createElement(animated.div, {
+  }), React.createElement(animated.div, {
     className: 'adm-swipe-action-track',
     style: {
-      x: x
+      x
     }
-  }, /*#__PURE__*/React.createElement("div", {
+  }, React.createElement("div", {
     className: 'adm-swipe-action-actions adm-swipe-action-actions-left',
     ref: leftRef
-  }, props.leftActions.map(renderAction)), /*#__PURE__*/React.createElement("div", {
+  }, props.leftActions.map(renderAction)), React.createElement("div", {
     className: 'adm-swipe-action-content',
-    onClickCapture: function onClickCapture(e) {
+    onClickCapture: e => {
       if (x.goal !== 0) {
         e.preventDefault();
         e.stopPropagation();
@@ -193,18 +181,16 @@ export var SwipeAction = /*#__PURE__*/forwardRef(function (p, ref) {
         });
       }
     }
-  }, /*#__PURE__*/React.createElement(animated.div, {
+  }, React.createElement(animated.div, {
     style: {
-      pointerEvents: x.to(function (v) {
-        return v !== 0 && x.goal !== 0 ? 'none' : 'unset';
-      })
+      pointerEvents: x.to(v => v !== 0 && x.goal !== 0 ? 'none' : 'unset')
     }
-  }, props.children)), /*#__PURE__*/React.createElement("div", {
+  }, props.children)), React.createElement("div", {
     className: 'adm-swipe-action-actions adm-swipe-action-actions-right',
     ref: rightRef
   }, props.rightActions.map(renderAction)))));
 });
-var colorRecord = {
+const colorRecord = {
   light: 'var(--adm-color-light)',
   weak: 'var(--adm-color-weak)',
   primary: 'var(--adm-color-primary)',

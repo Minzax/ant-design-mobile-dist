@@ -1,8 +1,16 @@
 .adm-form .adm-list.adm-list {
-  --padding-left: 20px;
+  --padding-left: 16px;
+  --padding-right: 12px;
+}
+.adm-form-horizontal .adm-list.adm-list {
+  --prefix-width: 6em;
+  --align-items: stretch;
+}
+.adm-form-horizontal .adm-list.adm-list .adm-list-item-content-extra {
+  align-self: center;
 }
 .adm-form .adm-form-footer {
-  padding: 12px;
+  padding: 20px 12px;
 }
 .adm-form-item + .adm-form-item {
   border-top: none;
@@ -17,7 +25,8 @@
 .adm-form-item-label-required {
   position: absolute;
   left: -0.6em;
-  top: 0.2em;
+  top: 0;
+  font-family: SimSun, sans-serif;
   color: var(--adm-color-danger);
   user-select: none;
 }
@@ -28,11 +37,15 @@
   display: none;
 }
 .adm-form-vertical .adm-form-item-label {
-  margin-bottom: 4px;
   font-size: 15px;
+  margin-bottom: 4px;
 }
 .adm-form-vertical .adm-form-item-footer {
   margin-top: 4px;
+}
+.adm-form-horizontal .adm-list-item-content-prefix {
+  padding-top: 12px;
+  padding-bottom: 12px;
 }
 .adm-form-item-label {
   color: #666666;

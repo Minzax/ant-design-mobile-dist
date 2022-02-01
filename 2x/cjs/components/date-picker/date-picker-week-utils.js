@@ -16,15 +16,15 @@ var _isoWeeksInYear = _interopRequireDefault(require("dayjs/plugin/isoWeeksInYea
 
 var _isLeapYear = _interopRequireDefault(require("dayjs/plugin/isLeapYear"));
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-_dayjs["default"].extend(_isoWeek["default"]);
+_dayjs.default.extend(_isoWeek.default);
 
-_dayjs["default"].extend(_isoWeeksInYear["default"]);
+_dayjs.default.extend(_isoWeeksInYear.default);
 
-_dayjs["default"].extend(_isLeapYear["default"]);
+_dayjs.default.extend(_isLeapYear.default);
 
-var precisionRankRecord = {
+const precisionRankRecord = {
   year: 0,
   week: 1,
   'week-day': 2
@@ -35,69 +35,67 @@ function defaultRenderLabel(type, data) {
 }
 
 function generateDatePickerColumns(selected, min, max, precision, renderLabel, filter) {
-  var ret = [];
-  var minYear = min.getFullYear();
-  var maxYear = max.getFullYear();
-  var rank = precisionRankRecord[precision];
+  const ret = [];
+  const minYear = min.getFullYear();
+  const maxYear = max.getFullYear();
+  const rank = precisionRankRecord[precision];
 
   if (rank >= precisionRankRecord.year) {
-    var years = [];
+    const years = [];
 
-    for (var i = minYear; i <= maxYear; i++) {
-      var value = i.toString();
+    for (let i = minYear; i <= maxYear; i++) {
+      const value = i.toString();
       years.push({
         label: renderLabel ? renderLabel('year', i) : value,
-        value: value
+        value
       });
     }
 
     ret.push(years);
   }
 
-  var selectedYear = parseInt(selected[0]);
-  var isInMinYear = selectedYear === minYear;
-  var isInMaxYear = selectedYear === maxYear;
-  var minDay = (0, _dayjs["default"])(min);
-  var maxDay = (0, _dayjs["default"])(max);
-  var minWeek = minDay.isoWeek();
-  var maxWeek = maxDay.isoWeek();
-  var minWeekday = minDay.isoWeekday();
-  var maxWeekday = maxDay.isoWeekday();
-  var selectedWeek = parseInt(selected[1]);
-  var isInMinWeek = isInMinYear && selectedWeek === minWeek;
-  var isInMaxWeek = isInMaxYear && selectedWeek === maxWeek;
-  var selectedYearWeeks = (0, _dayjs["default"])(selectedYear + "-01-01").isoWeeksInYear();
+  const selectedYear = parseInt(selected[0]);
+  const isInMinYear = selectedYear === minYear;
+  const isInMaxYear = selectedYear === maxYear;
+  const minDay = (0, _dayjs.default)(min);
+  const maxDay = (0, _dayjs.default)(max);
+  const minWeek = minDay.isoWeek();
+  const maxWeek = maxDay.isoWeek();
+  const minWeekday = minDay.isoWeekday();
+  const maxWeekday = maxDay.isoWeekday();
+  const selectedWeek = parseInt(selected[1]);
+  const isInMinWeek = isInMinYear && selectedWeek === minWeek;
+  const isInMaxWeek = isInMaxYear && selectedWeek === maxWeek;
+  const selectedYearWeeks = (0, _dayjs.default)(`${selectedYear}-01-01`).isoWeeksInYear();
 
-  var generateColumn = function generateColumn(from, to, precision) {
-    var column = [];
+  const generateColumn = (from, to, precision) => {
+    let column = [];
 
-    for (var _i = from; _i <= to; _i++) {
-      column.push(_i);
+    for (let i = from; i <= to; i++) {
+      column.push(i);
     }
 
-    var prefix = selected.slice(0, precisionRankRecord[precision]);
-    var currentFilter = filter === null || filter === void 0 ? void 0 : filter[precision];
+    const prefix = selected.slice(0, precisionRankRecord[precision]);
+    const currentFilter = filter === null || filter === void 0 ? void 0 : filter[precision];
 
     if (currentFilter && typeof currentFilter === 'function') {
-      column = column.filter(function (i) {
-        return currentFilter(i, {
-          get date() {
-            var stringArray = [].concat(prefix, [i.toString()]);
-            return convertStringArrayToDate(stringArray);
-          }
+      column = column.filter(i => currentFilter(i, {
+        get date() {
+          const stringArray = [...prefix, i.toString()];
+          return convertStringArrayToDate(stringArray);
+        }
 
-        });
-      });
+      }));
     }
 
     return column;
   };
 
   if (rank >= precisionRankRecord.week) {
-    var lower = isInMinYear ? minWeek : 1;
-    var upper = isInMaxYear ? maxWeek : selectedYearWeeks;
-    var weeks = generateColumn(lower, upper, 'week');
-    ret.push(weeks.map(function (v) {
+    const lower = isInMinYear ? minWeek : 1;
+    const upper = isInMaxYear ? maxWeek : selectedYearWeeks;
+    const weeks = generateColumn(lower, upper, 'week');
+    ret.push(weeks.map(v => {
       return {
         label: renderLabel('week', v),
         value: v.toString()
@@ -106,13 +104,10 @@ function generateDatePickerColumns(selected, min, max, precision, renderLabel, f
   }
 
   if (rank >= precisionRankRecord['week-day']) {
-    var _lower = isInMinWeek ? minWeekday : 1;
-
-    var _upper = isInMaxWeek ? maxWeekday : 7;
-
-    var _weeks = generateColumn(_lower, _upper, 'week-day');
-
-    ret.push(_weeks.map(function (v) {
+    const lower = isInMinWeek ? minWeekday : 1;
+    const upper = isInMaxWeek ? maxWeekday : 7;
+    const weeks = generateColumn(lower, upper, 'week-day');
+    ret.push(weeks.map(v => {
       return {
         label: renderLabel('week-day', v),
         value: v.toString()
@@ -125,16 +120,16 @@ function generateDatePickerColumns(selected, min, max, precision, renderLabel, f
 
 function convertDateToStringArray(date) {
   if (!date) return [];
-  var day = (0, _dayjs["default"])(date);
+  const day = (0, _dayjs.default)(date);
   return [day.isoWeekYear().toString(), day.isoWeek().toString(), day.isoWeekday().toString()];
 }
 
 function convertStringArrayToDate(value) {
   var _a, _b, _c;
 
-  var yearString = (_a = value[0]) !== null && _a !== void 0 ? _a : '1900';
-  var weekString = (_b = value[1]) !== null && _b !== void 0 ? _b : '1';
-  var weekdayString = (_c = value[2]) !== null && _c !== void 0 ? _c : '1';
-  var day = (0, _dayjs["default"])().year(parseInt(yearString)).isoWeek(parseInt(weekString)).isoWeekday(parseInt(weekdayString)).hour(0).minute(0).second(0);
+  const yearString = (_a = value[0]) !== null && _a !== void 0 ? _a : '1900';
+  const weekString = (_b = value[1]) !== null && _b !== void 0 ? _b : '1';
+  const weekdayString = (_c = value[2]) !== null && _c !== void 0 ? _c : '1';
+  const day = (0, _dayjs.default)().year(parseInt(yearString)).isoWeek(parseInt(weekString)).isoWeekday(parseInt(weekdayString)).hour(0).minute(0).second(0);
   return day.toDate();
 }

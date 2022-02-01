@@ -6,57 +6,49 @@ import { staged } from 'staged-components';
 import { toCSSLength } from '../../utils/to-css-length';
 import { LazyDetector } from './lazy-detector';
 import { useUpdateLayoutEffect } from 'ahooks';
-var classPrefix = "adm-image";
-var defaultProps = {
+const classPrefix = `adm-image`;
+const defaultProps = {
   fit: 'fill',
-  placeholder: /*#__PURE__*/React.createElement("div", {
-    className: classPrefix + "-tip"
-  }, /*#__PURE__*/React.createElement(PictureOutline, null)),
-  fallback: /*#__PURE__*/React.createElement("div", {
-    className: classPrefix + "-tip"
-  }, /*#__PURE__*/React.createElement(PictureWrongOutline, null)),
+  placeholder: React.createElement("div", {
+    className: `${classPrefix}-tip`
+  }, React.createElement(PictureOutline, null)),
+  fallback: React.createElement("div", {
+    className: `${classPrefix}-tip`
+  }, React.createElement(PictureWrongOutline, null)),
   lazy: false
 };
-export var Image = staged(function (p) {
-  var props = mergeProps(defaultProps, p);
-
-  var _useState = useState(false),
-      loaded = _useState[0],
-      setLoaded = _useState[1];
-
-  var _useState2 = useState(false),
-      failed = _useState2[0],
-      setFailed = _useState2[1];
-
-  var ref = useRef(null);
-  var src = props.src;
-  var srcSet = props.srcSet;
-
-  var _useState3 = useState(!props.lazy),
-      initialized = _useState3[0],
-      setInitialized = _useState3[1];
-
+export const Image = staged(p => {
+  const props = mergeProps(defaultProps, p);
+  const [loaded, setLoaded] = useState(false);
+  const [failed, setFailed] = useState(false);
+  const ref = useRef(null);
+  let src = props.src;
+  let srcSet = props.srcSet;
+  const [initialized, setInitialized] = useState(!props.lazy);
   src = initialized ? props.src : undefined;
   srcSet = initialized ? props.srcSet : undefined;
-  useUpdateLayoutEffect(function () {
+  useUpdateLayoutEffect(() => {
     setLoaded(false);
     setFailed(false);
   }, [src]);
 
   function renderInner() {
     if (failed) {
-      return /*#__PURE__*/React.createElement(React.Fragment, null, props.fallback);
+      return React.createElement(React.Fragment, null, props.fallback);
     }
 
-    var img = /*#__PURE__*/React.createElement("img", {
-      className: classPrefix + "-img",
+    const img = React.createElement("img", {
+      className: `${classPrefix}-img`,
       src: src,
       alt: props.alt,
       onClick: props.onClick,
-      onLoad: function onLoad() {
+      onLoad: e => {
+        var _a;
+
         setLoaded(true);
+        (_a = props.onLoad) === null || _a === void 0 ? void 0 : _a.call(props, e);
       },
-      onError: function onError(e) {
+      onError: e => {
         var _a;
 
         setFailed(true);
@@ -74,10 +66,10 @@ export var Image = staged(function (p) {
       srcSet: srcSet,
       useMap: props.useMap
     });
-    return /*#__PURE__*/React.createElement(React.Fragment, null, !loaded && props.placeholder, img);
+    return React.createElement(React.Fragment, null, !loaded && props.placeholder, img);
   }
 
-  var style = {};
+  const style = {};
 
   if (props.width) {
     style['--width'] = toCSSLength(props.width);
@@ -87,12 +79,12 @@ export var Image = staged(function (p) {
     style['--height'] = toCSSLength(props.height);
   }
 
-  return withNativeProps(props, /*#__PURE__*/React.createElement("div", {
+  return withNativeProps(props, React.createElement("div", {
     ref: ref,
     className: classPrefix,
     style: style
-  }, props.lazy && !initialized && /*#__PURE__*/React.createElement(LazyDetector, {
-    onActive: function onActive() {
+  }, props.lazy && !initialized && React.createElement(LazyDetector, {
+    onActive: () => {
       setInitialized(true);
     }
   }), renderInner()));

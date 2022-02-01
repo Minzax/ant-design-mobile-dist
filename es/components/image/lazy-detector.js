@@ -1,17 +1,14 @@
 import React, { useEffect, useRef } from 'react';
 import { useInViewport } from 'ahooks';
-export var LazyDetector = function LazyDetector(props) {
-  var ref = useRef(null);
-
-  var _useInViewport = useInViewport(ref),
-      inViewport = _useInViewport[0];
-
-  useEffect(function () {
+export const LazyDetector = props => {
+  const ref = useRef(null);
+  const [inViewport] = useInViewport(ref);
+  useEffect(() => {
     if (inViewport) {
       props.onActive();
     }
   }, [inViewport]);
-  return /*#__PURE__*/React.createElement("div", {
+  return React.createElement("div", {
     ref: ref
   });
 };

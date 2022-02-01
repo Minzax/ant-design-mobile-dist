@@ -1,10 +1,10 @@
 import { FC, ReactNode } from 'react';
-import { PickerProps } from '../picker';
+import type { PickerProps } from '../picker';
 import { NativeProps } from '../../utils/native-props';
 import type { Precision, DatePickerFilter } from './date-picker-utils';
-export declare type DatePickerProps = Pick<PickerProps, 'onCancel' | 'onClose' | 'visible' | 'confirmText' | 'cancelText' | 'getContainer' | 'afterShow' | 'afterClose' | 'onClick' | 'title' | 'stopPropagation'> & {
-    value?: Date;
-    defaultValue?: Date;
+export declare type DatePickerProps = Pick<PickerProps, 'onCancel' | 'onClose' | 'visible' | 'confirmText' | 'cancelText' | 'getContainer' | 'afterShow' | 'afterClose' | 'onClick' | 'title' | 'stopPropagation' | 'style'> & {
+    value?: Date | null;
+    defaultValue?: Date | null;
     onSelect?: (value: Date) => void;
     onConfirm?: (value: Date) => void;
     min?: Date;

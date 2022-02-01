@@ -14,9 +14,8 @@
 .adm-cascader-view-content {
   height: var(--height);
   overflow-y: auto;
-  box-sizing: border-box;
 }
-.adm-cascader-view-content.adm-check-list {
+.adm-cascader-view-content > .adm-check-list {
   --border-inner: none;
   --border-bottom: none;
   --border-top: none;
@@ -29,4 +28,19 @@
 }
 .adm-cascader-view .adm-list-inner {
   margin-bottom: 0;
+}
+.adm-cascader-view-skeleton {
+  padding: 16px 12px;
+}
+.adm-cascader-view-skeleton .adm-skeleton {
+  margin-bottom: 16px;
+  --height: 18px;
+  --width: 80%;
+  --border-radius: 2px;
+}
+.adm-cascader-view-skeleton .adm-skeleton.adm-cascader-view-skeleton-line-3 {
+  --width: 90%;
+}
+.adm-cascader-view-skeleton .adm-skeleton.adm-cascader-view-skeleton-line-4 {
+  --width: 60%;
 }

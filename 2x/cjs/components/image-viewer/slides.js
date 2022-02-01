@@ -17,45 +17,48 @@ var _convertPx = require("../../utils/convert-px");
 
 var _bound = require("../../utils/bound");
 
-function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function _getRequireWildcardCache(nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
+function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function (nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
 
-function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { "default": obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj["default"] = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
+function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
 
-var classPrefix = "adm-image-viewer";
+const classPrefix = `adm-image-viewer`;
+const Slides = (0, _react.forwardRef)((props, ref) => {
+  const slideWidth = window.innerWidth + (0, _convertPx.convertPx)(16);
+  const [{
+    x
+  }, api] = (0, _web.useSpring)(() => ({
+    x: props.defaultIndex * slideWidth,
+    config: {
+      tension: 250,
+      clamp: true
+    }
+  }));
+  const count = props.images.length;
 
-var Slides = function Slides(props) {
-  var slideWidth = window.innerWidth + (0, _convertPx.convertPx)(16);
-
-  var _useSpring = (0, _web.useSpring)(function () {
-    return {
-      x: props.defaultIndex * slideWidth,
-      config: {
-        tension: 250,
-        clamp: true
-      }
-    };
-  }),
-      x = _useSpring[0].x,
-      api = _useSpring[1];
-
-  var count = props.images.length;
-  var dragLockRef = (0, _react.useRef)(false);
-  var bind = (0, _react2.useDrag)(function (state) {
+  function swipeTo(index, immediate = false) {
     var _a;
 
+    const i = (0, _bound.bound)(index, 0, count - 1);
+    (_a = props.onIndexChange) === null || _a === void 0 ? void 0 : _a.call(props, i);
+    api.start({
+      x: i * slideWidth,
+      immediate
+    });
+  }
+
+  (0, _react.useImperativeHandle)(ref, () => ({
+    swipeTo
+  }));
+  const dragLockRef = (0, _react.useRef)(false);
+  const bind = (0, _react2.useDrag)(state => {
     if (dragLockRef.current) return;
-    var _state$offset = state.offset,
-        offsetX = _state$offset[0];
+    const [offsetX] = state.offset;
 
     if (state.last) {
-      var minIndex = Math.floor(offsetX / slideWidth);
-      var maxIndex = minIndex + 1;
-      var velocityOffset = Math.min(state.velocity[0] * 2000, slideWidth) * state.direction[0];
-      var index = (0, _bound.bound)((0, _bound.bound)(Math.round((offsetX + velocityOffset) / slideWidth), minIndex, maxIndex), 0, count - 1);
-      (_a = props.onIndexChange) === null || _a === void 0 ? void 0 : _a.call(props, index);
-      api.start({
-        x: index * slideWidth
-      });
+      const minIndex = Math.floor(offsetX / slideWidth);
+      const maxIndex = minIndex + 1;
+      const velocityOffset = Math.min(state.velocity[0] * 2000, slideWidth) * state.direction[0];
+      swipeTo((0, _bound.bound)(Math.round((offsetX + velocityOffset) / slideWidth), minIndex, maxIndex));
     } else {
       api.start({
         x: offsetX,
@@ -63,15 +66,9 @@ var Slides = function Slides(props) {
       });
     }
   }, {
-    transform: function transform(_ref) {
-      var x = _ref[0],
-          y = _ref[1];
-      return [-x, y];
-    },
-    from: function from() {
-      return [x.get(), 0];
-    },
-    bounds: function bounds() {
+    transform: ([x, y]) => [-x, y],
+    from: () => [x.get(), 0],
+    bounds: () => {
       return {
         left: 0,
         right: (count - 1) * slideWidth
@@ -83,37 +80,32 @@ var Slides = function Slides(props) {
       touch: true
     }
   });
-  return /*#__PURE__*/_react["default"].createElement("div", Object.assign({
-    className: classPrefix + "-slides"
-  }, bind()), /*#__PURE__*/_react["default"].createElement(_web.animated.div, {
-    className: classPrefix + "-indicator"
-  }, x.to(function (v) {
-    var index = (0, _bound.bound)(Math.round(v / slideWidth), 0, count - 1);
-    return index + 1 + " / " + count;
-  })), /*#__PURE__*/_react["default"].createElement(_web.animated.div, {
-    className: classPrefix + "-slides-inner",
+  return _react.default.createElement("div", Object.assign({
+    className: `${classPrefix}-slides`
+  }, bind()), _react.default.createElement(_web.animated.div, {
+    className: `${classPrefix}-indicator`
+  }, x.to(v => {
+    const index = (0, _bound.bound)(Math.round(v / slideWidth), 0, count - 1);
+    return `${index + 1} / ${count}`;
+  })), _react.default.createElement(_web.animated.div, {
+    className: `${classPrefix}-slides-inner`,
     style: {
-      x: x.to(function (x) {
-        return -x;
-      })
+      x: x.to(x => -x)
     }
-  }, props.images.map(function (image) {
-    return /*#__PURE__*/_react["default"].createElement(_slide.Slide, {
-      key: image,
-      image: image,
-      onTap: props.onTap,
-      maxZoom: props.maxZoom,
-      onZoomChange: function onZoomChange(zoom) {
-        if (zoom !== 1) {
-          var index = Math.round(x.get() / slideWidth);
-          api.start({
-            x: index * slideWidth
-          });
-        }
-      },
-      dragLockRef: dragLockRef
-    });
-  })));
-};
-
+  }, props.images.map(image => _react.default.createElement(_slide.Slide, {
+    key: image,
+    image: image,
+    onTap: props.onTap,
+    maxZoom: props.maxZoom,
+    onZoomChange: zoom => {
+      if (zoom !== 1) {
+        const index = Math.round(x.get() / slideWidth);
+        api.start({
+          x: index * slideWidth
+        });
+      }
+    },
+    dragLockRef: dragLockRef
+  }))));
+});
 exports.Slides = Slides;

@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports["default"] = void 0;
+exports.default = void 0;
 
 require("./radio.css");
 
@@ -17,4 +17,4 @@ var _default = (0, _attachPropertiesToComponent.attachPropertiesToComponent)(_ra
   Group: _group.Group
 });
 
-exports["default"] = _default;
+exports.default = _default;

@@ -6,29 +6,26 @@ import { mergeProps } from '../../utils/with-default-props';
 import { withNativeProps } from '../../utils/native-props';
 import { useResizeEffect } from '../../utils/use-resize-effect';
 import { useMutationEffect } from '../../utils/use-mutation-effect';
-var classPrefix = "adm-notice-bar";
-var defaultProps = {
+const classPrefix = `adm-notice-bar`;
+const defaultProps = {
   color: 'default',
   delay: 2000,
-  speed: 50
+  speed: 50,
+  icon: React.createElement(SoundOutline, null)
 };
-export var NoticeBar = /*#__PURE__*/memo(function (p) {
-  var props = mergeProps(defaultProps, p);
-  var containerRef = useRef(null);
-  var textRef = useRef(null);
-
-  var _useState = useState(true),
-      visible = _useState[0],
-      setVisible = _useState[1];
-
-  var speed = props.speed;
-  var delayLockRef = useRef(true);
-  var animatingRef = useRef(false);
+export const NoticeBar = memo(p => {
+  const props = mergeProps(defaultProps, p);
+  const containerRef = useRef(null);
+  const textRef = useRef(null);
+  const [visible, setVisible] = useState(true);
+  const speed = props.speed;
+  const delayLockRef = useRef(true);
+  const animatingRef = useRef(false);
 
   function start() {
     if (delayLockRef.current) return;
-    var container = containerRef.current;
-    var text = textRef.current;
+    const container = containerRef.current;
+    const text = textRef.current;
     if (!container || !text) return;
 
     if (container.offsetWidth >= text.offsetWidth) {
@@ -39,29 +36,29 @@ export var NoticeBar = /*#__PURE__*/memo(function (p) {
     }
 
     if (animatingRef.current) return;
-    var initial = !text.style.transform;
+    const initial = !text.style.transform;
     text.style.transitionDuration = '0s';
 
     if (initial) {
       text.style.transform = 'translateX(0)';
     } else {
-      text.style.transform = "translateX(" + container.offsetWidth + "px)";
+      text.style.transform = `translateX(${container.offsetWidth}px)`;
     }
 
-    var distance = initial ? text.offsetWidth : container.offsetWidth + text.offsetWidth;
+    const distance = initial ? text.offsetWidth : container.offsetWidth + text.offsetWidth;
     animatingRef.current = true;
-    text.style.transitionDuration = Math.round(distance / speed) + "s";
-    text.style.transform = "translateX(-" + text.offsetWidth + "px)";
+    text.style.transitionDuration = `${Math.round(distance / speed)}s`;
+    text.style.transform = `translateX(-${text.offsetWidth}px)`;
   }
 
-  useTimeout(function () {
+  useTimeout(() => {
     delayLockRef.current = false;
     start();
   }, props.delay);
-  useResizeEffect(function (text) {
+  useResizeEffect(text => {
     start();
   }, containerRef);
-  useMutationEffect(function () {
+  useMutationEffect(() => {
     start();
   }, textRef, {
     subtree: true,
@@ -69,24 +66,25 @@ export var NoticeBar = /*#__PURE__*/memo(function (p) {
     characterData: true
   });
   if (!visible) return null;
-  return withNativeProps(props, /*#__PURE__*/React.createElement("div", {
-    className: classNames(classPrefix, classPrefix + "-" + props.color)
-  }, /*#__PURE__*/React.createElement("span", {
-    className: classPrefix + "-left"
-  }, 'icon' in props ? props.icon : /*#__PURE__*/React.createElement(SoundOutline, null)), /*#__PURE__*/React.createElement("span", {
+  return withNativeProps(props, React.createElement("div", {
+    className: classNames(classPrefix, `${classPrefix}-${props.color}`)
+  }, props.icon && React.createElement("span", {
+    className: `${classPrefix}-left`
+  }, props.icon), React.createElement("span", {
     ref: containerRef,
-    className: classPrefix + "-content"
-  }, /*#__PURE__*/React.createElement("span", {
-    onTransitionEnd: function onTransitionEnd() {
+    className: `${classPrefix}-content`
+  }, React.createElement("span", {
+    onTransitionEnd: () => {
       animatingRef.current = false;
       start();
     },
     ref: textRef,
-    className: classPrefix + "-content-inner"
-  }, props.content)), (props.closeable || props.extra) && /*#__PURE__*/React.createElement("span", {
-    className: classPrefix + "-right"
-  }, props.extra, props.closeable && /*#__PURE__*/React.createElement(CloseOutline, {
-    onClick: function onClick() {
+    className: `${classPrefix}-content-inner`
+  }, props.content)), (props.closeable || props.extra) && React.createElement("span", {
+    className: `${classPrefix}-right`
+  }, props.extra, props.closeable && React.createElement(CloseOutline, {
+    className: `${classPrefix}-close-icon`,
+    onClick: () => {
       var _a;
 
       setVisible(false);

@@ -27,37 +27,32 @@ var _useShouldRender = require("../../utils/use-should-render");
 
 var _withStopPropagation = require("../../utils/with-stop-propagation");
 
-function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function _getRequireWildcardCache(nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
+function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function (nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
 
-function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { "default": obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj["default"] = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
+function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var classPrefix = "adm-popup";
-var defaultProps = {
+const classPrefix = `adm-popup`;
+const defaultProps = {
   position: 'bottom',
   visible: false,
-  getContainer: function getContainer() {
-    return document.body;
-  },
+  getContainer: () => document.body,
   mask: true,
   stopPropagation: ['click']
 };
 
-var Popup = function Popup(p) {
-  var props = (0, _withDefaultProps.mergeProps)(defaultProps, p);
-  var bodyCls = (0, _classnames["default"])(classPrefix + "-body", props.bodyClassName, classPrefix + "-body-position-" + props.position);
-  var ref = (0, _react.useRef)(null);
-
-  var _useState = (0, _react.useState)(props.visible),
-      active = _useState[0],
-      setActive = _useState[1];
-
+const Popup = p => {
+  const props = (0, _withDefaultProps.mergeProps)(defaultProps, p);
+  const bodyCls = (0, _classnames.default)(`${classPrefix}-body`, props.bodyClassName, `${classPrefix}-body-position-${props.position}`);
+  const ref = (0, _react.useRef)(null);
+  const [active, setActive] = (0, _react.useState)(props.visible);
   (0, _useLockScroll.useLockScroll)(ref, active);
-  var shouldRender = (0, _useShouldRender.useShouldRender)(active, props.forceRender, props.destroyOnClose);
-  var unmountedRef = (0, _ahooks.useUnmountedRef)();
-
-  var _useSpring = (0, _web.useSpring)({
+  const shouldRender = (0, _useShouldRender.useShouldRender)(active, props.forceRender, props.destroyOnClose);
+  const unmountedRef = (0, _ahooks.useUnmountedRef)();
+  const {
+    percent
+  } = (0, _web.useSpring)({
     percent: props.visible ? 0 : 100,
     config: {
       precision: 0.1,
@@ -65,10 +60,10 @@ var Popup = function Popup(p) {
       tension: 300,
       friction: 30
     },
-    onStart: function onStart() {
+    onStart: () => {
       setActive(true);
     },
-    onRest: function onRest() {
+    onRest: () => {
       var _a, _b;
 
       if (unmountedRef.current) return;
@@ -80,40 +75,38 @@ var Popup = function Popup(p) {
         (_b = props.afterClose) === null || _b === void 0 ? void 0 : _b.call(props);
       }
     }
-  }),
-      percent = _useSpring.percent;
-
-  var node = (0, _withStopPropagation.withStopPropagation)(props.stopPropagation, (0, _nativeProps.withNativeProps)(props, /*#__PURE__*/_react["default"].createElement("div", {
+  });
+  const node = (0, _withStopPropagation.withStopPropagation)(props.stopPropagation, (0, _nativeProps.withNativeProps)(props, _react.default.createElement("div", {
     className: classPrefix,
     onClick: props.onClick,
     style: {
       display: active ? 'unset' : 'none'
     }
-  }, props.mask && /*#__PURE__*/_react["default"].createElement(_mask["default"], {
+  }, props.mask && _react.default.createElement(_mask.default, {
     visible: props.visible,
     onMaskClick: props.onMaskClick,
     className: props.maskClassName,
     style: props.maskStyle,
     disableBodyScroll: false,
     stopPropagation: props.stopPropagation
-  }), /*#__PURE__*/_react["default"].createElement(_web.animated.div, {
+  }), _react.default.createElement(_web.animated.div, {
     className: bodyCls,
     style: Object.assign(Object.assign({}, props.bodyStyle), {
-      transform: percent.to(function (v) {
+      transform: percent.to(v => {
         if (props.position === 'bottom') {
-          return "translate(0, " + v + "%)";
+          return `translate(0, ${v}%)`;
         }
 
         if (props.position === 'top') {
-          return "translate(0, -" + v + "%)";
+          return `translate(0, -${v}%)`;
         }
 
         if (props.position === 'left') {
-          return "translate(-" + v + "%, 0)";
+          return `translate(-${v}%, 0)`;
         }
 
         if (props.position === 'right') {
-          return "translate(" + v + "%, 0)";
+          return `translate(${v}%, 0)`;
         }
 
         return 'none';

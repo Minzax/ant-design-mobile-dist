@@ -6,5 +6,5 @@ export declare type ErrorBlockProps = {
     image?: string | ReactElement;
     description?: ReactNode;
     fullPage?: boolean;
-} & NativeProps<'--image-height' | '--image-height-full-page'>;
+} & NativeProps<'--image-height' | '--image-height-full-page' | '--image-width' | '--image-width-full-page'>;
 export declare const ErrorBlock: FC<ErrorBlockProps>;

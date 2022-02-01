@@ -15,34 +15,36 @@ var _nativeProps = require("../../utils/native-props");
 
 var _withDefaultProps = require("../../utils/with-default-props");
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var classPrefix = "adm-nav-bar";
-var defaultProps = {
+const classPrefix = `adm-nav-bar`;
+const defaultProps = {
   back: '',
   backArrow: true
 };
 
-var NavBar = function NavBar(p) {
-  var props = (0, _withDefaultProps.mergeProps)(defaultProps, p);
-  var back = props.back,
-      backArrow = props.backArrow;
-  return (0, _nativeProps.withNativeProps)(props, /*#__PURE__*/_react["default"].createElement("div", {
-    className: (0, _classnames["default"])(classPrefix)
-  }, /*#__PURE__*/_react["default"].createElement("div", {
-    className: classPrefix + "-left",
+const NavBar = p => {
+  const props = (0, _withDefaultProps.mergeProps)(defaultProps, p);
+  const {
+    back,
+    backArrow
+  } = props;
+  return (0, _nativeProps.withNativeProps)(props, _react.default.createElement("div", {
+    className: (0, _classnames.default)(classPrefix)
+  }, _react.default.createElement("div", {
+    className: `${classPrefix}-left`,
     role: 'button'
-  }, back !== null && /*#__PURE__*/_react["default"].createElement("div", {
-    className: classPrefix + "-back",
+  }, back !== null && _react.default.createElement("div", {
+    className: `${classPrefix}-back`,
     onClick: props.onBack
-  }, backArrow && /*#__PURE__*/_react["default"].createElement("span", {
-    className: classPrefix + "-back-arrow"
-  }, backArrow === true ? /*#__PURE__*/_react["default"].createElement(_antdMobileIcons.LeftOutline, null) : backArrow), /*#__PURE__*/_react["default"].createElement("span", {
+  }, backArrow && _react.default.createElement("span", {
+    className: `${classPrefix}-back-arrow`
+  }, backArrow === true ? _react.default.createElement(_antdMobileIcons.LeftOutline, null) : backArrow), _react.default.createElement("span", {
     "aria-hidden": 'true'
-  }, back)), props.left), /*#__PURE__*/_react["default"].createElement("div", {
-    className: classPrefix + "-title"
-  }, props.children), /*#__PURE__*/_react["default"].createElement("div", {
-    className: classPrefix + "-right"
+  }, back)), props.left), _react.default.createElement("div", {
+    className: `${classPrefix}-title`
+  }, props.children), _react.default.createElement("div", {
+    className: `${classPrefix}-right`
   }, props.right)));
 };
 

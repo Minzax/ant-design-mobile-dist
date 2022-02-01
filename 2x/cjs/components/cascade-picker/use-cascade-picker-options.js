@@ -8,9 +8,9 @@ exports.useCascadePickerOptions = useCascadePickerOptions;
 var _react = require("react");
 
 function useCascadePickerOptions(options) {
-  return (0, _react.useMemo)(function () {
-    var depth = 1;
-    var subOptionsRecord = {};
+  return (0, _react.useMemo)(() => {
+    let depth = 1;
+    const subOptionsRecord = {};
 
     function traverse(option, currentDepth) {
       if (!option.children) {
@@ -18,23 +18,23 @@ function useCascadePickerOptions(options) {
       }
 
       subOptionsRecord[option.value] = option.children;
-      var nextDepth = currentDepth + 1;
+      const nextDepth = currentDepth + 1;
 
       if (nextDepth > depth) {
         depth = nextDepth;
       }
 
-      option.children.forEach(function (option) {
+      option.children.forEach(option => {
         traverse(option, nextDepth);
       });
     }
 
-    options.forEach(function (option) {
+    options.forEach(option => {
       traverse(option, 1);
     });
     return {
-      depth: depth,
-      subOptionsRecord: subOptionsRecord
+      depth,
+      subOptionsRecord
     };
   }, [options]);
 }

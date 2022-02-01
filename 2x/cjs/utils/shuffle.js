@@ -11,13 +11,11 @@ exports.shuffle = shuffle;
  * @returns any[] 打乱后的数组
  */
 function shuffle(array) {
-  var result = [].concat(array);
+  const result = [...array];
 
-  for (var i = result.length; i > 0; i--) {
-    var j = Math.floor(Math.random() * i);
-    var _ref = [result[j], result[i - 1]];
-    result[i - 1] = _ref[0];
-    result[j] = _ref[1];
+  for (let i = result.length; i > 0; i--) {
+    const j = Math.floor(Math.random() * i);
+    [result[i - 1], result[j]] = [result[j], result[i - 1]];
   }
 
   return result;

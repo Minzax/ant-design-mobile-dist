@@ -10,17 +10,19 @@ var _react = require("react");
 var _ahooks = require("ahooks");
 
 function usePropsValue(options) {
-  var value = options.value,
-      defaultValue = options.defaultValue,
-      onChange = options.onChange;
-  var update = (0, _ahooks.useUpdate)();
-  var stateRef = (0, _react.useRef)(value !== undefined ? value : defaultValue);
+  const {
+    value,
+    defaultValue,
+    onChange
+  } = options;
+  const update = (0, _ahooks.useUpdate)();
+  const stateRef = (0, _react.useRef)(value !== undefined ? value : defaultValue);
 
   if (value !== undefined) {
     stateRef.current = value;
   }
 
-  var setState = (0, _ahooks.useMemoizedFn)(function (v) {
+  const setState = (0, _ahooks.useMemoizedFn)(v => {
     if (value === undefined) {
       stateRef.current = v;
       update();

@@ -18,20 +18,29 @@
 }
 .adm-modal-main {
   width: 100%;
+  max-height: 70vh;
+  box-sizing: border-box;
   font-size: 14px;
   background-color: white;
   border-radius: 8px;
-  overflow: hidden;
+  overflow-x: hidden;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+}
+.adm-modal-main > * {
+  flex: none;
+}
+.adm-modal-main > .adm-modal-image-container {
+  flex: auto;
 }
 .adm-modal-main .adm-modal-body {
   padding: 20px 12px 12px;
+  display: flex;
+  flex-direction: column;
 }
-.adm-modal-main .adm-modal-body .adm-modal-close {
-  position: absolute;
-  right: 12px;
-  top: 12px;
-  color: var(--adm-color-weak);
-  padding: 2px;
+.adm-modal-main .adm-modal-body > * + * {
+  margin-top: 8px;
 }
 .adm-modal-main .adm-modal-body-header-wrapper {
   display: flex;
@@ -44,32 +53,39 @@
   text-align: center;
 }
 .adm-modal-main .adm-modal-body-content {
-  max-height: 70vh;
-  overflow-x: hidden;
-  overflow-y: auto;
   font-size: 15px;
   line-height: 1.4;
   color: #333;
 }
-.adm-modal-main .adm-modal-footer {
+.adm-modal-main .adm-modal-close {
+  position: absolute;
+  right: 8px;
+  top: 8px;
+  color: var(--adm-color-weak);
+  padding: 4px;
+  font-size: 18px;
+}
+.adm-modal-footer {
   user-select: none;
   padding: 8px 12px 12px;
 }
-.adm-modal-main .adm-modal-footer .adm-modal-button {
+.adm-modal-footer.adm-space {
+  --gap-vertical: 20px;
+}
+.adm-modal-footer .adm-modal-button {
   font-size: 18px;
   line-height: 25px;
-  border-right: solid 0.5px var(--adm-border-color);
 }
-.adm-modal-main .adm-modal-footer .adm-modal-button:last-child {
-  border-right: none;
-}
-.adm-modal-main .adm-modal-footer .adm-modal-button:not(.adm-modal-button-primary) {
+.adm-modal-footer .adm-modal-button:not(.adm-modal-button-primary) {
   padding-top: 0;
   padding-bottom: 0;
 }
-.adm-modal-main .adm-modal-footer .adm-modal-button:not(.adm-modal-button-primary)::before {
+.adm-modal-footer .adm-modal-button:not(.adm-modal-button-primary)::before {
   display: none;
 }
-.adm-modal-main .adm-modal-footer .adm-modal-button:not(.adm-modal-button-primary):active {
+.adm-modal-footer .adm-modal-button:not(.adm-modal-button-primary):active {
   opacity: 0.7;
+}
+.adm-modal-image-container {
+  overflow-y: auto;
 }

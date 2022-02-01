@@ -1,23 +1,25 @@
 import React, { useRef } from 'react';
 import { useDrag } from '@use-gesture/react';
-var classPrefix = "adm-slider";
+const classPrefix = `adm-slider`;
 
-var Thumb = function Thumb(props) {
-  var value = props.value,
-      min = props.min,
-      max = props.max,
-      disabled = props.disabled,
-      onDrag = props.onDrag;
-  var prevValue = useRef(value);
+const Thumb = props => {
+  const {
+    value,
+    min,
+    max,
+    disabled,
+    onDrag
+  } = props;
+  const prevValue = useRef(value);
 
-  var currentPosition = function currentPosition() {
+  const currentPosition = () => {
     return {
-      left: (value - min) / (max - min) * 100 + "%",
+      left: `${(value - min) / (max - min) * 100}%`,
       right: 'auto'
     };
   };
 
-  var bind = useDrag(function (state) {
+  const bind = useDrag(state => {
     var _a;
 
     if (disabled) return;
@@ -26,10 +28,10 @@ var Thumb = function Thumb(props) {
       prevValue.current = value;
     }
 
-    var x = state.xy[0] - state.initial[0];
-    var sliderOffsetWith = (_a = props.trackRef.current) === null || _a === void 0 ? void 0 : _a.offsetWidth;
+    const x = state.xy[0] - state.initial[0];
+    const sliderOffsetWith = (_a = props.trackRef.current) === null || _a === void 0 ? void 0 : _a.offsetWidth;
     if (!sliderOffsetWith) return;
-    var diff = x / Math.ceil(sliderOffsetWith) * (max - min);
+    const diff = x / Math.ceil(sliderOffsetWith) * (max - min);
     onDrag(prevValue.current + diff, state.first, state.last);
   }, {
     axis: 'x',
@@ -37,11 +39,11 @@ var Thumb = function Thumb(props) {
       touch: true
     }
   });
-  return /*#__PURE__*/React.createElement("div", Object.assign({
-    className: classPrefix + "-thumb-container",
+  return React.createElement("div", Object.assign({
+    className: `${classPrefix}-thumb-container`,
     style: currentPosition()
-  }, bind()), /*#__PURE__*/React.createElement("div", {
-    className: classPrefix + "-thumb"
+  }, bind()), React.createElement("div", {
+    className: `${classPrefix}-thumb`
   }));
 };
 

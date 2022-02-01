@@ -6,9 +6,9 @@ Object.defineProperty(exports, "__esModule", {
 exports.attachPropertiesToComponent = attachPropertiesToComponent;
 
 function attachPropertiesToComponent(component, properties) {
-  var ret = component;
+  const ret = component;
 
-  for (var key in properties) {
+  for (const key in properties) {
     if (properties.hasOwnProperty(key)) {
       ret[key] = properties[key];
     }

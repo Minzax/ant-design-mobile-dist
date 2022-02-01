@@ -4,61 +4,50 @@ import { mergeProps } from '../../utils/with-default-props';
 import { usePropsValue } from '../../utils/use-props-value';
 import classNames from 'classnames';
 import { CloseCircleFill } from 'antd-mobile-icons';
-var classPrefix = 'adm-virtual-input';
-var defaultProps = {
+const classPrefix = 'adm-virtual-input';
+const defaultProps = {
   defaultValue: ''
 };
-export var VirtualInput = /*#__PURE__*/forwardRef(function (p, ref) {
-  var _classNames;
-
-  var props = mergeProps(defaultProps, p);
-
-  var _usePropsValue = usePropsValue(props),
-      value = _usePropsValue[0],
-      setValue = _usePropsValue[1];
-
-  var rootRef = useRef(null);
-  var contentRef = useRef(null);
-
-  var _useState = useState(false),
-      hasFocus = _useState[0],
-      setHasFocus = _useState[1];
+export const VirtualInput = forwardRef((p, ref) => {
+  const props = mergeProps(defaultProps, p);
+  const [value, setValue] = usePropsValue(props);
+  const rootRef = useRef(null);
+  const contentRef = useRef(null);
+  const [hasFocus, setHasFocus] = useState(false);
 
   function scrollToEnd() {
-    var root = rootRef.current;
+    const root = rootRef.current;
     if (!root) return;
 
     if (document.activeElement !== root) {
       return;
     }
 
-    var content = contentRef.current;
+    const content = contentRef.current;
     if (!content) return;
     content.scrollLeft = content.clientWidth;
   }
 
-  useLayoutEffect(function () {
+  useLayoutEffect(() => {
     scrollToEnd();
   }, [value]);
-  useEffect(function () {
+  useEffect(() => {
     if (hasFocus) {
       scrollToEnd();
     }
   }, [hasFocus]);
-  useImperativeHandle(ref, function () {
-    return {
-      focus: function focus() {
-        var _a;
+  useImperativeHandle(ref, () => ({
+    focus: () => {
+      var _a;
 
-        (_a = rootRef.current) === null || _a === void 0 ? void 0 : _a.focus();
-      },
-      blur: function blur() {
-        var _a;
+      (_a = rootRef.current) === null || _a === void 0 ? void 0 : _a.focus();
+    },
+    blur: () => {
+      var _a;
 
-        (_a = rootRef.current) === null || _a === void 0 ? void 0 : _a.blur();
-      }
-    };
-  });
+      (_a = rootRef.current) === null || _a === void 0 ? void 0 : _a.blur();
+    }
+  }));
 
   function onFocus() {
     var _a;
@@ -74,40 +63,42 @@ export var VirtualInput = /*#__PURE__*/forwardRef(function (p, ref) {
     (_a = props.onBlur) === null || _a === void 0 ? void 0 : _a.call(props);
   }
 
-  return withNativeProps(props, /*#__PURE__*/React.createElement("div", {
+  return withNativeProps(props, React.createElement("div", {
     ref: rootRef,
-    className: classNames(classPrefix, (_classNames = {}, _classNames[classPrefix + "-disabled"] = props.disabled, _classNames)),
+    className: classNames(classPrefix, {
+      [`${classPrefix}-disabled`]: props.disabled
+    }),
     tabIndex: props.disabled ? undefined : 0,
     onFocus: onFocus,
     onBlur: onBlur,
     onClick: props.onClick
-  }, /*#__PURE__*/React.createElement("div", {
-    className: classPrefix + "-content",
+  }, React.createElement("div", {
+    className: `${classPrefix}-content`,
     ref: contentRef
-  }, value, /*#__PURE__*/React.createElement("div", {
-    className: classPrefix + "-caret-container"
-  }, hasFocus && /*#__PURE__*/React.createElement("div", {
-    className: classPrefix + "-caret"
-  }))), props.clearable && !!value && hasFocus && /*#__PURE__*/React.createElement("div", {
-    className: classPrefix + "-clear",
-    onClick: function onClick(e) {
+  }, value, React.createElement("div", {
+    className: `${classPrefix}-caret-container`
+  }, hasFocus && React.createElement("div", {
+    className: `${classPrefix}-caret`
+  }))), props.clearable && !!value && hasFocus && React.createElement("div", {
+    className: `${classPrefix}-clear`,
+    onClick: e => {
       var _a;
 
       e.stopPropagation();
       setValue('');
       (_a = props.onClear) === null || _a === void 0 ? void 0 : _a.call(props);
     }
-  }, /*#__PURE__*/React.createElement(CloseCircleFill, null)), !value && /*#__PURE__*/React.createElement("div", {
-    className: classPrefix + "-placeholder"
-  }, props.placeholder), props.keyboard && /*#__PURE__*/React.cloneElement(props.keyboard, {
-    onInput: function onInput(v) {
+  }, React.createElement(CloseCircleFill, null)), !value && React.createElement("div", {
+    className: `${classPrefix}-placeholder`
+  }, props.placeholder), props.keyboard && React.cloneElement(props.keyboard, {
+    onInput: v => {
       setValue(value + v);
     },
-    onDelete: function onDelete() {
+    onDelete: () => {
       setValue(value.slice(0, -1));
     },
     visible: hasFocus,
-    onClose: function onClose() {
+    onClose: () => {
       var _a;
 
       (_a = rootRef.current) === null || _a === void 0 ? void 0 : _a.blur();

@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports["default"] = void 0;
+exports.default = void 0;
 
 require("./steps.css");
 
@@ -17,4 +17,4 @@ var _default = (0, _attachPropertiesToComponent.attachPropertiesToComponent)(_st
   Step: _step.Step
 });
 
-exports["default"] = _default;
+exports.default = _default;

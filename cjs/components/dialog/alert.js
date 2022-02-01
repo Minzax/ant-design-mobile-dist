@@ -12,11 +12,11 @@ var _withDefaultProps = require("../../utils/with-default-props");
 var _configProvider = require("../config-provider");
 
 function alert(p) {
-  var defaultProps = {
+  const defaultProps = {
     confirmText: (0, _configProvider.getDefaultConfig)().locale.Dialog.ok
   };
-  var props = (0, _withDefaultProps.mergeProps)(defaultProps, p);
-  return new Promise(function (resolve) {
+  const props = (0, _withDefaultProps.mergeProps)(defaultProps, p);
+  return new Promise(resolve => {
     (0, _show.show)(Object.assign(Object.assign({}, props), {
       closeOnAction: true,
       actions: [{
@@ -24,7 +24,10 @@ function alert(p) {
         text: props.confirmText
       }],
       onAction: props.onConfirm,
-      onClose: function onClose() {
+      onClose: () => {
+        var _a;
+
+        (_a = props.onClose) === null || _a === void 0 ? void 0 : _a.call(props);
         resolve();
       }
     }));

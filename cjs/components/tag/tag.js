@@ -13,38 +13,38 @@ var _nativeProps = require("../../utils/native-props");
 
 var _classnames = _interopRequireDefault(require("classnames"));
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var classPrefix = "adm-tag";
-var colorRecord = {
-  "default": '#666666',
+const classPrefix = `adm-tag`;
+const colorRecord = {
+  default: '#666666',
   primary: 'var(--adm-color-primary, #1677ff)',
   success: 'var(--adm-color-success, #00b578)',
   warning: 'var(--adm-color-warning, #ff8f1f)',
   danger: 'var(--adm-color-danger, #ff3141)'
 };
-var defaultProps = {
+const defaultProps = {
   color: 'default',
   fill: 'solid',
   round: false
 };
 
-var Tag = function Tag(p) {
-  var _classNames;
-
+const Tag = p => {
   var _a;
 
-  var props = (0, _withDefaultProps.mergeProps)(defaultProps, p);
-  var color = (_a = colorRecord[props.color]) !== null && _a !== void 0 ? _a : props.color;
-  var style = {
+  const props = (0, _withDefaultProps.mergeProps)(defaultProps, p);
+  const color = (_a = colorRecord[props.color]) !== null && _a !== void 0 ? _a : props.color;
+  const style = {
     '--border-color': color,
     '--text-color': props.fill === 'outline' ? color : '#ffffff',
     '--background-color': props.fill === 'outline' ? 'transparent' : color
   };
-  return (0, _nativeProps.withNativeProps)(props, /*#__PURE__*/_react["default"].createElement("span", {
+  return (0, _nativeProps.withNativeProps)(props, _react.default.createElement("span", {
     style: style,
     onClick: props.onClick,
-    className: (0, _classnames["default"])(classPrefix, (_classNames = {}, _classNames[classPrefix + "-round"] = props.round, _classNames))
+    className: (0, _classnames.default)(classPrefix, {
+      [`${classPrefix}-round`]: props.round
+    })
   }, props.children));
 };
 

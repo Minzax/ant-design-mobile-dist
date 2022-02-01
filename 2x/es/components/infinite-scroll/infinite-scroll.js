@@ -3,40 +3,39 @@ import React, { useEffect, useRef } from 'react';
 import { useLockFn, useMemoizedFn } from 'ahooks';
 import { withNativeProps } from '../../utils/native-props';
 import { getScrollParent } from '../../utils/get-scroll-parent';
-import Loading from '../loading';
+import DotLoading from '../dot-loading';
 
 function isWindow(element) {
   return element === window;
 }
 
-var classPrefix = "adm-infinite-scroll";
+const classPrefix = `adm-infinite-scroll`;
 
-var InfiniteScrollContent = function InfiniteScrollContent(_ref) {
-  var hasMore = _ref.hasMore;
-  return /*#__PURE__*/React.createElement(React.Fragment, null, hasMore ? /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("span", null, "\u52A0\u8F7D\u4E2D"), /*#__PURE__*/React.createElement(Loading, null)) : /*#__PURE__*/React.createElement("span", null, "\u6CA1\u6709\u66F4\u591A\u4E86"));
+const InfiniteScrollContent = ({
+  hasMore
+}) => {
+  return React.createElement(React.Fragment, null, hasMore ? React.createElement(React.Fragment, null, React.createElement("span", null, "\u52A0\u8F7D\u4E2D"), React.createElement(DotLoading, null)) : React.createElement("span", null, "\u6CA1\u6709\u66F4\u591A\u4E86"));
 };
 
-export var InfiniteScroll = function InfiniteScroll(p) {
-  var props = mergeProps({
+export const InfiniteScroll = p => {
+  const props = mergeProps({
     threshold: 250
   }, p);
-  var doLoadMore = useLockFn(function () {
-    return props.loadMore();
-  });
-  var elementRef = useRef(null);
-  var checkTimeoutRef = useRef();
-  var check = useMemoizedFn(function () {
+  const doLoadMore = useLockFn(() => props.loadMore());
+  const elementRef = useRef(null);
+  const checkTimeoutRef = useRef();
+  const check = useMemoizedFn(() => {
     window.clearTimeout(checkTimeoutRef.current);
-    checkTimeoutRef.current = window.setTimeout(function () {
+    checkTimeoutRef.current = window.setTimeout(() => {
       if (!props.hasMore) return;
-      var element = elementRef.current;
+      const element = elementRef.current;
       if (!element) return;
       if (!element.offsetParent) return;
-      var parent = getScrollParent(element);
+      const parent = getScrollParent(element);
       if (!parent) return;
-      var rect = element.getBoundingClientRect();
-      var elementTop = rect.top;
-      var current = isWindow(parent) ? window.innerHeight : parent.getBoundingClientRect().bottom;
+      const rect = element.getBoundingClientRect();
+      const elementTop = rect.top;
+      const current = isWindow(parent) ? window.innerHeight : parent.getBoundingClientRect().bottom;
 
       if (current >= elementTop - props.threshold) {
         doLoadMore();
@@ -44,13 +43,13 @@ export var InfiniteScroll = function InfiniteScroll(p) {
     });
   }); // 确保在内容不足时会自动触发加载事件
 
-  useEffect(function () {
+  useEffect(() => {
     check();
   });
-  useEffect(function () {
-    var element = elementRef.current;
+  useEffect(() => {
+    const element = elementRef.current;
     if (!element) return;
-    var parent = getScrollParent(element);
+    const parent = getScrollParent(element);
     if (!parent) return;
 
     function onScroll() {
@@ -58,14 +57,14 @@ export var InfiniteScroll = function InfiniteScroll(p) {
     }
 
     parent.addEventListener('scroll', onScroll);
-    return function () {
+    return () => {
       parent.removeEventListener('scroll', onScroll);
     };
   }, []);
-  return withNativeProps(props, /*#__PURE__*/React.createElement("div", {
+  return withNativeProps(props, React.createElement("div", {
     className: classPrefix,
     ref: elementRef
-  }, props.children && props.children, !props.children && /*#__PURE__*/React.createElement(InfiniteScrollContent, {
+  }, props.children && props.children, !props.children && React.createElement(InfiniteScrollContent, {
     hasMore: props.hasMore
   })));
 };

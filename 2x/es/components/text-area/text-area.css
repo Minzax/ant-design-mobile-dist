@@ -1,4 +1,4 @@
-.adm-text-area-wrapper {
+.adm-text-area {
   --font-size: 34px;
   --color: var(--adm-color-text);
   --placeholder-color: var(--adm-color-light);
@@ -8,7 +8,7 @@
   max-height: 100%;
 }
 
-.adm-text-area {
+.adm-text-area-element {
   font-family: var(--adm-font-family);
   resize: none;
   flex: auto;
@@ -29,35 +29,35 @@
   min-height: 1.5em;
 }
 
-.adm-text-area::placeholder {
+.adm-text-area-element::placeholder {
   color: var(--placeholder-color);
   font-family: inherit;
 }
 
-.adm-text-area:-webkit-autofill {
+.adm-text-area-element:-webkit-autofill {
   background-color: transparent;
 }
 
-.adm-text-area:disabled {
+.adm-text-area-element:disabled {
   color: var(--disabled-color);
   cursor: not-allowed;
   opacity: 1;
   -webkit-text-fill-color: var(--disabled-color);
 }
 
-.adm-text-area:read-only {
+.adm-text-area-element:read-only {
   cursor: default;
 }
 
-.adm-text-area:invalid {
+.adm-text-area-element:invalid {
   box-shadow: none;
 }
 
-.adm-text-area::-ms-clear {
+.adm-text-area-element::-ms-clear {
   display: none;
 }
 
-.adm-text-area[readonly] {
+.adm-text-area-element[readonly] {
   pointer-events: none;
 }
 

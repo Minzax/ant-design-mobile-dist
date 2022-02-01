@@ -5,18 +5,14 @@ import { useColumns } from './use-columns';
 import { withNativeProps } from '../../utils/native-props';
 import { usePickerValueExtend } from './use-picker-value-extend';
 import { useDebounceEffect } from 'ahooks';
-var classPrefix = "adm-picker-view";
-var defaultProps = {
+const classPrefix = `adm-picker-view`;
+const defaultProps = {
   defaultValue: []
 };
-export var PickerView = /*#__PURE__*/memo(function (p) {
-  var props = mergeProps(defaultProps, p);
-
-  var _useState = useState(props.value === undefined ? props.defaultValue : props.value),
-      innerValue = _useState[0],
-      setInnerValue = _useState[1];
-
-  useDebounceEffect(function () {
+export const PickerView = memo(p => {
+  const props = mergeProps(defaultProps, p);
+  const [innerValue, setInnerValue] = useState(props.value === undefined ? props.defaultValue : props.value);
+  useDebounceEffect(() => {
     var _a;
 
     if (props.value === innerValue) return;
@@ -27,50 +23,48 @@ export var PickerView = /*#__PURE__*/memo(function (p) {
     trailing: true
   }); // Sync `value` to `innerValue`
 
-  useEffect(function () {
+  useEffect(() => {
     if (props.value === undefined) return; // Uncontrolled mode
 
     if (props.value === innerValue) return;
     setInnerValue(props.value);
   }, [props.value]);
-  useEffect(function () {
+  useEffect(() => {
     if (props.value === innerValue) return;
-    var timeout = window.setTimeout(function () {
+    const timeout = window.setTimeout(() => {
       if (props.value !== undefined && props.value !== innerValue) {
         setInnerValue(props.value);
       }
     }, 1000);
-    return function () {
+    return () => {
       window.clearTimeout(timeout);
     };
   }, [props.value, innerValue]);
-  var columns = useColumns(props.columns, innerValue);
-  var generateValueExtend = usePickerValueExtend(columns);
-  var handleSelect = useCallback(function (val, index) {
-    setInnerValue(function (prev) {
-      var next = [].concat(prev);
+  const columns = useColumns(props.columns, innerValue);
+  const generateValueExtend = usePickerValueExtend(columns);
+  const handleSelect = useCallback((val, index) => {
+    setInnerValue(prev => {
+      const next = [...prev];
       next[index] = val;
       return next;
     });
   }, []);
-  return withNativeProps(props, /*#__PURE__*/React.createElement("div", {
-    className: "" + classPrefix
-  }, columns.map(function (column, index) {
-    return /*#__PURE__*/React.createElement(Wheel, {
-      key: index,
-      index: index,
-      column: column,
-      value: innerValue[index],
-      onSelect: handleSelect
-    });
-  }), /*#__PURE__*/React.createElement("div", {
-    className: classPrefix + "-mask"
-  }, /*#__PURE__*/React.createElement("div", {
-    className: classPrefix + "-mask-top"
-  }), /*#__PURE__*/React.createElement("div", {
-    className: classPrefix + "-mask-middle"
-  }), /*#__PURE__*/React.createElement("div", {
-    className: classPrefix + "-mask-bottom"
+  return withNativeProps(props, React.createElement("div", {
+    className: `${classPrefix}`
+  }, columns.map((column, index) => React.createElement(Wheel, {
+    key: index,
+    index: index,
+    column: column,
+    value: innerValue[index],
+    onSelect: handleSelect
+  })), React.createElement("div", {
+    className: `${classPrefix}-mask`
+  }, React.createElement("div", {
+    className: `${classPrefix}-mask-top`
+  }), React.createElement("div", {
+    className: `${classPrefix}-mask-middle`
+  }), React.createElement("div", {
+    className: `${classPrefix}-mask-bottom`
   }))));
 });
 PickerView.displayName = 'PickerView';

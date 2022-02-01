@@ -5,31 +5,27 @@ import { RadioGroupContext } from './group-context';
 import { usePropsValue } from '../../utils/use-props-value';
 import { mergeProps } from '../../utils/with-default-props';
 import { CheckIcon } from '../checkbox/check-icon';
-var classPrefix = "adm-radio";
-var defaultProps = {
+const classPrefix = `adm-radio`;
+const defaultProps = {
   defaultChecked: false
 };
-export var Radio = function Radio(p) {
-  var _classNames;
-
-  var props = mergeProps(defaultProps, p);
-  var groupContext = useContext(RadioGroupContext);
-
-  var _usePropsValue = usePropsValue({
+export const Radio = p => {
+  const props = mergeProps(defaultProps, p);
+  const groupContext = useContext(RadioGroupContext);
+  let [checked, setChecked] = usePropsValue({
     value: props.checked,
     defaultValue: props.defaultChecked,
     onChange: props.onChange
-  }),
-      checked = _usePropsValue[0],
-      setChecked = _usePropsValue[1];
-
-  var disabled = props.disabled;
-  var value = props.value;
+  });
+  let disabled = props.disabled;
+  const {
+    value
+  } = props;
 
   if (groupContext && value !== undefined) {
     checked = groupContext.value.includes(value);
 
-    setChecked = function setChecked(checked) {
+    setChecked = checked => {
       var _a;
 
       if (checked) {
@@ -44,36 +40,38 @@ export var Radio = function Radio(p) {
     disabled = disabled || groupContext.disabled;
   }
 
-  var renderIcon = function renderIcon() {
+  const renderIcon = () => {
     if (props.icon) {
-      return /*#__PURE__*/React.createElement("div", {
-        className: classPrefix + "-custom-icon"
+      return React.createElement("div", {
+        className: `${classPrefix}-custom-icon`
       }, props.icon(checked));
     }
 
-    return /*#__PURE__*/React.createElement("div", {
-      className: classPrefix + "-icon"
-    }, checked && /*#__PURE__*/React.createElement(CheckIcon, {
-      className: classPrefix + "-icon-checked"
-    }));
+    return React.createElement("div", {
+      className: `${classPrefix}-icon`
+    }, checked && React.createElement(CheckIcon, null));
   };
 
-  return withNativeProps(props, /*#__PURE__*/React.createElement("label", {
-    className: classNames(classPrefix, props.className, (_classNames = {}, _classNames[classPrefix + "-checked"] = checked, _classNames[classPrefix + "-disabled"] = disabled, _classNames[classPrefix + "-block"] = props.block, _classNames)),
+  return withNativeProps(props, React.createElement("label", {
+    className: classNames(classPrefix, props.className, {
+      [`${classPrefix}-checked`]: checked,
+      [`${classPrefix}-disabled`]: disabled,
+      [`${classPrefix}-block`]: props.block
+    }),
     style: props.style
-  }, /*#__PURE__*/React.createElement("input", {
+  }, React.createElement("input", {
     type: 'radio',
     checked: checked,
-    onChange: function onChange(e) {
+    onChange: e => {
       setChecked(e.target.checked);
     },
-    onClick: function onClick(e) {
+    onClick: e => {
       e.stopPropagation();
       e.nativeEvent.stopImmediatePropagation();
     },
     disabled: disabled,
     id: props.id
-  }), renderIcon(), props.children && /*#__PURE__*/React.createElement("div", {
-    className: classPrefix + "-content"
+  }), renderIcon(), props.children && React.createElement("div", {
+    className: `${classPrefix}-content`
   }, props.children)));
 };

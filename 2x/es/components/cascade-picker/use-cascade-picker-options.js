@@ -1,8 +1,8 @@
 import { useMemo } from 'react';
 export function useCascadePickerOptions(options) {
-  return useMemo(function () {
-    var depth = 1;
-    var subOptionsRecord = {};
+  return useMemo(() => {
+    let depth = 1;
+    const subOptionsRecord = {};
 
     function traverse(option, currentDepth) {
       if (!option.children) {
@@ -10,23 +10,23 @@ export function useCascadePickerOptions(options) {
       }
 
       subOptionsRecord[option.value] = option.children;
-      var nextDepth = currentDepth + 1;
+      const nextDepth = currentDepth + 1;
 
       if (nextDepth > depth) {
         depth = nextDepth;
       }
 
-      option.children.forEach(function (option) {
+      option.children.forEach(option => {
         traverse(option, nextDepth);
       });
     }
 
-    options.forEach(function (option) {
+    options.forEach(option => {
       traverse(option, 1);
     });
     return {
-      depth: depth,
-      subOptionsRecord: subOptionsRecord
+      depth,
+      subOptionsRecord
     };
   }, [options]);
 }

@@ -13,25 +13,31 @@ var _nativeProps = require("../../utils/native-props");
 
 var _withDefaultProps = require("../../utils/with-default-props");
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var classPrefix = "adm-space";
-var defaultProps = {
+const classPrefix = `adm-space`;
+const defaultProps = {
   direction: 'horizontal'
 };
 
-var Space = function Space(p) {
-  var _classNames;
-
-  var props = (0, _withDefaultProps.mergeProps)(defaultProps, p);
-  var direction = props.direction,
-      onClick = props.onClick;
-  return (0, _nativeProps.withNativeProps)(props, /*#__PURE__*/_react["default"].createElement("div", {
-    className: (0, _classnames["default"])(classPrefix, (_classNames = {}, _classNames[classPrefix + "-wrap"] = props.wrap, _classNames[classPrefix + "-block"] = props.block, _classNames[classPrefix + "-" + direction] = true, _classNames[classPrefix + "-align-" + props.align] = !!props.align, _classNames[classPrefix + "-justify-" + props.justify] = !!props.justify, _classNames)),
+const Space = p => {
+  const props = (0, _withDefaultProps.mergeProps)(defaultProps, p);
+  const {
+    direction,
+    onClick
+  } = props;
+  return (0, _nativeProps.withNativeProps)(props, _react.default.createElement("div", {
+    className: (0, _classnames.default)(classPrefix, {
+      [`${classPrefix}-wrap`]: props.wrap,
+      [`${classPrefix}-block`]: props.block,
+      [`${classPrefix}-${direction}`]: true,
+      [`${classPrefix}-align-${props.align}`]: !!props.align,
+      [`${classPrefix}-justify-${props.justify}`]: !!props.justify
+    }),
     onClick: onClick
-  }, _react["default"].Children.map(props.children, function (child) {
-    return child !== null && child !== undefined && /*#__PURE__*/_react["default"].createElement("div", {
-      className: classPrefix + "-item"
+  }, _react.default.Children.map(props.children, child => {
+    return child !== null && child !== undefined && _react.default.createElement("div", {
+      className: `${classPrefix}-item`
     }, child);
   })));
 };

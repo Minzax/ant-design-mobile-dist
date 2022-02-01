@@ -6,6 +6,7 @@ declare const _default: import("react").ForwardRefExoticComponent<{
     activeKey?: string | null | undefined;
     defaultActiveKey?: string | null | undefined;
     closeOnMaskClick?: boolean | undefined;
+    closeOnClickAway?: boolean | undefined;
     onChange?: ((key: string | null) => void) | undefined;
     arrow?: import("react").ReactNode;
 } & import("../../utils/native-props").NativeProps<never> & {

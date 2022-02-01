@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports["default"] = void 0;
+exports.default = void 0;
 
 var _cascader = require("./cascader");
 
@@ -13,8 +13,11 @@ var _attachPropertiesToComponent = require("../../utils/attach-properties-to-com
 
 require("./cascader.css");
 
+var _optionSkeleton = require("../cascader-view/option-skeleton");
+
 var _default = (0, _attachPropertiesToComponent.attachPropertiesToComponent)(_cascader.Cascader, {
-  prompt: _prompt.prompt
+  prompt: _prompt.prompt,
+  optionSkeleton: _optionSkeleton.optionSkeleton
 });
 
-exports["default"] = _default;
+exports.default = _default;

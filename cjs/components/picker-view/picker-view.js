@@ -19,22 +19,18 @@ var _usePickerValueExtend = require("./use-picker-value-extend");
 
 var _ahooks = require("ahooks");
 
-function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function _getRequireWildcardCache(nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
+function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function (nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
 
-function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { "default": obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj["default"] = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
+function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
 
-var classPrefix = "adm-picker-view";
-var defaultProps = {
+const classPrefix = `adm-picker-view`;
+const defaultProps = {
   defaultValue: []
 };
-var PickerView = /*#__PURE__*/(0, _react.memo)(function (p) {
-  var props = (0, _withDefaultProps.mergeProps)(defaultProps, p);
-
-  var _useState = (0, _react.useState)(props.value === undefined ? props.defaultValue : props.value),
-      innerValue = _useState[0],
-      setInnerValue = _useState[1];
-
-  (0, _ahooks.useDebounceEffect)(function () {
+const PickerView = (0, _react.memo)(p => {
+  const props = (0, _withDefaultProps.mergeProps)(defaultProps, p);
+  const [innerValue, setInnerValue] = (0, _react.useState)(props.value === undefined ? props.defaultValue : props.value);
+  (0, _ahooks.useDebounceEffect)(() => {
     var _a;
 
     if (props.value === innerValue) return;
@@ -45,50 +41,48 @@ var PickerView = /*#__PURE__*/(0, _react.memo)(function (p) {
     trailing: true
   }); // Sync `value` to `innerValue`
 
-  (0, _react.useEffect)(function () {
+  (0, _react.useEffect)(() => {
     if (props.value === undefined) return; // Uncontrolled mode
 
     if (props.value === innerValue) return;
     setInnerValue(props.value);
   }, [props.value]);
-  (0, _react.useEffect)(function () {
+  (0, _react.useEffect)(() => {
     if (props.value === innerValue) return;
-    var timeout = window.setTimeout(function () {
+    const timeout = window.setTimeout(() => {
       if (props.value !== undefined && props.value !== innerValue) {
         setInnerValue(props.value);
       }
     }, 1000);
-    return function () {
+    return () => {
       window.clearTimeout(timeout);
     };
   }, [props.value, innerValue]);
-  var columns = (0, _useColumns.useColumns)(props.columns, innerValue);
-  var generateValueExtend = (0, _usePickerValueExtend.usePickerValueExtend)(columns);
-  var handleSelect = (0, _react.useCallback)(function (val, index) {
-    setInnerValue(function (prev) {
-      var next = [].concat(prev);
+  const columns = (0, _useColumns.useColumns)(props.columns, innerValue);
+  const generateValueExtend = (0, _usePickerValueExtend.usePickerValueExtend)(columns);
+  const handleSelect = (0, _react.useCallback)((val, index) => {
+    setInnerValue(prev => {
+      const next = [...prev];
       next[index] = val;
       return next;
     });
   }, []);
-  return (0, _nativeProps.withNativeProps)(props, /*#__PURE__*/_react["default"].createElement("div", {
-    className: "" + classPrefix
-  }, columns.map(function (column, index) {
-    return /*#__PURE__*/_react["default"].createElement(_wheel.Wheel, {
-      key: index,
-      index: index,
-      column: column,
-      value: innerValue[index],
-      onSelect: handleSelect
-    });
-  }), /*#__PURE__*/_react["default"].createElement("div", {
-    className: classPrefix + "-mask"
-  }, /*#__PURE__*/_react["default"].createElement("div", {
-    className: classPrefix + "-mask-top"
-  }), /*#__PURE__*/_react["default"].createElement("div", {
-    className: classPrefix + "-mask-middle"
-  }), /*#__PURE__*/_react["default"].createElement("div", {
-    className: classPrefix + "-mask-bottom"
+  return (0, _nativeProps.withNativeProps)(props, _react.default.createElement("div", {
+    className: `${classPrefix}`
+  }, columns.map((column, index) => _react.default.createElement(_wheel.Wheel, {
+    key: index,
+    index: index,
+    column: column,
+    value: innerValue[index],
+    onSelect: handleSelect
+  })), _react.default.createElement("div", {
+    className: `${classPrefix}-mask`
+  }, _react.default.createElement("div", {
+    className: `${classPrefix}-mask-top`
+  }), _react.default.createElement("div", {
+    className: `${classPrefix}-mask-middle`
+  }), _react.default.createElement("div", {
+    className: `${classPrefix}-mask-bottom`
   }))));
 });
 exports.PickerView = PickerView;

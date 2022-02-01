@@ -3,28 +3,23 @@ import { useSpring, animated } from '@react-spring/web';
 import { useDrag } from '@use-gesture/react';
 import { mergeProps } from '../../utils/with-default-props';
 import { withNativeProps } from '../../utils/native-props';
-var classPrefix = "adm-floating-bubble";
-var defaultProps = {};
-export var FloatingBubble = function FloatingBubble(p) {
-  var props = mergeProps(defaultProps, p);
-  var boundaryRef = useRef(null);
+const classPrefix = `adm-floating-bubble`;
+const defaultProps = {};
+export const FloatingBubble = p => {
+  const props = mergeProps(defaultProps, p);
+  const boundaryRef = useRef(null);
   /**
    * memoize the `to` function
    * inside a component that renders frequently
    * to prevent an unintended restart
    */
 
-  var _useSpring = useSpring(function () {
-    return {
-      y: 0,
-      scale: 1,
-      opacity: 1
-    };
-  }),
-      animationStyles = _useSpring[0],
-      animation = _useSpring[1];
-
-  var bind = useDrag(function (state) {
+  const [animationStyles, animation] = useSpring(() => ({
+    y: 0,
+    scale: 1,
+    opacity: 1
+  }));
+  const bind = useDrag(state => {
     if (state.down) {
       // be movable in y axis
       animation.start({
@@ -48,16 +43,16 @@ export var FloatingBubble = function FloatingBubble(p) {
     // set constraints to the user gesture
     bounds: boundaryRef
   });
-  return withNativeProps(props, /*#__PURE__*/React.createElement("div", {
+  return withNativeProps(props, React.createElement("div", {
     className: classPrefix
-  }, /*#__PURE__*/React.createElement("div", {
-    className: classPrefix + "-boundary-outer"
-  }, /*#__PURE__*/React.createElement("div", {
-    className: classPrefix + "-boundary",
+  }, React.createElement("div", {
+    className: `${classPrefix}-boundary-outer`
+  }, React.createElement("div", {
+    className: `${classPrefix}-boundary`,
     ref: boundaryRef
-  })), /*#__PURE__*/React.createElement(animated.div, Object.assign({}, bind(), {
+  })), React.createElement(animated.div, Object.assign({}, bind(), {
     style: Object.assign({}, animationStyles),
     onClick: props.onClick,
-    className: classPrefix + "-button"
+    className: `${classPrefix}-button`
   }), props.children)));
 };

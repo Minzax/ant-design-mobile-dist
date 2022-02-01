@@ -23,27 +23,25 @@ var _panel = require("./panel");
 
 var _devLog = require("../../utils/dev-log");
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function _getRequireWildcardCache(nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
+function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function (nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
 
-function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { "default": obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj["default"] = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
+function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
 
-var classPrefix = "adm-index-bar";
-var defaultProps = {
+const classPrefix = `adm-index-bar`;
+const defaultProps = {
   sticky: true
 };
-var IndexBar = /*#__PURE__*/(0, _react.forwardRef)(function (p, ref) {
-  var _classNames;
+const IndexBar = (0, _react.forwardRef)((p, ref) => {
+  const props = (0, _withDefaultProps.mergeProps)(defaultProps, p);
+  const titleHeight = (0, _convertPx.convertPx)(35);
+  const bodyRef = (0, _react.useRef)(null);
+  const indexes = [];
+  const panels = [];
 
-  var props = (0, _withDefaultProps.mergeProps)(defaultProps, p);
-  var titleHeight = (0, _convertPx.convertPx)(35);
-  var bodyRef = (0, _react.useRef)(null);
-  var indexes = [];
-  var panels = [];
-
-  _react["default"].Children.forEach(props.children, function (child) {
-    if (! /*#__PURE__*/_react["default"].isValidElement(child)) return;
+  _react.default.Children.forEach(props.children, child => {
+    if (!_react.default.isValidElement(child)) return;
 
     if (child.type !== _panel.Panel) {
       (0, _devLog.devWarning)('IndexBar', 'The children of `IndexBar` must be `IndexBar.Panel` components.');
@@ -51,34 +49,29 @@ var IndexBar = /*#__PURE__*/(0, _react.forwardRef)(function (p, ref) {
     }
 
     indexes.push(child.props.index);
-    panels.push((0, _nativeProps.withNativeProps)(child.props, /*#__PURE__*/_react["default"].createElement("div", {
+    panels.push((0, _nativeProps.withNativeProps)(child.props, _react.default.createElement("div", {
       key: child.props.index,
       "data-index": child.props.index,
-      className: classPrefix + "-anchor"
-    }, /*#__PURE__*/_react["default"].createElement("div", {
-      className: classPrefix + "-anchor-title"
+      className: `${classPrefix}-anchor`
+    }, _react.default.createElement("div", {
+      className: `${classPrefix}-anchor-title`
     }, child.props.title || child.props.index), child.props.children)));
   });
 
-  var _useState = (0, _react.useState)(indexes[0]),
-      activeIndex = _useState[0],
-      setActiveIndex = _useState[1];
-
-  (0, _react.useImperativeHandle)(ref, function () {
-    return {
-      scrollTo: scrollTo
-    };
-  });
+  const [activeIndex, setActiveIndex] = (0, _react.useState)(indexes[0]);
+  (0, _react.useImperativeHandle)(ref, () => ({
+    scrollTo
+  }));
 
   function scrollTo(index) {
-    var body = bodyRef.current;
+    const body = bodyRef.current;
     if (!body) return;
-    var children = body.children;
+    const children = body.children;
 
-    for (var i = 0; i < children.length; i++) {
-      var panel = children.item(i);
+    for (let i = 0; i < children.length; i++) {
+      const panel = children.item(i);
       if (!panel) continue;
-      var panelIndex = panel.dataset['index'];
+      const panelIndex = panel.dataset['index'];
 
       if (panelIndex === index) {
         body.scrollTop = panel.offsetTop;
@@ -88,16 +81,18 @@ var IndexBar = /*#__PURE__*/(0, _react.forwardRef)(function (p, ref) {
     }
   }
 
-  var _useThrottleFn = (0, _ahooks.useThrottleFn)(function () {
-    var body = bodyRef.current;
+  const {
+    run: checkActiveIndex
+  } = (0, _ahooks.useThrottleFn)(() => {
+    const body = bodyRef.current;
     if (!body) return;
-    var scrollTop = body.scrollTop;
-    var elements = body.getElementsByClassName(classPrefix + "-anchor");
+    const scrollTop = body.scrollTop;
+    const elements = body.getElementsByClassName(`${classPrefix}-anchor`);
 
-    for (var i = 0; i < elements.length; i++) {
-      var panel = elements.item(i);
+    for (let i = 0; i < elements.length; i++) {
+      const panel = elements.item(i);
       if (!panel) continue;
-      var panelIndex = panel.dataset['index'];
+      const panelIndex = panel.dataset['index'];
       if (!panelIndex) continue;
 
       if (panel.offsetTop + panel.clientHeight - titleHeight > scrollTop) {
@@ -109,19 +104,19 @@ var IndexBar = /*#__PURE__*/(0, _react.forwardRef)(function (p, ref) {
     wait: 50,
     trailing: true,
     leading: true
-  }),
-      checkActiveIndex = _useThrottleFn.run;
-
-  return (0, _nativeProps.withNativeProps)(props, /*#__PURE__*/_react["default"].createElement("div", {
-    className: (0, _classnames["default"])("" + classPrefix, (_classNames = {}, _classNames[classPrefix + "-sticky"] = props.sticky, _classNames))
-  }, /*#__PURE__*/_react["default"].createElement(_sidebar.Sidebar, {
+  });
+  return (0, _nativeProps.withNativeProps)(props, _react.default.createElement("div", {
+    className: (0, _classnames.default)(`${classPrefix}`, {
+      [`${classPrefix}-sticky`]: props.sticky
+    })
+  }, _react.default.createElement(_sidebar.Sidebar, {
     indexes: indexes,
     activeIndex: activeIndex,
-    onActive: function onActive(index) {
+    onActive: index => {
       scrollTo(index);
     }
-  }), /*#__PURE__*/_react["default"].createElement("div", {
-    className: classPrefix + "-body",
+  }), _react.default.createElement("div", {
+    className: `${classPrefix}-body`,
     ref: bodyRef,
     onScroll: checkActiveIndex
   }, panels)));

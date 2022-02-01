@@ -1,49 +1,16 @@
-var __awaiter = this && this.__awaiter || function (thisArg, _arguments, P, generator) {
-  function adopt(value) {
-    return value instanceof P ? value : new P(function (resolve) {
-      resolve(value);
-    });
-  }
-
-  return new (P || (P = Promise))(function (resolve, reject) {
-    function fulfilled(value) {
-      try {
-        step(generator.next(value));
-      } catch (e) {
-        reject(e);
-      }
-    }
-
-    function rejected(value) {
-      try {
-        step(generator["throw"](value));
-      } catch (e) {
-        reject(e);
-      }
-    }
-
-    function step(result) {
-      result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected);
-    }
-
-    step((generator = generator.apply(thisArg, _arguments || [])).next());
-  });
-};
-
+import { __awaiter } from "tslib";
 import { show } from './show';
 import { mergeProps } from '../../utils/with-default-props';
-var defaultProps = {
+const defaultProps = {
   confirmText: '确认',
   cancelText: '取消'
 };
 export function confirm(p) {
-  var _this = this;
-
-  var props = mergeProps(defaultProps, p);
-  return new Promise(function (resolve) {
+  const props = mergeProps(defaultProps, p);
+  return new Promise(resolve => {
     show(Object.assign(Object.assign({}, props), {
       closeOnAction: true,
-      onClose: function onClose() {
+      onClose: () => {
         var _a;
 
         (_a = props.onClose) === null || _a === void 0 ? void 0 : _a.call(props);
@@ -53,53 +20,21 @@ export function confirm(p) {
         key: 'confirm',
         text: props.confirmText,
         primary: true,
-        onClick: function onClick() {
-          return __awaiter(_this, void 0, void 0, /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
-            var _a;
+        onClick: () => __awaiter(this, void 0, void 0, function* () {
+          var _a;
 
-            return regeneratorRuntime.wrap(function _callee$(_context) {
-              while (1) {
-                switch (_context.prev = _context.next) {
-                  case 0:
-                    _context.next = 2;
-                    return (_a = props.onConfirm) === null || _a === void 0 ? void 0 : _a.call(props);
-
-                  case 2:
-                    resolve(true);
-
-                  case 3:
-                  case "end":
-                    return _context.stop();
-                }
-              }
-            }, _callee);
-          }));
-        }
+          yield (_a = props.onConfirm) === null || _a === void 0 ? void 0 : _a.call(props);
+          resolve(true);
+        })
       }, {
         key: 'cancel',
         text: props.cancelText,
-        onClick: function onClick() {
-          return __awaiter(_this, void 0, void 0, /*#__PURE__*/regeneratorRuntime.mark(function _callee2() {
-            var _b;
+        onClick: () => __awaiter(this, void 0, void 0, function* () {
+          var _b;
 
-            return regeneratorRuntime.wrap(function _callee2$(_context2) {
-              while (1) {
-                switch (_context2.prev = _context2.next) {
-                  case 0:
-                    _context2.next = 2;
-                    return (_b = props.onCancel) === null || _b === void 0 ? void 0 : _b.call(props);
-
-                  case 2:
-                    resolve(false);
-
-                  case 3:
-                  case "end":
-                    return _context2.stop();
-                }
-              }
-            }, _callee2);
-          }));
-        }
+          yield (_b = props.onCancel) === null || _b === void 0 ? void 0 : _b.call(props);
+          resolve(false);
+        })
       }]
     }));
   });

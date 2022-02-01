@@ -29,6 +29,9 @@
 .adm-step-status-wait {
   --icon-color: #e5e5e5;
 }
+.adm-step-status-wait .adm-step-title {
+  color: var(--adm-color-weak);
+}
 .adm-step-status-process {
   --icon-color: var(--adm-color-primary);
 }
@@ -79,13 +82,13 @@
 .adm-steps-horizontal .adm-step-content {
   text-align: center;
   font-size: var(--description-font-size);
-  padding-top: 2px;
+  padding: 2px 8px 0;
 }
 .adm-steps-horizontal .adm-step-content .adm-step-title {
   font-size: var(--title-font-size);
 }
 .adm-steps-horizontal .adm-step-content .adm-step-description {
-  margin-top: 2px;
+  margin-top: 4px;
   color: var(--adm-color-weak);
 }
 .adm-steps-vertical {
@@ -117,14 +120,14 @@
 }
 .adm-steps-vertical .adm-step .adm-step-content {
   flex: auto;
-  padding-bottom: 14px;
+  padding-bottom: 24px;
 }
 .adm-steps-vertical .adm-step .adm-step-content .adm-step-title {
   font-size: var(--title-font-size);
   line-height: 1.5;
 }
 .adm-steps-vertical .adm-step .adm-step-content .adm-step-description {
-  padding-top: 2px;
+  padding-top: 4px;
   font-size: var(--description-font-size);
   color: var(--adm-color-weak);
 }

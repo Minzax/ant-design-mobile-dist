@@ -1,17 +1,17 @@
 import { useLayoutEffect } from 'react';
 import { useMemoizedFn } from 'ahooks';
 export function useResizeEffect(effect, targetRef) {
-  var fn = useMemoizedFn(effect);
-  useLayoutEffect(function () {
-    var target = targetRef.current;
+  const fn = useMemoizedFn(effect);
+  useLayoutEffect(() => {
+    const target = targetRef.current;
     if (!target) return;
 
     if (window.ResizeObserver) {
-      var observer = new ResizeObserver(function () {
+      const observer = new ResizeObserver(() => {
         fn(target);
       });
       observer.observe(target);
-      return function () {
+      return () => {
         observer.disconnect();
       };
     } else {

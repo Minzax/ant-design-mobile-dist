@@ -11,31 +11,36 @@ var _withDefaultProps = require("../../utils/with-default-props");
 
 var _groupContext = require("./group-context");
 
-var _usePropsValue2 = require("../../utils/use-props-value");
+var _usePropsValue = require("../../utils/use-props-value");
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var defaultProps = {
+const defaultProps = {
   disabled: false,
   defaultValue: null
 };
 
-var Group = function Group(p) {
-  var props = (0, _withDefaultProps.mergeProps)(defaultProps, p);
+const Group = p => {
+  const props = (0, _withDefaultProps.mergeProps)(defaultProps, p);
+  const [value, setValue] = (0, _usePropsValue.usePropsValue)({
+    value: props.value,
+    defaultValue: props.defaultValue,
+    onChange: v => {
+      var _a;
 
-  var _usePropsValue = (0, _usePropsValue2.usePropsValue)(props),
-      value = _usePropsValue[0],
-      setValue = _usePropsValue[1];
-
-  return /*#__PURE__*/_react["default"].createElement(_groupContext.RadioGroupContext.Provider // TODO: 性能优化
+      if (v === null) return;
+      (_a = props.onChange) === null || _a === void 0 ? void 0 : _a.call(props, v);
+    }
+  });
+  return _react.default.createElement(_groupContext.RadioGroupContext.Provider // TODO: 性能优化
   , {
     // TODO: 性能优化
     value: {
       value: value === null ? [] : [value],
-      check: function check(v) {
+      check: v => {
         setValue(v);
       },
-      uncheck: function uncheck() {},
+      uncheck: () => {},
       disabled: props.disabled
     }
   }, props.children);

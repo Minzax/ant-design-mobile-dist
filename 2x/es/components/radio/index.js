@@ -3,5 +3,5 @@ import { attachPropertiesToComponent } from '../../utils/attach-properties-to-co
 import { Group } from './group';
 import { Radio } from './radio';
 export default attachPropertiesToComponent(Radio, {
-  Group: Group
+  Group
 });

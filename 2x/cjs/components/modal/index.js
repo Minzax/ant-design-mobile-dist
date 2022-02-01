@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports["default"] = void 0;
+exports.default = void 0;
 
 require("./modal.css");
 
@@ -23,4 +23,4 @@ var _default = (0, _attachPropertiesToComponent.attachPropertiesToComponent)(_mo
   confirm: _confirm.confirm
 });
 
-exports["default"] = _default;
+exports.default = _default;

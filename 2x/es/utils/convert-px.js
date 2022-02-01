@@ -1,8 +1,8 @@
 import { canUseDom } from './can-use-dom';
 import { isDev } from './is-dev';
 import { devError } from './dev-log';
-var tenPxTester = null;
-var tester = null;
+let tenPxTester = null;
+let tester = null;
 
 if (canUseDom) {
   tenPxTester = document.createElement('div');

@@ -9,13 +9,13 @@ var _react = _interopRequireDefault(require("react"));
 
 var _classnames = _interopRequireDefault(require("classnames"));
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function withNativeProps(props, element) {
-  var p = Object.assign({}, element.props);
+  const p = Object.assign({}, element.props);
 
   if (props.className) {
-    p.className = (0, _classnames["default"])(element.props.className, props.className);
+    p.className = (0, _classnames.default)(element.props.className, props.className);
   }
 
   if (props.style) {
@@ -26,7 +26,7 @@ function withNativeProps(props, element) {
     p.tabIndex = props.tabIndex;
   }
 
-  for (var key in props) {
+  for (const key in props) {
     if (!props.hasOwnProperty(key)) continue;
 
     if (key.startsWith('data-') || key.startsWith('aria-')) {
@@ -34,5 +34,5 @@ function withNativeProps(props, element) {
     }
   }
 
-  return /*#__PURE__*/_react["default"].cloneElement(element, p);
+  return _react.default.cloneElement(element, p);
 }

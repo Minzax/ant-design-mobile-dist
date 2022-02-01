@@ -1,7 +1,7 @@
 import React from 'react';
 import { NativeProps } from '../../utils/native-props';
 declare type NativeInputProps = React.DetailedHTMLProps<React.InputHTMLAttributes<HTMLInputElement>, HTMLInputElement>;
-export declare type InputProps = Pick<NativeInputProps, 'maxLength' | 'minLength' | 'max' | 'min' | 'autoComplete' | 'pattern' | 'inputMode' | 'type' | 'onFocus' | 'onBlur' | 'autoCapitalize' | 'autoCorrect' | 'onKeyDown' | 'onKeyUp' | 'onClick'> & {
+export declare type InputProps = Pick<NativeInputProps, 'maxLength' | 'minLength' | 'max' | 'min' | 'autoComplete' | 'pattern' | 'inputMode' | 'type' | 'onFocus' | 'onBlur' | 'autoCapitalize' | 'autoCorrect' | 'onKeyDown' | 'onKeyUp' | 'onClick' | 'onCompositionStart' | 'onCompositionEnd'> & {
     value?: string;
     defaultValue?: string;
     onChange?: (val: string) => void;
@@ -13,13 +13,13 @@ export declare type InputProps = Pick<NativeInputProps, 'maxLength' | 'minLength
     id?: string;
     onEnterPress?: (e: React.KeyboardEvent<HTMLInputElement>) => void;
     enterKeyHint?: 'enter' | 'done' | 'go' | 'next' | 'previous' | 'search' | 'send';
-} & NativeProps<'--font-size' | '--color' | '--placeholder-color' | '--disabled-color' | '--text-align'>;
+} & NativeProps<'--font-size' | '--color' | '--placeholder-color' | '--text-align'>;
 export declare type InputRef = {
     clear: () => void;
     focus: () => void;
     blur: () => void;
 };
-export declare const Input: React.ForwardRefExoticComponent<Pick<React.DetailedHTMLProps<React.InputHTMLAttributes<HTMLInputElement>, HTMLInputElement>, "pattern" | "onClick" | "max" | "min" | "type" | "onFocus" | "onBlur" | "onKeyDown" | "onKeyUp" | "autoCapitalize" | "autoCorrect" | "inputMode" | "autoComplete" | "maxLength" | "minLength"> & {
+export declare const Input: React.ForwardRefExoticComponent<Pick<React.DetailedHTMLProps<React.InputHTMLAttributes<HTMLInputElement>, HTMLInputElement>, "pattern" | "onClick" | "max" | "min" | "type" | "onCompositionEnd" | "onCompositionStart" | "onFocus" | "onBlur" | "onKeyDown" | "onKeyUp" | "autoCapitalize" | "autoCorrect" | "inputMode" | "autoComplete" | "maxLength" | "minLength"> & {
     value?: string | undefined;
     defaultValue?: string | undefined;
     onChange?: ((val: string) => void) | undefined;
@@ -31,5 +31,5 @@ export declare const Input: React.ForwardRefExoticComponent<Pick<React.DetailedH
     id?: string | undefined;
     onEnterPress?: ((e: React.KeyboardEvent<HTMLInputElement>) => void) | undefined;
     enterKeyHint?: "enter" | "search" | "done" | "go" | "next" | "previous" | "send" | undefined;
-} & NativeProps<"--font-size" | "--color" | "--placeholder-color" | "--disabled-color" | "--text-align"> & React.RefAttributes<InputRef>>;
+} & NativeProps<"--color" | "--font-size" | "--placeholder-color" | "--text-align"> & React.RefAttributes<InputRef>>;
 export {};

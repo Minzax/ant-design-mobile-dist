@@ -14,5 +14,5 @@ export declare type PickerViewProps = {
     value?: PickerValue[];
     defaultValue?: PickerValue[];
     onChange?: (value: PickerValue[], extend: PickerValueExtend) => void;
-} & NativeProps<'--height'>;
+} & NativeProps<'--height' | '--item-font-size'>;
 export declare const PickerView: React.NamedExoticComponent<PickerViewProps>;

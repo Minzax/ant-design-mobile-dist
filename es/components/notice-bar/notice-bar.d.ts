@@ -17,5 +17,5 @@ export declare type NoticeBarProps = {
     extra?: React.ReactNode;
     /** 左侧广播图标 */
     icon?: React.ReactNode;
-} & NativeProps<'--background-color' | '--border-color' | '--text-color'>;
+} & NativeProps<'--background-color' | '--border-color' | '--text-color' | '--font-size' | '--icon-font-size' | '--height'>;
 export declare const NoticeBar: React.NamedExoticComponent<NoticeBarProps>;

@@ -1,4 +1,7 @@
+/// <reference types="react" />
 import './cascader-view.less';
-import { CascaderView } from './cascader-view';
 export type { CascaderViewProps, CascaderValue, CascaderValueExtend, CascaderOption, } from './cascader-view';
-export default CascaderView;
+declare const _default: import("react").FC<import("./cascader-view").CascaderViewProps> & {
+    optionSkeleton: import("./cascader-view").CascaderOption[];
+};
+export default _default;

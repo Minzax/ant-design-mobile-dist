@@ -2,12 +2,14 @@ import { mergeProps } from '../../utils/with-default-props';
 import React from 'react';
 import { withNativeProps } from '../../utils/native-props';
 import { toCSSLength } from '../../utils/to-css-length';
-var classPrefix = "adm-grid";
-export var Grid = function Grid(props) {
-  var style = {
+const classPrefix = `adm-grid`;
+export const Grid = props => {
+  const style = {
     '--columns': props.columns.toString()
   };
-  var gap = props.gap;
+  const {
+    gap
+  } = props;
 
   if (gap !== undefined) {
     if (Array.isArray(gap)) {
@@ -18,20 +20,20 @@ export var Grid = function Grid(props) {
     }
   }
 
-  return withNativeProps(props, /*#__PURE__*/React.createElement("div", {
+  return withNativeProps(props, React.createElement("div", {
     className: classPrefix,
     style: style
   }, props.children));
 };
-export var GridItem = function GridItem(p) {
-  var props = mergeProps({
+export const GridItem = p => {
+  const props = mergeProps({
     span: 1
   }, p);
-  var itemStyle = {
+  const itemStyle = {
     '--item-span': props.span
   };
-  return withNativeProps(props, /*#__PURE__*/React.createElement("div", {
-    className: classPrefix + "-item",
+  return withNativeProps(props, React.createElement("div", {
+    className: `${classPrefix}-item`,
     style: itemStyle,
     onClick: props.onClick
   }, props.children));

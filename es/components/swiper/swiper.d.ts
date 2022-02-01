@@ -37,4 +37,4 @@ export declare const Swiper: React.ForwardRefExoticComponent<{
     stuckAtBoundary?: boolean | undefined;
     rubberband?: boolean | undefined;
     children?: React.ReactElement<any, string | ((props: any) => React.ReactElement<any, any> | null) | (new (props: any) => React.Component<any, any, any>)> | React.ReactElement<any, string | ((props: any) => React.ReactElement<any, any> | null) | (new (props: any) => React.Component<any, any, any>)>[] | undefined;
-} & NativeProps<"--border-radius" | "--height" | "--width" | "--track-padding"> & React.RefAttributes<SwiperRef>>;
+} & NativeProps<"--border-radius" | "--width" | "--height" | "--track-padding"> & React.RefAttributes<SwiperRef>>;

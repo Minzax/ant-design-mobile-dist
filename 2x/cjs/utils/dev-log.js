@@ -10,12 +10,12 @@ var _isDev = require("./is-dev");
 
 function devWarning(component, message) {
   if (_isDev.isDev) {
-    console.warn("[antd-mobile: " + component + "] " + message);
+    console.warn(`[antd-mobile: ${component}] ${message}`);
   }
 }
 
 function devError(component, message) {
   if (_isDev.isDev) {
-    console.error("[antd-mobile: " + component + "] " + message);
+    console.error(`[antd-mobile: ${component}] ${message}`);
   }
 }

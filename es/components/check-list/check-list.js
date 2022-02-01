@@ -5,46 +5,43 @@ import { mergeProps } from '../../utils/with-default-props';
 import { CheckListContext } from './context';
 import { usePropsValue } from '../../utils/use-props-value';
 import { CheckOutline } from 'antd-mobile-icons';
-var classPrefix = 'adm-check-list';
-var defaultProps = {
+const classPrefix = 'adm-check-list';
+const defaultProps = {
   multiple: false,
   defaultValue: [],
-  activeIcon: /*#__PURE__*/React.createElement(CheckOutline, null)
+  activeIcon: React.createElement(CheckOutline, null)
 };
-export var CheckList = function CheckList(p) {
-  var props = mergeProps(defaultProps, p);
-
-  var _usePropsValue = usePropsValue(props),
-      value = _usePropsValue[0],
-      setValue = _usePropsValue[1];
+export const CheckList = p => {
+  const props = mergeProps(defaultProps, p);
+  const [value, setValue] = usePropsValue(props);
 
   function check(val) {
     if (props.multiple) {
-      setValue([].concat(value, [val]));
+      setValue([...value, val]);
     } else {
       setValue([val]);
     }
   }
 
   function uncheck(val) {
-    setValue(value.filter(function (item) {
-      return item !== val;
-    }));
+    setValue(value.filter(item => item !== val));
   }
 
-  var activeIcon = props.activeIcon,
-      disabled = props.disabled,
-      readOnly = props.readOnly;
-  return /*#__PURE__*/React.createElement(CheckListContext.Provider, {
+  const {
+    activeIcon,
+    disabled,
+    readOnly
+  } = props;
+  return React.createElement(CheckListContext.Provider, {
     value: {
-      value: value,
-      check: check,
-      uncheck: uncheck,
-      activeIcon: activeIcon,
-      disabled: disabled,
-      readOnly: readOnly
+      value,
+      check,
+      uncheck,
+      activeIcon,
+      disabled,
+      readOnly
     }
-  }, withNativeProps(props, /*#__PURE__*/React.createElement(List, {
+  }, withNativeProps(props, React.createElement(List, {
     mode: props.mode,
     className: classPrefix
   }, props.children)));

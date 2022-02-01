@@ -7,7 +7,7 @@ import type { FormLayout } from './index';
 declare type RenderChildren<Values = any> = (form: FormInstance<Values>) => React.ReactNode;
 declare type ChildrenType<Values = any> = RenderChildren<Values> | React.ReactNode;
 declare type RcFieldProps = Omit<FieldProps, 'children'>;
-export declare type FormItemProps = RcFieldProps & NativeProps & Pick<ListItemProps, 'style' | 'onClick' | 'extra'> & {
+export declare type FormItemProps = Pick<RcFieldProps, 'dependencies' | 'valuePropName' | 'name' | 'rules' | 'messageVariables' | 'trigger' | 'validateTrigger' | 'shouldUpdate'> & Pick<ListItemProps, 'style' | 'onClick' | 'extra' | 'arrow'> & {
     label?: React.ReactNode;
     help?: React.ReactNode;
     hasFeedback?: boolean;
@@ -17,6 +17,6 @@ export declare type FormItemProps = RcFieldProps & NativeProps & Pick<ListItemPr
     hidden?: boolean;
     layout?: FormLayout;
     children: ChildrenType;
-};
+} & NativeProps;
 export declare const FormItem: FC<FormItemProps>;
 export {};

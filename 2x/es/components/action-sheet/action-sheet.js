@@ -6,8 +6,8 @@ import Popup from '../popup';
 import Button from '../button';
 import { renderToBody } from '../../utils/render-to-body';
 import SafeArea from '../safe-area';
-var classPrefix = "adm-action-sheet";
-var defaultProps = {
+const classPrefix = `adm-action-sheet`;
+const defaultProps = {
   visible: false,
   actions: [],
   cancelText: '',
@@ -15,11 +15,11 @@ var defaultProps = {
   closeOnMaskClick: true,
   safeArea: true
 };
-export var ActionSheet = function ActionSheet(p) {
-  var props = mergeProps(defaultProps, p);
-  return /*#__PURE__*/React.createElement(Popup, {
+export const ActionSheet = p => {
+  const props = mergeProps(defaultProps, p);
+  return React.createElement(Popup, {
     visible: props.visible,
-    onMaskClick: function onMaskClick() {
+    onMaskClick: () => {
       var _a, _b;
 
       (_a = props.onMaskClick) === null || _a === void 0 ? void 0 : _a.call(props);
@@ -29,68 +29,63 @@ export var ActionSheet = function ActionSheet(p) {
       }
     },
     afterClose: props.afterClose,
-    className: classPrefix + "-popup",
+    className: `${classPrefix}-popup`,
     getContainer: props.getContainer
-  }, withNativeProps(props, /*#__PURE__*/React.createElement("div", {
+  }, withNativeProps(props, React.createElement("div", {
     className: classPrefix
-  }, props.extra && /*#__PURE__*/React.createElement("div", {
-    className: classPrefix + "-extra"
-  }, props.extra), /*#__PURE__*/React.createElement("div", {
-    className: classPrefix + "-button-list"
-  }, props.actions.map(function (action, index) {
-    var _classNames;
-
-    return /*#__PURE__*/React.createElement("div", {
-      key: action.key,
-      className: classPrefix + "-button-item-wrapper"
-    }, /*#__PURE__*/React.createElement(Button, {
-      block: true,
-      fill: 'none',
-      shape: 'rectangular',
-      disabled: action.disabled,
-      onClick: function onClick() {
-        var _a, _b, _c;
-
-        (_a = action.onClick) === null || _a === void 0 ? void 0 : _a.call(action);
-        (_b = props.onAction) === null || _b === void 0 ? void 0 : _b.call(props, action, index);
-
-        if (props.closeOnAction) {
-          (_c = props.onClose) === null || _c === void 0 ? void 0 : _c.call(props);
-        }
-      },
-      className: classNames(classPrefix + "-button-item", (_classNames = {}, _classNames[classPrefix + "-button-item-danger"] = action.danger, _classNames))
-    }, /*#__PURE__*/React.createElement("div", {
-      className: classPrefix + "-button-item-name"
-    }, action.text), action.description && /*#__PURE__*/React.createElement("div", {
-      className: classPrefix + "-button-item-description"
-    }, action.description)));
-  })), props.cancelText && /*#__PURE__*/React.createElement("div", {
-    className: classPrefix + "-cancel"
-  }, /*#__PURE__*/React.createElement("div", {
-    className: classPrefix + "-button-item-wrapper"
-  }, /*#__PURE__*/React.createElement(Button, {
+  }, props.extra && React.createElement("div", {
+    className: `${classPrefix}-extra`
+  }, props.extra), React.createElement("div", {
+    className: `${classPrefix}-button-list`
+  }, props.actions.map((action, index) => React.createElement("div", {
+    key: action.key,
+    className: `${classPrefix}-button-item-wrapper`
+  }, React.createElement(Button, {
     block: true,
     fill: 'none',
     shape: 'rectangular',
-    className: classPrefix + "-button-item",
-    onClick: function onClick() {
+    disabled: action.disabled,
+    onClick: () => {
+      var _a, _b, _c;
+
+      (_a = action.onClick) === null || _a === void 0 ? void 0 : _a.call(action);
+      (_b = props.onAction) === null || _b === void 0 ? void 0 : _b.call(props, action, index);
+
+      if (props.closeOnAction) {
+        (_c = props.onClose) === null || _c === void 0 ? void 0 : _c.call(props);
+      }
+    },
+    className: classNames(`${classPrefix}-button-item`, {
+      [`${classPrefix}-button-item-danger`]: action.danger
+    })
+  }, React.createElement("div", {
+    className: `${classPrefix}-button-item-name`
+  }, action.text), action.description && React.createElement("div", {
+    className: `${classPrefix}-button-item-description`
+  }, action.description))))), props.cancelText && React.createElement("div", {
+    className: `${classPrefix}-cancel`
+  }, React.createElement("div", {
+    className: `${classPrefix}-button-item-wrapper`
+  }, React.createElement(Button, {
+    block: true,
+    fill: 'none',
+    shape: 'rectangular',
+    className: `${classPrefix}-button-item`,
+    onClick: () => {
       var _a;
 
       (_a = props.onClose) === null || _a === void 0 ? void 0 : _a.call(props);
     }
-  }, /*#__PURE__*/React.createElement("div", {
-    className: classPrefix + "-button-item-name"
-  }, props.cancelText)))), props.safeArea && /*#__PURE__*/React.createElement(SafeArea, {
+  }, React.createElement("div", {
+    className: `${classPrefix}-button-item-name`
+  }, props.cancelText)))), props.safeArea && React.createElement(SafeArea, {
     position: 'bottom'
   }))));
 };
 export function showActionSheet(props) {
-  var Wrapper = /*#__PURE__*/forwardRef(function (_, ref) {
-    var _useState = useState(false),
-        visible = _useState[0],
-        setVisible = _useState[1];
-
-    useEffect(function () {
+  const Wrapper = forwardRef((_, ref) => {
+    const [visible, setVisible] = useState(false);
+    useEffect(() => {
       setVisible(true);
     }, []);
 
@@ -101,15 +96,13 @@ export function showActionSheet(props) {
       setVisible(false);
     }
 
-    useImperativeHandle(ref, function () {
-      return {
-        close: handleClose
-      };
-    });
-    return /*#__PURE__*/React.createElement(ActionSheet, Object.assign({}, props, {
+    useImperativeHandle(ref, () => ({
+      close: handleClose
+    }));
+    return React.createElement(ActionSheet, Object.assign({}, props, {
       visible: visible,
       onClose: handleClose,
-      afterClose: function afterClose() {
+      afterClose: () => {
         var _a;
 
         (_a = props.afterClose) === null || _a === void 0 ? void 0 : _a.call(props);
@@ -117,12 +110,12 @@ export function showActionSheet(props) {
       }
     }));
   });
-  var ref = /*#__PURE__*/createRef();
-  var unmount = renderToBody( /*#__PURE__*/React.createElement(Wrapper, {
+  const ref = createRef();
+  const unmount = renderToBody(React.createElement(Wrapper, {
     ref: ref
   }));
   return {
-    close: function close() {
+    close: () => {
       var _a;
 
       (_a = ref.current) === null || _a === void 0 ? void 0 : _a.close();

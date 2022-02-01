@@ -7,8 +7,8 @@ import Popup from '../popup';
 import { withNativeProps } from '../../utils/native-props';
 import SafeArea from '../safe-area';
 import { useMemoizedFn } from 'ahooks';
-var classPrefix = 'adm-number-keyboard';
-var defaultProps = {
+const classPrefix = 'adm-number-keyboard';
+const defaultProps = {
   defaultVisible: false,
   randomOrder: false,
   showCloseButton: true,
@@ -16,20 +16,22 @@ var defaultProps = {
   closeOnConfirm: true,
   safeArea: true
 };
-export var NumberKeyboard = function NumberKeyboard(p) {
-  var props = mergeProps(defaultProps, p);
-  var visible = props.visible,
-      title = props.title,
-      getContainer = props.getContainer,
-      confirmText = props.confirmText,
-      customKey = props.customKey,
-      randomOrder = props.randomOrder,
-      showCloseButton = props.showCloseButton,
-      onInput = props.onInput;
-  var keyboardRef = useRef(null);
-  var keys = useMemo(function () {
-    var defaultKeys = ['1', '2', '3', '4', '5', '6', '7', '8', '9'];
-    var keyList = randomOrder ? shuffle(defaultKeys) : defaultKeys;
+export const NumberKeyboard = p => {
+  const props = mergeProps(defaultProps, p);
+  const {
+    visible,
+    title,
+    getContainer,
+    confirmText,
+    customKey,
+    randomOrder,
+    showCloseButton,
+    onInput
+  } = props;
+  const keyboardRef = useRef(null);
+  const keys = useMemo(() => {
+    const defaultKeys = ['1', '2', '3', '4', '5', '6', '7', '8', '9'];
+    const keyList = randomOrder ? shuffle(defaultKeys) : defaultKeys;
     keyList.push('0');
 
     if (confirmText) {
@@ -41,28 +43,28 @@ export var NumberKeyboard = function NumberKeyboard(p) {
 
     return keyList;
   }, [customKey, confirmText, randomOrder, randomOrder && visible]);
-  var timeoutRef = useRef(-1);
-  var intervalRef = useRef(-1);
-  var onDelete = useMemoizedFn(function () {
+  const timeoutRef = useRef(-1);
+  const intervalRef = useRef(-1);
+  const onDelete = useMemoizedFn(() => {
     var _a;
 
     (_a = props.onDelete) === null || _a === void 0 ? void 0 : _a.call(props);
   });
 
-  var onBackspacePressStart = function onBackspacePressStart() {
-    timeoutRef.current = window.setTimeout(function () {
+  const onBackspacePressStart = () => {
+    timeoutRef.current = window.setTimeout(() => {
       onDelete();
       intervalRef.current = window.setInterval(onDelete, 150);
     }, 700);
   };
 
-  var onBackspacePressEnd = function onBackspacePressEnd() {
+  const onBackspacePressEnd = () => {
     clearTimeout(timeoutRef.current);
     clearInterval(intervalRef.current);
   }; // 点击键盘按键
 
 
-  var onKeyPress = function onKeyPress(e, key) {
+  const onKeyPress = (e, key) => {
     var _a, _b;
 
     e.preventDefault();
@@ -89,105 +91,99 @@ export var NumberKeyboard = function NumberKeyboard(p) {
   }; // 渲染 title 和 close button
 
 
-  var renderHeader = function renderHeader() {
+  const renderHeader = () => {
     if (!showCloseButton && !title) return null;
-    return /*#__PURE__*/React.createElement("div", {
-      className: classNames(classPrefix + "-header", {
+    return React.createElement("div", {
+      className: classNames(`${classPrefix}-header`, {
         'with-title': !!title
       })
-    }, title && /*#__PURE__*/React.createElement("div", {
-      className: classPrefix + "-title"
-    }, title), showCloseButton && /*#__PURE__*/React.createElement("span", {
-      className: classPrefix + "-header-close-button",
-      onClick: function onClick() {
+    }, title && React.createElement("div", {
+      className: `${classPrefix}-title`
+    }, title), showCloseButton && React.createElement("span", {
+      className: `${classPrefix}-header-close-button`,
+      onClick: () => {
         var _a;
 
         (_a = props.onClose) === null || _a === void 0 ? void 0 : _a.call(props);
       },
       role: 'button',
       title: 'CLOSE'
-    }, /*#__PURE__*/React.createElement(DownOutline, null)));
+    }, React.createElement(DownOutline, null)));
   }; // 渲染基础键盘按键
 
 
-  var renderKey = function renderKey(key, index) {
-    var isNumberKey = /^\d$/.test(key);
-    var className = classNames(classPrefix + "-key", {
+  const renderKey = (key, index) => {
+    const isNumberKey = /^\d$/.test(key);
+    const className = classNames(`${classPrefix}-key`, {
       'number-key': isNumberKey,
       'sign-key': !isNumberKey && key,
       'mid-key': index === 9 && !!confirmText
     });
-    return /*#__PURE__*/React.createElement("div", {
+    return React.createElement("div", {
       key: key,
       className: className,
-      onTouchStart: function onTouchStart() {
+      onTouchStart: () => {
         if (key === 'BACKSPACE') {
           onBackspacePressStart();
         }
       },
-      onTouchEnd: function onTouchEnd(e) {
+      onTouchEnd: e => {
         onKeyPress(e, key);
 
         if (key === 'BACKSPACE') {
           onBackspacePressEnd();
         }
       },
-      onMouseUp: function onMouseUp(e) {
+      onMouseUp: e => {
         onKeyPress(e, key);
       },
       title: key,
       role: 'button'
-    }, key === 'BACKSPACE' ? /*#__PURE__*/React.createElement(TextDeletionOutline, null) : key);
+    }, key === 'BACKSPACE' ? React.createElement(TextDeletionOutline, null) : key);
   };
 
-  return /*#__PURE__*/React.createElement(Popup, {
+  return React.createElement(Popup, {
     visible: visible,
     getContainer: getContainer,
     mask: false,
     afterClose: props.afterClose,
     afterShow: props.afterShow,
-    className: classPrefix + "-popup",
+    className: `${classPrefix}-popup`,
     stopPropagation: props.stopPropagation
-  }, withNativeProps(props, /*#__PURE__*/React.createElement("div", {
+  }, withNativeProps(props, React.createElement("div", {
     ref: keyboardRef,
     className: classPrefix,
-    onMouseDown: function onMouseDown(e) {
+    onMouseDown: e => {
       e.preventDefault();
     }
-  }, renderHeader(), /*#__PURE__*/React.createElement("div", {
-    className: classPrefix + "-wrapper"
-  }, /*#__PURE__*/React.createElement("div", {
-    className: classNames(classPrefix + "-main", {
+  }, renderHeader(), React.createElement("div", {
+    className: `${classPrefix}-wrapper`
+  }, React.createElement("div", {
+    className: classNames(`${classPrefix}-main`, {
       'confirmed-style': !!confirmText
     })
-  }, keys.map(renderKey)), !!confirmText && /*#__PURE__*/React.createElement("div", {
-    className: classPrefix + "-confirm"
-  }, /*#__PURE__*/React.createElement("div", {
-    className: classPrefix + "-key extra-key bs-key",
-    onTouchStart: function onTouchStart() {
+  }, keys.map(renderKey)), !!confirmText && React.createElement("div", {
+    className: `${classPrefix}-confirm`
+  }, React.createElement("div", {
+    className: `${classPrefix}-key extra-key bs-key`,
+    onTouchStart: () => {
       onBackspacePressStart();
     },
-    onTouchEnd: function onTouchEnd(e) {
+    onTouchEnd: e => {
       onKeyPress(e, 'BACKSPACE');
       onBackspacePressEnd();
     },
-    onMouseUp: function onMouseUp(e) {
-      return onKeyPress(e, 'BACKSPACE');
-    },
+    onMouseUp: e => onKeyPress(e, 'BACKSPACE'),
     title: 'BACKSPACE',
     role: 'button'
-  }, /*#__PURE__*/React.createElement(TextDeletionOutline, null)), /*#__PURE__*/React.createElement("div", {
-    className: classPrefix + "-key extra-key ok-key",
-    onTouchEnd: function onTouchEnd(e) {
-      return onKeyPress(e, 'OK');
-    },
-    onMouseUp: function onMouseUp(e) {
-      return onKeyPress(e, 'OK');
-    },
+  }, React.createElement(TextDeletionOutline, null)), React.createElement("div", {
+    className: `${classPrefix}-key extra-key ok-key`,
+    onTouchEnd: e => onKeyPress(e, 'OK'),
+    onMouseUp: e => onKeyPress(e, 'OK'),
     role: 'button'
-  }, confirmText))), props.safeArea && /*#__PURE__*/React.createElement("div", {
-    className: classPrefix + "-footer"
-  }, /*#__PURE__*/React.createElement(SafeArea, {
+  }, confirmText))), props.safeArea && React.createElement("div", {
+    className: `${classPrefix}-footer`
+  }, React.createElement(SafeArea, {
     position: 'bottom'
   })))));
 };

@@ -6,6 +6,6 @@ Object.defineProperty(exports, "__esModule", {
 exports.resolveContainer = resolveContainer;
 
 function resolveContainer(getContainer) {
-  var container = typeof getContainer === 'function' ? getContainer() : getContainer;
+  const container = typeof getContainer === 'function' ? getContainer() : getContainer;
   return container || document.body;
 }

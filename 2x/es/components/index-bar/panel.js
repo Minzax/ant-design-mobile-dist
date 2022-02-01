@@ -1,3 +1,1 @@
-export var Panel = function Panel() {
-  return null;
-};
+export const Panel = () => null;

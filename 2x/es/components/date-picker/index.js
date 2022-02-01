@@ -3,5 +3,5 @@ import { attachPropertiesToComponent } from '../../utils/attach-properties-to-co
 import { DatePicker } from './date-picker';
 import { prompt } from './prompt';
 export default attachPropertiesToComponent(DatePicker, {
-  prompt: prompt
+  prompt
 });

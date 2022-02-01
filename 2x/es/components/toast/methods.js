@@ -3,76 +3,70 @@ import { resolveContainer } from '../../utils/get-container';
 import ReactDOM from 'react-dom';
 import { InternalToast } from './toast';
 import { mergeProps } from '../../utils/with-default-props';
-var containers = [];
+const containers = [];
 
 function unmount(container) {
-  var unmountResult = ReactDOM.unmountComponentAtNode(container);
+  const unmountResult = ReactDOM.unmountComponentAtNode(container);
 
   if (unmountResult && container.parentNode) {
     container.parentNode.removeChild(container);
   }
 }
 
-var defaultProps = {
+const defaultProps = {
   duration: 2000,
   position: 'center',
   maskClickable: true
 };
 export function show(p) {
-  var props = mergeProps(defaultProps, typeof p === 'string' ? {
+  const props = mergeProps(defaultProps, typeof p === 'string' ? {
     content: p
   } : p);
-  var timer = 0;
-  var _props$getContainer = props.getContainer,
-      getContainer = _props$getContainer === void 0 ? function () {
-    return document.body;
-  } : _props$getContainer;
-  var container = document.createElement('div');
-  var bodyContainer = resolveContainer(getContainer);
+  let timer = 0;
+  const {
+    getContainer = () => document.body
+  } = props;
+  const container = document.createElement('div');
+  const bodyContainer = resolveContainer(getContainer);
   bodyContainer.appendChild(container);
   clear();
   containers.push(container);
 
-  var TempToast = function TempToast() {
-    var _useState = useState(true),
-        visible = _useState[0],
-        setVisible = _useState[1];
-
-    useEffect(function () {
-      return function () {
+  const TempToast = () => {
+    const [visible, setVisible] = useState(true);
+    useEffect(() => {
+      return () => {
         var _a;
 
         (_a = props.afterClose) === null || _a === void 0 ? void 0 : _a.call(props);
       };
     }, []);
-    useEffect(function () {
+    useEffect(() => {
       if (props.duration === 0) {
         return;
       }
 
-      timer = window.setTimeout(function () {
+      timer = window.setTimeout(() => {
         setVisible(false);
       }, props.duration);
-      return function () {
+      return () => {
         window.clearTimeout(timer);
       };
     }, []);
-    return /*#__PURE__*/React.createElement(InternalToast, Object.assign({}, props, {
-      getContainer: function getContainer() {
-        return container;
-      },
+    return React.createElement(InternalToast, Object.assign({}, props, {
+      getContainer: () => container,
       visible: visible,
-      afterClose: function afterClose() {
+      afterClose: () => {
         unmount(container);
       }
     }));
   };
 
-  ReactDOM.render( /*#__PURE__*/React.createElement(TempToast, null), container);
+  ReactDOM.render(React.createElement(TempToast, null), container);
 }
 export function clear() {
   while (true) {
-    var container = containers.pop();
+    const container = containers.pop();
     if (!container) break;
     unmount(container);
   }

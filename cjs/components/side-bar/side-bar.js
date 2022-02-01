@@ -13,27 +13,29 @@ var _badge = _interopRequireDefault(require("../badge"));
 
 var _nativeProps = require("../../utils/native-props");
 
-var _usePropsValue2 = require("../../utils/use-props-value");
+var _usePropsValue = require("../../utils/use-props-value");
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+var _corner = require("./corner");
 
-var classPrefix = "adm-side-bar";
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var SideBarItem = function SideBarItem() {
+const classPrefix = `adm-side-bar`;
+
+const SideBarItem = () => {
   return null;
 };
 
 exports.SideBarItem = SideBarItem;
 
-var SideBar = function SideBar(props) {
+const SideBar = props => {
   var _a;
 
-  var firstActiveKey = null;
-  var items = [];
+  let firstActiveKey = null;
+  const items = [];
 
-  _react["default"].Children.forEach(props.children, function (child, index) {
-    if (! /*#__PURE__*/_react["default"].isValidElement(child)) return;
-    var key = child.key;
+  _react.default.Children.forEach(props.children, (child, index) => {
+    if (!_react.default.isValidElement(child)) return;
+    const key = child.key;
     if (typeof key !== 'string') return;
 
     if (index === 0) {
@@ -43,36 +45,56 @@ var SideBar = function SideBar(props) {
     items.push(child);
   });
 
-  var _usePropsValue = (0, _usePropsValue2.usePropsValue)({
+  const [activeKey, setActiveKey] = (0, _usePropsValue.usePropsValue)({
     value: props.activeKey,
     defaultValue: (_a = props.defaultActiveKey) !== null && _a !== void 0 ? _a : firstActiveKey,
-    onChange: props.onChange
-  }),
-      activeKey = _usePropsValue[0],
-      setActiveKey = _usePropsValue[1];
+    onChange: v => {
+      var _a;
 
-  return (0, _nativeProps.withNativeProps)(props, /*#__PURE__*/_react["default"].createElement("div", {
-    className: (0, _classnames["default"])(classPrefix)
-  }, items.map(function (item) {
-    var _classNames;
-
-    var active = item.key === activeKey;
-    return (0, _nativeProps.withNativeProps)(item.props, /*#__PURE__*/_react["default"].createElement("div", {
+      if (v === null) return;
+      (_a = props.onChange) === null || _a === void 0 ? void 0 : _a.call(props, v);
+    }
+  });
+  const lastItem = items[items.length - 1];
+  const isLastItemActive = lastItem && lastItem.key === activeKey;
+  return (0, _nativeProps.withNativeProps)(props, _react.default.createElement("div", {
+    className: classPrefix
+  }, _react.default.createElement("div", {
+    className: `${classPrefix}-items`
+  }, items.map((item, index) => {
+    const active = item.key === activeKey;
+    const isActiveNextSibling = items[index - 1] && items[index - 1].key === activeKey;
+    const isActivePreviousSibling = items[index + 1] && items[index + 1].key === activeKey;
+    return (0, _nativeProps.withNativeProps)(item.props, _react.default.createElement("div", {
       key: item.key,
-      onClick: function onClick() {
-        var key = item.key;
+      onClick: () => {
+        const {
+          key
+        } = item;
         if (key === undefined || key === null || item.props.disabled) return;
         setActiveKey(key.toString());
       },
-      className: (0, _classnames["default"])(classPrefix + "-item", (_classNames = {}, _classNames[classPrefix + "-item-active"] = active, _classNames[classPrefix + "-item-disabled"] = item.props.disabled, _classNames))
-    }, /*#__PURE__*/_react["default"].createElement(_badge["default"], {
-      content: item.props.badge
-    }, /*#__PURE__*/_react["default"].createElement("div", {
-      className: classPrefix + "-item-title"
-    }, active && /*#__PURE__*/_react["default"].createElement("div", {
-      className: classPrefix + "-item-highlight"
+      className: (0, _classnames.default)(`${classPrefix}-item`, {
+        [`${classPrefix}-item-active`]: active,
+        [`${classPrefix}-item-disabled`]: item.props.disabled
+      })
+    }, _react.default.createElement(_react.default.Fragment, null, isActiveNextSibling && _react.default.createElement(_corner.Corner, {
+      className: `${classPrefix}-item-corner ${classPrefix}-item-corner-top`
+    }), isActivePreviousSibling && _react.default.createElement(_corner.Corner, {
+      className: `${classPrefix}-item-corner ${classPrefix}-item-corner-bottom`
+    })), _react.default.createElement(_badge.default, {
+      content: item.props.badge,
+      className: `${classPrefix}-badge`
+    }, _react.default.createElement("div", {
+      className: `${classPrefix}-item-title`
+    }, active && _react.default.createElement("div", {
+      className: `${classPrefix}-item-highlight`
     }), item.props.title))));
-  })));
+  })), _react.default.createElement("div", {
+    className: (0, _classnames.default)(`${classPrefix}-extra-space`, isLastItemActive && `${classPrefix}-item-active-next-sibling`)
+  }, isLastItemActive && _react.default.createElement(_corner.Corner, {
+    className: `${classPrefix}-item-corner ${classPrefix}-item-corner-top`
+  }))));
 };
 
 exports.SideBar = SideBar;

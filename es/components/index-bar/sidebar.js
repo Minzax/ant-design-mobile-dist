@@ -1,64 +1,62 @@
 import React, { useState } from 'react';
 import classNames from 'classnames';
-var classPrefix = "adm-index-bar";
-export var Sidebar = function Sidebar(props) {
-  var _classNames;
-
-  var _useState = useState(false),
-      interacting = _useState[0],
-      setInteracting = _useState[1];
-
-  return /*#__PURE__*/React.createElement("div", {
-    className: classNames(classPrefix + "-sidebar", (_classNames = {}, _classNames[classPrefix + "-sidebar-interacting"] = interacting, _classNames)),
-    onMouseDown: function onMouseDown() {
+const classPrefix = `adm-index-bar`;
+export const Sidebar = props => {
+  const [interacting, setInteracting] = useState(false);
+  return React.createElement("div", {
+    className: classNames(`${classPrefix}-sidebar`, {
+      [`${classPrefix}-sidebar-interacting`]: interacting
+    }),
+    onMouseDown: () => {
       setInteracting(true);
     },
-    onMouseUp: function onMouseUp() {
+    onMouseUp: () => {
       setInteracting(false);
     },
-    onTouchStart: function onTouchStart() {
+    onTouchStart: () => {
       setInteracting(true);
     },
-    onTouchEnd: function onTouchEnd() {
+    onTouchEnd: () => {
       setInteracting(false);
     },
-    onTouchMove: function onTouchMove(e) {
+    onTouchMove: e => {
       if (!interacting) return;
-      var _e$touches$ = e.touches[0],
-          clientX = _e$touches$.clientX,
-          clientY = _e$touches$.clientY;
-      var target = document.elementFromPoint(clientX, clientY);
+      const {
+        clientX,
+        clientY
+      } = e.touches[0];
+      const target = document.elementFromPoint(clientX, clientY);
       if (!target) return;
-      var index = target.dataset['index'];
+      const index = target.dataset['index'];
 
       if (index) {
         props.onActive(index);
       }
     }
-  }, props.indexes.map(function (index) {
-    var _classNames2;
-
-    var active = index === props.activeIndex;
-    return /*#__PURE__*/React.createElement("div", {
-      className: classPrefix + "-sidebar-row",
-      onMouseDown: function onMouseDown() {
+  }, props.indexes.map(index => {
+    const active = index === props.activeIndex;
+    return React.createElement("div", {
+      className: `${classPrefix}-sidebar-row`,
+      onMouseDown: () => {
         props.onActive(index);
       },
-      onTouchStart: function onTouchStart() {
+      onTouchStart: () => {
         props.onActive(index);
       },
-      onMouseEnter: function onMouseEnter() {
+      onMouseEnter: () => {
         if (interacting) {
           props.onActive(index);
         }
       },
       "data-index": index,
       key: index
-    }, interacting && active && /*#__PURE__*/React.createElement("div", {
-      className: classPrefix + "-sidebar-bubble"
-    }, index), /*#__PURE__*/React.createElement("div", {
-      className: classNames(classPrefix + "-sidebar-item", (_classNames2 = {}, _classNames2[classPrefix + "-sidebar-item-active"] = active, _classNames2)),
+    }, interacting && active && React.createElement("div", {
+      className: `${classPrefix}-sidebar-bubble`
+    }, index), React.createElement("div", {
+      className: classNames(`${classPrefix}-sidebar-item`, {
+        [`${classPrefix}-sidebar-item-active`]: active
+      }),
       "data-index": index
-    }, /*#__PURE__*/React.createElement("div", null, index)));
+    }, React.createElement("div", null, index)));
   }));
 };

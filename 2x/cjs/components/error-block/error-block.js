@@ -17,33 +17,30 @@ var _nativeProps = require("../../utils/native-props");
 
 var _configProvider = require("../config-provider");
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var classPrefix = "adm-error-block";
-var defaultProps = {
+const classPrefix = `adm-error-block`;
+const defaultProps = {
   status: 'default'
 };
 
-var ErrorBlock = function ErrorBlock(p) {
-  var _classNames;
+const ErrorBlock = p => {
+  const props = (0, _withDefaultProps.mergeProps)(defaultProps, p);
+  const icon = _error.iconRecord[props.status];
+  const {
+    locale
+  } = (0, _configProvider.useConfig)();
+  const contentPack = locale.ErrorBlock[props.status];
+  const des = 'description' in props ? props.description : contentPack.description;
+  const title = 'title' in props ? props.title : contentPack.title;
 
-  var props = (0, _withDefaultProps.mergeProps)(defaultProps, p);
-  var icon = _error.iconRecord[props.status];
-
-  var _useConfig = (0, _configProvider.useConfig)(),
-      locale = _useConfig.locale;
-
-  var contentPack = locale.ErrorBlock[props.status];
-  var des = 'description' in props ? props.description : contentPack.description;
-  var title = 'title' in props ? props.title : contentPack.title;
-
-  var imageNode = /*#__PURE__*/_react["default"].createElement("img", {
+  let imageNode = _react.default.createElement("img", {
     src: icon
   });
 
   if (props.image) {
     if (typeof props.image === 'string') {
-      imageNode = /*#__PURE__*/_react["default"].createElement("img", {
+      imageNode = _react.default.createElement("img", {
         src: props.image
       });
     } else {
@@ -51,18 +48,20 @@ var ErrorBlock = function ErrorBlock(p) {
     }
   }
 
-  return (0, _nativeProps.withNativeProps)(props, /*#__PURE__*/_react["default"].createElement("div", {
-    className: (0, _classnames["default"])(classPrefix, (_classNames = {}, _classNames[classPrefix + "-full-page"] = props.fullPage, _classNames))
-  }, /*#__PURE__*/_react["default"].createElement("div", {
-    className: classPrefix + "-image"
-  }, imageNode), /*#__PURE__*/_react["default"].createElement("div", {
-    className: classPrefix + "-description"
-  }, title && /*#__PURE__*/_react["default"].createElement("div", {
-    className: classPrefix + "-description-title"
-  }, title), des && /*#__PURE__*/_react["default"].createElement("div", {
-    className: classPrefix + "-description-subtitle"
-  }, des)), props.children && /*#__PURE__*/_react["default"].createElement("div", {
-    className: classPrefix + "-content"
+  return (0, _nativeProps.withNativeProps)(props, _react.default.createElement("div", {
+    className: (0, _classnames.default)(classPrefix, {
+      [`${classPrefix}-full-page`]: props.fullPage
+    })
+  }, _react.default.createElement("div", {
+    className: `${classPrefix}-image`
+  }, imageNode), _react.default.createElement("div", {
+    className: `${classPrefix}-description`
+  }, title && _react.default.createElement("div", {
+    className: `${classPrefix}-description-title`
+  }, title), des && _react.default.createElement("div", {
+    className: `${classPrefix}-description-subtitle`
+  }, des)), props.children && _react.default.createElement("div", {
+    className: `${classPrefix}-content`
   }, props.children)));
 };
 

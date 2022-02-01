@@ -8,7 +8,7 @@ exports.useInitialized = useInitialized;
 var _react = require("react");
 
 function useInitialized(check) {
-  var initializedRef = (0, _react.useRef)(check);
+  const initializedRef = (0, _react.useRef)(check);
 
   if (check) {
     initializedRef.current = true;

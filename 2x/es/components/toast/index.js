@@ -1,8 +1,8 @@
 import "./toast.css";
 import { clear, show, config } from './methods';
-var Toast = {
-  show: show,
-  clear: clear,
-  config: config
+const Toast = {
+  show,
+  clear,
+  config
 };
 export default Toast;

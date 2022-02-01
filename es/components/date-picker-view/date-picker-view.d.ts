@@ -1,7 +1,8 @@
 import { FC, ReactNode } from 'react';
+import type { PickerViewProps } from '../picker-view';
 import { NativeProps } from '../../utils/native-props';
 import type { Precision, DatePickerFilter } from '../date-picker/date-picker-utils';
-export declare type DatePickerViewProps = {
+export declare type DatePickerViewProps = Pick<PickerViewProps, 'style'> & {
     value?: Date;
     defaultValue?: Date;
     onChange?: (value: Date) => void;
@@ -10,5 +11,5 @@ export declare type DatePickerViewProps = {
     precision?: Precision;
     renderLabel?: (type: Precision, data: number) => ReactNode;
     filter?: DatePickerFilter;
-} & NativeProps<'--height'>;
+} & NativeProps;
 export declare const DatePickerView: FC<DatePickerViewProps>;

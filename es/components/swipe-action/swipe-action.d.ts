@@ -14,7 +14,7 @@ export declare type Action = {
 export declare type SwipeActionProps = {
     rightActions?: Action[];
     leftActions?: Action[];
-    onAction?: (action: Action) => void;
+    onAction?: (action: Action, e: React.MouseEvent) => void;
     closeOnTouchOutside?: boolean;
     closeOnAction?: boolean;
     children: ReactNode;
@@ -22,7 +22,7 @@ export declare type SwipeActionProps = {
 export declare const SwipeAction: React.ForwardRefExoticComponent<{
     rightActions?: Action[] | undefined;
     leftActions?: Action[] | undefined;
-    onAction?: ((action: Action) => void) | undefined;
+    onAction?: ((action: Action, e: React.MouseEvent) => void) | undefined;
     closeOnTouchOutside?: boolean | undefined;
     closeOnAction?: boolean | undefined;
     children: ReactNode;

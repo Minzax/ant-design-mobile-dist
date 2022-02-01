@@ -5,6 +5,6 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.noop = void 0;
 
-var noop = function noop() {};
+const noop = () => {};
 
 exports.noop = noop;

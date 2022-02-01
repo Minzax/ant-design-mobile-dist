@@ -5,8 +5,6 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.Header = void 0;
 
-var Header = function Header() {
-  return null;
-};
+const Header = () => null;
 
 exports.Header = Header;

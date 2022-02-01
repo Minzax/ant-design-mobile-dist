@@ -1,13 +1,14 @@
 import { canUseDom } from './can-use-dom';
-export var supportsPassive = false;
+export let supportsPassive = false;
 
 if (canUseDom) {
   try {
-    var opts = {};
+    const opts = {};
     Object.defineProperty(opts, 'passive', {
-      get: function get() {
+      get() {
         supportsPassive = true;
       }
+
     });
     window.addEventListener('test-passive', null, opts);
   } catch (e) {}

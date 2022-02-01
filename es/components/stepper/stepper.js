@@ -7,35 +7,27 @@ import { mergeProps } from '../../utils/with-default-props';
 import { bound } from '../../utils/bound';
 import Input from '../input';
 import Button from '../button';
-var classPrefix = "adm-stepper";
-var defaultProps = {
+const classPrefix = `adm-stepper`;
+const defaultProps = {
   defaultValue: 0,
   step: 1,
   disabled: false
 };
-export var Stepper = function Stepper(p) {
-  var _classNames;
-
-  var props = mergeProps(defaultProps, p);
-  var disabled = props.disabled,
-      step = props.step,
-      max = props.max,
-      min = props.min,
-      inputReadOnly = props.inputReadOnly;
-
-  var _usePropsValue = usePropsValue(props),
-      value = _usePropsValue[0],
-      setValue = _usePropsValue[1];
-
-  var _useState = useState(function () {
-    return value.toString();
-  }),
-      inputValue = _useState[0],
-      setInputValue = _useState[1];
+export const Stepper = p => {
+  const props = mergeProps(defaultProps, p);
+  const {
+    disabled,
+    step,
+    max,
+    min,
+    inputReadOnly
+  } = props;
+  const [value, setValue] = usePropsValue(props);
+  const [inputValue, setInputValue] = useState(() => value.toString());
 
   function setValueWithCheck(v) {
     if (isNaN(v)) return;
-    var target = bound(v, props.min, props.max);
+    let target = bound(v, props.min, props.max);
 
     if (props.digits || props.digits === 0) {
       target = parseFloat(target.toFixed(props.digits));
@@ -44,35 +36,32 @@ export var Stepper = function Stepper(p) {
     setValue(target);
   }
 
-  var _useState2 = useState(false),
-      hasFocus = _useState2[0],
-      setHasFocus = _useState2[1];
-
-  useEffect(function () {
+  const [hasFocus, setHasFocus] = useState(false);
+  useEffect(() => {
     if (!hasFocus) {
       setInputValue(value.toString());
     }
   }, [hasFocus]);
-  useEffect(function () {
+  useEffect(() => {
     if (!hasFocus) {
       setInputValue(value.toString());
     }
   }, [value]);
 
-  var handleInputChange = function handleInputChange(v) {
+  const handleInputChange = v => {
     setInputValue(v);
     setValueWithCheck(parseFloat(v));
   };
 
-  var handleMinus = function handleMinus() {
+  const handleMinus = () => {
     setValueWithCheck(value - step);
   };
 
-  var handlePlus = function handlePlus() {
+  const handlePlus = () => {
     setValueWithCheck(value + step);
   };
 
-  var minusDisabled = function minusDisabled() {
+  const minusDisabled = () => {
     if (min === undefined) {
       return disabled;
     } else {
@@ -80,7 +69,7 @@ export var Stepper = function Stepper(p) {
     }
   };
 
-  var plusDisabled = function plusDisabled() {
+  const plusDisabled = () => {
     if (max === undefined) {
       return disabled;
     } else {
@@ -88,41 +77,45 @@ export var Stepper = function Stepper(p) {
     }
   };
 
-  return withNativeProps(props, /*#__PURE__*/React.createElement("div", {
-    className: classNames(classPrefix, (_classNames = {}, _classNames[classPrefix + "-disabled"] = disabled, _classNames[classPrefix + "-active"] = hasFocus, _classNames))
-  }, /*#__PURE__*/React.createElement(Button, {
-    className: classPrefix + "-minus",
+  return withNativeProps(props, React.createElement("div", {
+    className: classNames(classPrefix, {
+      [`${classPrefix}-active`]: hasFocus
+    })
+  }, React.createElement(Button, {
+    className: `${classPrefix}-minus`,
     onClick: handleMinus,
     disabled: minusDisabled(),
     fill: 'none',
+    shape: 'rectangular',
     color: 'primary'
-  }, /*#__PURE__*/React.createElement(MinusOutline, null)), /*#__PURE__*/React.createElement("div", {
-    className: classPrefix + "-middle"
-  }, /*#__PURE__*/React.createElement(Input, {
-    className: classPrefix + "-input",
-    onFocus: function onFocus(e) {
+  }, React.createElement(MinusOutline, null)), React.createElement("div", {
+    className: `${classPrefix}-middle`
+  }, React.createElement(Input, {
+    className: `${classPrefix}-input`,
+    onFocus: e => {
       var _a;
 
       setHasFocus(true);
       (_a = props.onFocus) === null || _a === void 0 ? void 0 : _a.call(props, e);
     },
     value: inputValue,
-    onChange: function onChange(val) {
+    onChange: val => {
       disabled || handleInputChange(val);
     },
     disabled: disabled,
-    onBlur: function onBlur(e) {
+    onBlur: e => {
       var _a;
 
       setHasFocus(false);
       (_a = props.onBlur) === null || _a === void 0 ? void 0 : _a.call(props, e);
     },
     readOnly: inputReadOnly
-  })), /*#__PURE__*/React.createElement(Button, {
-    className: classPrefix + "-plus",
+  })), React.createElement(Button, {
+    className: `${classPrefix}-plus`,
     onClick: handlePlus,
     disabled: plusDisabled(),
     fill: 'none',
+    shape: 'rectangular',
     color: 'primary'
-  }, /*#__PURE__*/React.createElement(AddOutline, null))));
+  }, React.createElement(AddOutline, null))));
 };

@@ -13,10 +13,10 @@ var _antdMobileIcons = require("antd-mobile-icons");
 
 var _nativeProps = require("../../utils/native-props");
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var classPrefix = "adm-result";
-var iconRecord = {
+const classPrefix = `adm-result`;
+const iconRecord = {
   success: _antdMobileIcons.CheckCircleFill,
   error: _antdMobileIcons.CloseCircleFill,
   info: _antdMobileIcons.InformationCircleFill,
@@ -24,23 +24,25 @@ var iconRecord = {
   warning: _antdMobileIcons.ExclamationCircleFill
 };
 
-var Result = function Result(props) {
-  var status = props.status,
-      title = props.title,
-      description = props.description,
-      icon = props.icon;
+const Result = props => {
+  const {
+    status,
+    title,
+    description,
+    icon
+  } = props;
   if (!status) return null;
 
-  var resultIcon = icon || /*#__PURE__*/_react["default"].createElement(iconRecord[status]);
+  const resultIcon = icon || _react.default.createElement(iconRecord[status]);
 
-  return (0, _nativeProps.withNativeProps)(props, /*#__PURE__*/_react["default"].createElement("div", {
-    className: (0, _classnames["default"])(classPrefix, classPrefix + "-" + status)
-  }, /*#__PURE__*/_react["default"].createElement("div", {
-    className: classPrefix + "-icon"
-  }, resultIcon), /*#__PURE__*/_react["default"].createElement("div", {
-    className: classPrefix + "-title"
-  }, title), description ? /*#__PURE__*/_react["default"].createElement("div", {
-    className: classPrefix + "-description"
+  return (0, _nativeProps.withNativeProps)(props, _react.default.createElement("div", {
+    className: (0, _classnames.default)(classPrefix, `${classPrefix}-${status}`)
+  }, _react.default.createElement("div", {
+    className: `${classPrefix}-icon`
+  }, resultIcon), _react.default.createElement("div", {
+    className: `${classPrefix}-title`
+  }, title), description ? _react.default.createElement("div", {
+    className: `${classPrefix}-description`
   }, description) : null));
 };
 

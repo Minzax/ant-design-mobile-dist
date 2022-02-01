@@ -3,11 +3,12 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports["default"] = void 0;
+exports.default = void 0;
 
-require("./loading.css");
+require("../dot-loading/dot-loading.css");
 
-var _loading2 = require("./loading");
+var _dotLoading2 = require("../dot-loading/dot-loading");
 
-var _default = _loading2.Loading;
-exports["default"] = _default;
+// Deprecated
+var _default = _dotLoading2.DotLoading;
+exports.default = _default;

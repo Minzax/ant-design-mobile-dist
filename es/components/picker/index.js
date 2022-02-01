@@ -3,5 +3,5 @@ import { attachPropertiesToComponent } from '../../utils/attach-properties-to-co
 import { Picker } from './picker';
 import { prompt } from './prompt';
 export default attachPropertiesToComponent(Picker, {
-  prompt: prompt
+  prompt
 });

@@ -10,17 +10,17 @@ var _react = require("react");
 var _ahooks = require("ahooks");
 
 function useResizeEffect(effect, targetRef) {
-  var fn = (0, _ahooks.useMemoizedFn)(effect);
-  (0, _react.useLayoutEffect)(function () {
-    var target = targetRef.current;
+  const fn = (0, _ahooks.useMemoizedFn)(effect);
+  (0, _react.useLayoutEffect)(() => {
+    const target = targetRef.current;
     if (!target) return;
 
     if (window.ResizeObserver) {
-      var observer = new ResizeObserver(function () {
+      const observer = new ResizeObserver(() => {
         fn(target);
       });
       observer.observe(target);
-      return function () {
+      return () => {
         observer.disconnect();
       };
     } else {

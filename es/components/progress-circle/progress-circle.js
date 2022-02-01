@@ -1,29 +1,29 @@
 import React from 'react';
 import { withNativeProps } from '../../utils/native-props';
 import { mergeProps } from '../../utils/with-default-props';
-var classPrefix = "adm-progress-circle";
-export var ProgressCircle = function ProgressCircle(p) {
-  var props = mergeProps({
+const classPrefix = `adm-progress-circle`;
+export const ProgressCircle = p => {
+  const props = mergeProps({
     percent: 0,
     strokeColor: '#1677FF'
   }, p);
-  var style = {
+  const style = {
     '--percent': props.percent.toString()
   };
-  return withNativeProps(props, /*#__PURE__*/React.createElement("div", {
-    className: "" + classPrefix,
+  return withNativeProps(props, React.createElement("div", {
+    className: `${classPrefix}`,
     style: style
-  }, /*#__PURE__*/React.createElement("div", {
-    className: classPrefix + "-content"
-  }, /*#__PURE__*/React.createElement("svg", {
-    className: classPrefix + "-svg"
-  }, /*#__PURE__*/React.createElement("circle", {
-    className: classPrefix + "-track",
+  }, React.createElement("div", {
+    className: `${classPrefix}-content`
+  }, React.createElement("svg", {
+    className: `${classPrefix}-svg`
+  }, React.createElement("circle", {
+    className: `${classPrefix}-track`,
     fill: 'transparent'
-  }), /*#__PURE__*/React.createElement("circle", {
-    className: classPrefix + "-fill",
+  }), React.createElement("circle", {
+    className: `${classPrefix}-fill`,
     fill: 'transparent'
-  })), /*#__PURE__*/React.createElement("div", {
-    className: classPrefix + "-info"
+  })), React.createElement("div", {
+    className: `${classPrefix}-info`
   }, props.children))));
 };

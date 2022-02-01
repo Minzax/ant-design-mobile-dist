@@ -6,6 +6,6 @@ import { Header } from './header';
 import { useForm } from 'rc-field-form';
 export default attachPropertiesToComponent(Form, {
   Item: FormItem,
-  Header: Header,
-  useForm: useForm
+  Header,
+  useForm
 });

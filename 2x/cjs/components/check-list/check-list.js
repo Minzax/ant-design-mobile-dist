@@ -15,53 +15,50 @@ var _withDefaultProps = require("../../utils/with-default-props");
 
 var _context = require("./context");
 
-var _usePropsValue2 = require("../../utils/use-props-value");
+var _usePropsValue = require("../../utils/use-props-value");
 
 var _antdMobileIcons = require("antd-mobile-icons");
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var classPrefix = 'adm-check-list';
-var defaultProps = {
+const classPrefix = 'adm-check-list';
+const defaultProps = {
   multiple: false,
   defaultValue: [],
-  activeIcon: /*#__PURE__*/_react["default"].createElement(_antdMobileIcons.CheckOutline, null)
+  activeIcon: _react.default.createElement(_antdMobileIcons.CheckOutline, null)
 };
 
-var CheckList = function CheckList(p) {
-  var props = (0, _withDefaultProps.mergeProps)(defaultProps, p);
-
-  var _usePropsValue = (0, _usePropsValue2.usePropsValue)(props),
-      value = _usePropsValue[0],
-      setValue = _usePropsValue[1];
+const CheckList = p => {
+  const props = (0, _withDefaultProps.mergeProps)(defaultProps, p);
+  const [value, setValue] = (0, _usePropsValue.usePropsValue)(props);
 
   function check(val) {
     if (props.multiple) {
-      setValue([].concat(value, [val]));
+      setValue([...value, val]);
     } else {
       setValue([val]);
     }
   }
 
   function uncheck(val) {
-    setValue(value.filter(function (item) {
-      return item !== val;
-    }));
+    setValue(value.filter(item => item !== val));
   }
 
-  var activeIcon = props.activeIcon,
-      disabled = props.disabled,
-      readOnly = props.readOnly;
-  return /*#__PURE__*/_react["default"].createElement(_context.CheckListContext.Provider, {
+  const {
+    activeIcon,
+    disabled,
+    readOnly
+  } = props;
+  return _react.default.createElement(_context.CheckListContext.Provider, {
     value: {
-      value: value,
-      check: check,
-      uncheck: uncheck,
-      activeIcon: activeIcon,
-      disabled: disabled,
-      readOnly: readOnly
+      value,
+      check,
+      uncheck,
+      activeIcon,
+      disabled,
+      readOnly
     }
-  }, (0, _nativeProps.withNativeProps)(props, /*#__PURE__*/_react["default"].createElement(_list["default"], {
+  }, (0, _nativeProps.withNativeProps)(props, _react.default.createElement(_list.default, {
     mode: props.mode,
     className: classPrefix
   }, props.children)));

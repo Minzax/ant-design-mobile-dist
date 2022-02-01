@@ -1,72 +1,48 @@
-var __rest = this && this.__rest || function (s, e) {
-  var t = {};
-
-  for (var p in s) {
-    if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0) t[p] = s[p];
-  }
-
-  if (s != null && typeof Object.getOwnPropertySymbols === "function") for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) {
-    if (e.indexOf(p[i]) < 0 && Object.prototype.propertyIsEnumerable.call(s, p[i])) t[p[i]] = s[p[i]];
-  }
-  return t;
-};
-
 import React, { forwardRef, useEffect, useImperativeHandle, useRef } from 'react';
-import classNames from 'classnames';
+import { withNativeProps } from '../../utils/native-props';
 import { usePropsValue } from '../../utils/use-props-value';
 import { mergeProps } from '../../utils/with-default-props';
-var classPrefix = 'adm-text-area';
-var defaultProps = {
+const classPrefix = 'adm-text-area';
+const defaultProps = {
   rows: 2,
   showCount: false,
   autoSize: false,
   defaultValue: ''
 };
-export var TextArea = /*#__PURE__*/forwardRef(function (p, ref) {
-  var props = mergeProps(defaultProps, p);
+export const TextArea = forwardRef((p, ref) => {
+  const props = mergeProps(defaultProps, p);
+  const {
+    autoSize,
+    showCount,
+    maxLength
+  } = props;
+  const [value, setValue] = usePropsValue(props);
+  const nativeTextAreaRef = useRef(null);
+  useImperativeHandle(ref, () => ({
+    clear: () => {
+      setValue('');
+    },
+    focus: () => {
+      var _a;
 
-  var className = props.className,
-      style = props.style,
-      outerDefaultValue = props.defaultValue,
-      outerValue = props.value,
-      outerOnChange = props.onChange,
-      rows = props.rows,
-      autoSize = props.autoSize,
-      showCount = props.showCount,
-      textAreaProps = __rest(props, ["className", "style", "defaultValue", "value", "onChange", "rows", "autoSize", "showCount"]);
+      (_a = nativeTextAreaRef.current) === null || _a === void 0 ? void 0 : _a.focus();
+    },
+    blur: () => {
+      var _a;
 
-  var _usePropsValue = usePropsValue(props),
-      value = _usePropsValue[0],
-      setValue = _usePropsValue[1];
-
-  var nativeTextAreaRef = useRef(null);
-  useImperativeHandle(ref, function () {
-    return {
-      clear: function clear() {
-        setValue('');
-      },
-      focus: function focus() {
-        var _a;
-
-        (_a = nativeTextAreaRef.current) === null || _a === void 0 ? void 0 : _a.focus();
-      },
-      blur: function blur() {
-        var _a;
-
-        (_a = nativeTextAreaRef.current) === null || _a === void 0 ? void 0 : _a.blur();
-      }
-    };
-  });
-  useEffect(function () {
+      (_a = nativeTextAreaRef.current) === null || _a === void 0 ? void 0 : _a.blur();
+    }
+  }));
+  useEffect(() => {
     if (!autoSize) return;
-    var textArea = nativeTextAreaRef.current;
+    const textArea = nativeTextAreaRef.current;
     if (!textArea) return;
     textArea.style.height = 'auto';
-    var height = textArea.scrollHeight;
+    let height = textArea.scrollHeight;
 
     if (typeof autoSize === 'object') {
-      var computedStyle = window.getComputedStyle(textArea);
-      var lineHeight = parseFloat(computedStyle.lineHeight);
+      const computedStyle = window.getComputedStyle(textArea);
+      const lineHeight = parseFloat(computedStyle.lineHeight);
 
       if (autoSize.minRows) {
         height = Math.max(height, autoSize.minRows * lineHeight);
@@ -77,41 +53,59 @@ export var TextArea = /*#__PURE__*/forwardRef(function (p, ref) {
       }
     }
 
-    textArea.style.height = height + "px";
+    textArea.style.height = `${height}px`;
   }, [value, autoSize]);
-  var count;
+  const compositingRef = useRef(false);
+  let count;
+  const valueLength = [...value].length;
 
   if (typeof showCount === 'function') {
-    count = showCount(value.length, props.maxLength);
+    count = showCount(valueLength, maxLength);
   } else if (showCount) {
-    count = /*#__PURE__*/React.createElement("div", {
-      className: classPrefix + "-count"
-    }, props.maxLength === undefined ? value.length : value.length + '/' + props.maxLength);
+    count = React.createElement("div", {
+      className: `${classPrefix}-count`
+    }, maxLength === undefined ? valueLength : valueLength + '/' + maxLength);
   }
 
-  return /*#__PURE__*/React.createElement("div", {
-    className: classNames(classPrefix + "-wrapper", className),
-    style: style
-  }, /*#__PURE__*/React.createElement("textarea", Object.assign({
-    ref: nativeTextAreaRef
-  }, textAreaProps, {
-    className: classPrefix,
-    rows: rows,
+  return withNativeProps(props, React.createElement("div", {
+    className: classPrefix
+  }, React.createElement("textarea", {
+    ref: nativeTextAreaRef,
+    className: `${classPrefix}-element`,
+    rows: props.rows,
     value: value,
-    onChange: function onChange(e) {
-      setValue(e.target.value);
+    onChange: e => {
+      let v = e.target.value;
+
+      if (maxLength && !compositingRef.current) {
+        v = [...v].slice(0, maxLength).join('');
+      }
+
+      setValue(v);
     },
-    onFocus: function onFocus(e) {
+    id: props.id,
+    onCompositionStart: e => {
       var _a;
 
-      (_a = props.onFocus) === null || _a === void 0 ? void 0 : _a.call(props, e);
+      compositingRef.current = true;
+      (_a = props.onCompositionStart) === null || _a === void 0 ? void 0 : _a.call(props, e);
     },
-    onBlur: function onBlur(e) {
+    onCompositionEnd: e => {
       var _a;
 
-      (_a = props.onBlur) === null || _a === void 0 ? void 0 : _a.call(props, e);
+      compositingRef.current = false;
+
+      if (maxLength) {
+        setValue([...value].slice(0, maxLength).join(''));
+      }
+
+      (_a = props.onCompositionEnd) === null || _a === void 0 ? void 0 : _a.call(props, e);
     },
-    id: props.id
-  })), count);
+    autoComplete: props.autoComplete,
+    disabled: props.disabled,
+    readOnly: props.readOnly,
+    onFocus: props.onFocus,
+    onBlur: props.onBlur
+  }), count));
 });
 TextArea.defaultProps = defaultProps;

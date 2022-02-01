@@ -2,19 +2,21 @@ import React, { useMemo } from 'react';
 import { CloseOutline } from 'antd-mobile-icons';
 import classNames from 'classnames';
 import Image from '../image';
-import Loading from '../loading';
+import SpinLoading from '../spin-loading';
 import { useConfig } from '../config-provider';
-var classPrefix = "adm-image-uploader";
+const classPrefix = `adm-image-uploader`;
 
-var PreviewItem = function PreviewItem(props) {
-  var _useConfig = useConfig(),
-      locale = _useConfig.locale;
-
-  var url = props.url,
-      file = props.file,
-      deletable = props.deletable,
-      onDelete = props.onDelete;
-  var src = useMemo(function () {
+const PreviewItem = props => {
+  const {
+    locale
+  } = useConfig();
+  const {
+    url,
+    file,
+    deletable,
+    onDelete
+  } = props;
+  const src = useMemo(() => {
     if (url) {
       return url;
     }
@@ -27,30 +29,30 @@ var PreviewItem = function PreviewItem(props) {
   }, [url, file]);
 
   function renderLoading() {
-    return props.status === 'pending' && /*#__PURE__*/React.createElement("div", {
-      className: classPrefix + "-cell-mask"
-    }, /*#__PURE__*/React.createElement("span", {
-      className: classPrefix + "-cell-loading"
-    }, /*#__PURE__*/React.createElement(Loading, {
-      color: '#fff'
-    }), /*#__PURE__*/React.createElement("span", {
-      className: classPrefix + "-cell-mask-message"
+    return props.status === 'pending' && React.createElement("div", {
+      className: `${classPrefix}-cell-mask`
+    }, React.createElement("span", {
+      className: `${classPrefix}-cell-loading`
+    }, React.createElement(SpinLoading, {
+      color: 'white'
+    }), React.createElement("span", {
+      className: `${classPrefix}-cell-mask-message`
     }, locale.ImageUploader.uploading)));
   }
 
   function renderDelete() {
-    return deletable && /*#__PURE__*/React.createElement("span", {
-      className: classPrefix + "-cell-delete",
+    return deletable && React.createElement("span", {
+      className: `${classPrefix}-cell-delete`,
       onClick: onDelete
-    }, /*#__PURE__*/React.createElement(CloseOutline, {
-      className: classPrefix + "-cell-delete-icon"
+    }, React.createElement(CloseOutline, {
+      className: `${classPrefix}-cell-delete-icon`
     }));
   }
 
-  return /*#__PURE__*/React.createElement("div", {
-    className: classNames(classPrefix + "-cell", props.status === 'fail' && classPrefix + "-cell-fail")
-  }, /*#__PURE__*/React.createElement(Image, {
-    className: classPrefix + "-cell-image",
+  return React.createElement("div", {
+    className: classNames(`${classPrefix}-cell`, props.status === 'fail' && `${classPrefix}-cell-fail`)
+  }, React.createElement(Image, {
+    className: `${classPrefix}-cell-image`,
     src: src,
     fit: 'cover',
     onClick: props.onClick

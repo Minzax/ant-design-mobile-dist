@@ -3,53 +3,47 @@ import { useSpring } from '@react-spring/web';
 import { useMutationEffect } from './use-mutation-effect';
 import { bound } from './bound';
 import { useUpdateLayoutEffect } from 'ahooks';
-export var useTabListScroll = function useTabListScroll(targetRef, activeIndex) {
-  var _useSpring = useSpring(function () {
-    return {
-      scrollLeft: 0,
-      config: {
-        tension: 300,
-        clamp: true
-      }
-    };
-  }),
-      scrollLeft = _useSpring[0].scrollLeft,
-      api = _useSpring[1];
-
-  function animate(immediate) {
-    if (immediate === void 0) {
-      immediate = false;
+export const useTabListScroll = (targetRef, activeIndex) => {
+  const [{
+    scrollLeft
+  }, api] = useSpring(() => ({
+    scrollLeft: 0,
+    config: {
+      tension: 300,
+      clamp: true
     }
+  }));
 
-    var container = targetRef.current;
+  function animate(immediate = false) {
+    const container = targetRef.current;
     if (!container) return;
-    if (!activeIndex) return;
-    var activeTabWrapper = container.children.item(activeIndex);
-    var activeTab = activeTabWrapper.children.item(0);
-    var activeTabLeft = activeTab.offsetLeft;
-    var activeTabWidth = activeTab.offsetWidth;
-    var containerWidth = container.offsetWidth;
-    var containerScrollWidth = container.scrollWidth;
-    var containerScrollLeft = container.scrollLeft;
-    var maxScrollDistance = containerScrollWidth - containerWidth;
+    if (activeIndex === undefined) return;
+    const activeTabWrapper = container.children.item(activeIndex);
+    const activeTab = activeTabWrapper.children.item(0);
+    const activeTabLeft = activeTab.offsetLeft;
+    const activeTabWidth = activeTab.offsetWidth;
+    const containerWidth = container.offsetWidth;
+    const containerScrollWidth = container.scrollWidth;
+    const containerScrollLeft = container.scrollLeft;
+    const maxScrollDistance = containerScrollWidth - containerWidth;
     if (maxScrollDistance <= 0) return;
-    var nextScrollLeft = bound(activeTabLeft - (containerWidth - activeTabWidth) / 2, 0, containerScrollWidth - containerWidth);
+    const nextScrollLeft = bound(activeTabLeft - (containerWidth - activeTabWidth) / 2, 0, containerScrollWidth - containerWidth);
     api.start({
       scrollLeft: nextScrollLeft,
       from: {
         scrollLeft: containerScrollLeft
       },
-      immediate: immediate
+      immediate
     });
   }
 
-  useLayoutEffect(function () {
+  useLayoutEffect(() => {
     animate(true);
   }, []);
-  useUpdateLayoutEffect(function () {
+  useUpdateLayoutEffect(() => {
     animate();
   }, [activeIndex]);
-  useMutationEffect(function () {
+  useMutationEffect(() => {
     animate(true);
   }, targetRef, {
     subtree: true,
@@ -57,7 +51,7 @@ export var useTabListScroll = function useTabListScroll(targetRef, activeIndex) 
     characterData: true
   });
   return {
-    scrollLeft: scrollLeft,
-    animate: animate
+    scrollLeft,
+    animate
   };
 };

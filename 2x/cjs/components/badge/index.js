@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports["default"] = void 0;
+exports.default = void 0;
 
 require("./badge.css");
 
@@ -15,4 +15,4 @@ var _default = (0, _attachPropertiesToComponent.attachPropertiesToComponent)(_ba
   dot: _badge2.dot
 });
 
-exports["default"] = _default;
+exports.default = _default;

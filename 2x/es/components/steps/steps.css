@@ -37,6 +37,10 @@
   --icon-color: #e5e5e5;
 }
 
+.adm-step-status-wait .adm-step-title {
+  color: var(--adm-color-weak);
+}
+
 .adm-step-status-process {
   --icon-color: var(--adm-color-primary);
 }
@@ -98,7 +102,7 @@
 .adm-steps-horizontal .adm-step-content {
   text-align: center;
   font-size: var(--description-font-size);
-  padding-top: 4px;
+  padding: 4px 16px 0;
 }
 
 .adm-steps-horizontal .adm-step-content .adm-step-title {
@@ -106,7 +110,7 @@
 }
 
 .adm-steps-horizontal .adm-step-content .adm-step-description {
-  margin-top: 4px;
+  margin-top: 8px;
   color: var(--adm-color-weak);
 }
 
@@ -145,7 +149,7 @@
 
 .adm-steps-vertical .adm-step .adm-step-content {
   flex: auto;
-  padding-bottom: 28px;
+  padding-bottom: 48px;
 }
 
 .adm-steps-vertical .adm-step .adm-step-content .adm-step-title {
@@ -154,7 +158,7 @@
 }
 
 .adm-steps-vertical .adm-step .adm-step-content .adm-step-description {
-  padding-top: 4px;
+  padding-top: 8px;
   font-size: var(--description-font-size);
   color: var(--adm-color-weak);
 }

@@ -23,14 +23,14 @@ var _safeArea = _interopRequireDefault(require("../safe-area"));
 
 var _ahooks = require("ahooks");
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function _getRequireWildcardCache(nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
+function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function (nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
 
-function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { "default": obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj["default"] = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
+function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
 
-var classPrefix = 'adm-number-keyboard';
-var defaultProps = {
+const classPrefix = 'adm-number-keyboard';
+const defaultProps = {
   defaultVisible: false,
   randomOrder: false,
   showCloseButton: true,
@@ -39,20 +39,22 @@ var defaultProps = {
   safeArea: true
 };
 
-var NumberKeyboard = function NumberKeyboard(p) {
-  var props = (0, _withDefaultProps.mergeProps)(defaultProps, p);
-  var visible = props.visible,
-      title = props.title,
-      getContainer = props.getContainer,
-      confirmText = props.confirmText,
-      customKey = props.customKey,
-      randomOrder = props.randomOrder,
-      showCloseButton = props.showCloseButton,
-      onInput = props.onInput;
-  var keyboardRef = (0, _react.useRef)(null);
-  var keys = (0, _react.useMemo)(function () {
-    var defaultKeys = ['1', '2', '3', '4', '5', '6', '7', '8', '9'];
-    var keyList = randomOrder ? (0, _shuffle.shuffle)(defaultKeys) : defaultKeys;
+const NumberKeyboard = p => {
+  const props = (0, _withDefaultProps.mergeProps)(defaultProps, p);
+  const {
+    visible,
+    title,
+    getContainer,
+    confirmText,
+    customKey,
+    randomOrder,
+    showCloseButton,
+    onInput
+  } = props;
+  const keyboardRef = (0, _react.useRef)(null);
+  const keys = (0, _react.useMemo)(() => {
+    const defaultKeys = ['1', '2', '3', '4', '5', '6', '7', '8', '9'];
+    const keyList = randomOrder ? (0, _shuffle.shuffle)(defaultKeys) : defaultKeys;
     keyList.push('0');
 
     if (confirmText) {
@@ -64,28 +66,28 @@ var NumberKeyboard = function NumberKeyboard(p) {
 
     return keyList;
   }, [customKey, confirmText, randomOrder, randomOrder && visible]);
-  var timeoutRef = (0, _react.useRef)(-1);
-  var intervalRef = (0, _react.useRef)(-1);
-  var onDelete = (0, _ahooks.useMemoizedFn)(function () {
+  const timeoutRef = (0, _react.useRef)(-1);
+  const intervalRef = (0, _react.useRef)(-1);
+  const onDelete = (0, _ahooks.useMemoizedFn)(() => {
     var _a;
 
     (_a = props.onDelete) === null || _a === void 0 ? void 0 : _a.call(props);
   });
 
-  var onBackspacePressStart = function onBackspacePressStart() {
-    timeoutRef.current = window.setTimeout(function () {
+  const onBackspacePressStart = () => {
+    timeoutRef.current = window.setTimeout(() => {
       onDelete();
       intervalRef.current = window.setInterval(onDelete, 150);
     }, 700);
   };
 
-  var onBackspacePressEnd = function onBackspacePressEnd() {
+  const onBackspacePressEnd = () => {
     clearTimeout(timeoutRef.current);
     clearInterval(intervalRef.current);
   }; // 点击键盘按键
 
 
-  var onKeyPress = function onKeyPress(e, key) {
+  const onKeyPress = (e, key) => {
     var _a, _b;
 
     e.preventDefault();
@@ -112,105 +114,99 @@ var NumberKeyboard = function NumberKeyboard(p) {
   }; // 渲染 title 和 close button
 
 
-  var renderHeader = function renderHeader() {
+  const renderHeader = () => {
     if (!showCloseButton && !title) return null;
-    return /*#__PURE__*/_react["default"].createElement("div", {
-      className: (0, _classnames["default"])(classPrefix + "-header", {
+    return _react.default.createElement("div", {
+      className: (0, _classnames.default)(`${classPrefix}-header`, {
         'with-title': !!title
       })
-    }, title && /*#__PURE__*/_react["default"].createElement("div", {
-      className: classPrefix + "-title"
-    }, title), showCloseButton && /*#__PURE__*/_react["default"].createElement("span", {
-      className: classPrefix + "-header-close-button",
-      onClick: function onClick() {
+    }, title && _react.default.createElement("div", {
+      className: `${classPrefix}-title`
+    }, title), showCloseButton && _react.default.createElement("span", {
+      className: `${classPrefix}-header-close-button`,
+      onClick: () => {
         var _a;
 
         (_a = props.onClose) === null || _a === void 0 ? void 0 : _a.call(props);
       },
       role: 'button',
       title: 'CLOSE'
-    }, /*#__PURE__*/_react["default"].createElement(_antdMobileIcons.DownOutline, null)));
+    }, _react.default.createElement(_antdMobileIcons.DownOutline, null)));
   }; // 渲染基础键盘按键
 
 
-  var renderKey = function renderKey(key, index) {
-    var isNumberKey = /^\d$/.test(key);
-    var className = (0, _classnames["default"])(classPrefix + "-key", {
+  const renderKey = (key, index) => {
+    const isNumberKey = /^\d$/.test(key);
+    const className = (0, _classnames.default)(`${classPrefix}-key`, {
       'number-key': isNumberKey,
       'sign-key': !isNumberKey && key,
       'mid-key': index === 9 && !!confirmText
     });
-    return /*#__PURE__*/_react["default"].createElement("div", {
+    return _react.default.createElement("div", {
       key: key,
       className: className,
-      onTouchStart: function onTouchStart() {
+      onTouchStart: () => {
         if (key === 'BACKSPACE') {
           onBackspacePressStart();
         }
       },
-      onTouchEnd: function onTouchEnd(e) {
+      onTouchEnd: e => {
         onKeyPress(e, key);
 
         if (key === 'BACKSPACE') {
           onBackspacePressEnd();
         }
       },
-      onMouseUp: function onMouseUp(e) {
+      onMouseUp: e => {
         onKeyPress(e, key);
       },
       title: key,
       role: 'button'
-    }, key === 'BACKSPACE' ? /*#__PURE__*/_react["default"].createElement(_antdMobileIcons.TextDeletionOutline, null) : key);
+    }, key === 'BACKSPACE' ? _react.default.createElement(_antdMobileIcons.TextDeletionOutline, null) : key);
   };
 
-  return /*#__PURE__*/_react["default"].createElement(_popup["default"], {
+  return _react.default.createElement(_popup.default, {
     visible: visible,
     getContainer: getContainer,
     mask: false,
     afterClose: props.afterClose,
     afterShow: props.afterShow,
-    className: classPrefix + "-popup",
+    className: `${classPrefix}-popup`,
     stopPropagation: props.stopPropagation
-  }, (0, _nativeProps.withNativeProps)(props, /*#__PURE__*/_react["default"].createElement("div", {
+  }, (0, _nativeProps.withNativeProps)(props, _react.default.createElement("div", {
     ref: keyboardRef,
     className: classPrefix,
-    onMouseDown: function onMouseDown(e) {
+    onMouseDown: e => {
       e.preventDefault();
     }
-  }, renderHeader(), /*#__PURE__*/_react["default"].createElement("div", {
-    className: classPrefix + "-wrapper"
-  }, /*#__PURE__*/_react["default"].createElement("div", {
-    className: (0, _classnames["default"])(classPrefix + "-main", {
+  }, renderHeader(), _react.default.createElement("div", {
+    className: `${classPrefix}-wrapper`
+  }, _react.default.createElement("div", {
+    className: (0, _classnames.default)(`${classPrefix}-main`, {
       'confirmed-style': !!confirmText
     })
-  }, keys.map(renderKey)), !!confirmText && /*#__PURE__*/_react["default"].createElement("div", {
-    className: classPrefix + "-confirm"
-  }, /*#__PURE__*/_react["default"].createElement("div", {
-    className: classPrefix + "-key extra-key bs-key",
-    onTouchStart: function onTouchStart() {
+  }, keys.map(renderKey)), !!confirmText && _react.default.createElement("div", {
+    className: `${classPrefix}-confirm`
+  }, _react.default.createElement("div", {
+    className: `${classPrefix}-key extra-key bs-key`,
+    onTouchStart: () => {
       onBackspacePressStart();
     },
-    onTouchEnd: function onTouchEnd(e) {
+    onTouchEnd: e => {
       onKeyPress(e, 'BACKSPACE');
       onBackspacePressEnd();
     },
-    onMouseUp: function onMouseUp(e) {
-      return onKeyPress(e, 'BACKSPACE');
-    },
+    onMouseUp: e => onKeyPress(e, 'BACKSPACE'),
     title: 'BACKSPACE',
     role: 'button'
-  }, /*#__PURE__*/_react["default"].createElement(_antdMobileIcons.TextDeletionOutline, null)), /*#__PURE__*/_react["default"].createElement("div", {
-    className: classPrefix + "-key extra-key ok-key",
-    onTouchEnd: function onTouchEnd(e) {
-      return onKeyPress(e, 'OK');
-    },
-    onMouseUp: function onMouseUp(e) {
-      return onKeyPress(e, 'OK');
-    },
+  }, _react.default.createElement(_antdMobileIcons.TextDeletionOutline, null)), _react.default.createElement("div", {
+    className: `${classPrefix}-key extra-key ok-key`,
+    onTouchEnd: e => onKeyPress(e, 'OK'),
+    onMouseUp: e => onKeyPress(e, 'OK'),
     role: 'button'
-  }, confirmText))), props.safeArea && /*#__PURE__*/_react["default"].createElement("div", {
-    className: classPrefix + "-footer"
-  }, /*#__PURE__*/_react["default"].createElement(_safeArea["default"], {
+  }, confirmText))), props.safeArea && _react.default.createElement("div", {
+    className: `${classPrefix}-footer`
+  }, _react.default.createElement(_safeArea.default, {
     position: 'bottom'
   })))));
 };

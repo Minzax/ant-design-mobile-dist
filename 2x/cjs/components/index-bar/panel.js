@@ -5,8 +5,6 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.Panel = void 0;
 
-var Panel = function Panel() {
-  return null;
-};
+const Panel = () => null;
 
 exports.Panel = Panel;

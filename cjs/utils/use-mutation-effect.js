@@ -10,14 +10,14 @@ var _react = require("react");
 var _ahooks = require("ahooks");
 
 function useMutationEffect(effect, targetRef, options) {
-  var fn = (0, _ahooks.useMemoizedFn)(effect);
-  (0, _react.useEffect)(function () {
-    var observer = new MutationObserver(function () {
+  const fn = (0, _ahooks.useMemoizedFn)(effect);
+  (0, _react.useEffect)(() => {
+    const observer = new MutationObserver(() => {
       fn();
     });
     if (!targetRef.current) return;
     observer.observe(targetRef.current, options);
-    return function () {
+    return () => {
       observer.disconnect();
     };
   }, [targetRef]);

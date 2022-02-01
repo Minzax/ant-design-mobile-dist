@@ -1,2 +1,2 @@
 import { createContext } from 'react';
-export var CheckboxGroupContext = /*#__PURE__*/createContext(null);
+export const CheckboxGroupContext = createContext(null);

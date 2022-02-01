@@ -1,19 +1,7 @@
-var __rest = this && this.__rest || function (s, e) {
-  var t = {};
-
-  for (var p in s) {
-    if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0) t[p] = s[p];
-  }
-
-  if (s != null && typeof Object.getOwnPropertySymbols === "function") for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) {
-    if (e.indexOf(p[i]) < 0 && Object.prototype.propertyIsEnumerable.call(s, p[i])) t[p[i]] = s[p[i]];
-  }
-  return t;
-};
-
+import { __rest } from "tslib";
 import React, { useContext } from 'react';
 import zhCN from '../../locales/zh-CN';
-export var defaultConfigRef = {
+export const defaultConfigRef = {
   current: {
     locale: zhCN
   }
@@ -24,13 +12,15 @@ export function setDefaultConfig(config) {
 export function getDefaultConfig() {
   return defaultConfigRef.current;
 }
-var ConfigContext = /*#__PURE__*/React.createContext(null);
-export var ConfigProvider = function ConfigProvider(props) {
-  var children = props.children,
-      config = __rest(props, ["children"]);
+const ConfigContext = React.createContext(null);
+export const ConfigProvider = props => {
+  const {
+    children
+  } = props,
+        config = __rest(props, ["children"]);
 
-  var parentConfig = useConfig();
-  return /*#__PURE__*/React.createElement(ConfigContext.Provider, {
+  const parentConfig = useConfig();
+  return React.createElement(ConfigContext.Provider, {
     value: Object.assign(Object.assign({}, parentConfig), config)
   }, children);
 };

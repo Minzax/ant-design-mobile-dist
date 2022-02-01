@@ -1,7 +1,7 @@
 export function generateIntArray(from, to) {
-  var array = [];
+  const array = [];
 
-  for (var i = from; i <= to; i++) {
+  for (let i = from; i <= to; i++) {
     array.push(i);
   }
 

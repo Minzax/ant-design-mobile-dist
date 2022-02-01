@@ -13,21 +13,23 @@ var _getScrollParent = require("./get-scroll-parent");
 
 var _supportsPassive = require("./supports-passive");
 
-var totalLockCount = 0;
-var BODY_LOCK_CLASS = 'adm-overflow-hidden'; // 移植自vant：https://github.com/youzan/vant/blob/HEAD/src/composables/use-lock-scroll.ts
+let totalLockCount = 0;
+const BODY_LOCK_CLASS = 'adm-overflow-hidden'; // 移植自vant：https://github.com/youzan/vant/blob/HEAD/src/composables/use-lock-scroll.ts
 
 function useLockScroll(rootRef, shouldLock) {
-  var touch = (0, _useTouch.useTouch)();
+  const touch = (0, _useTouch.useTouch)();
 
-  var onTouchMove = function onTouchMove(event) {
+  const onTouchMove = event => {
     touch.move(event);
-    var direction = touch.deltaY.current > 0 ? '10' : '01';
-    var el = (0, _getScrollParent.getScrollParent)(event.target, rootRef.current);
+    const direction = touch.deltaY.current > 0 ? '10' : '01';
+    const el = (0, _getScrollParent.getScrollParent)(event.target, rootRef.current);
     if (!el) return;
-    var scrollHeight = el.scrollHeight,
-        offsetHeight = el.offsetHeight,
-        scrollTop = el.scrollTop;
-    var status = '11';
+    const {
+      scrollHeight,
+      offsetHeight,
+      scrollTop
+    } = el;
+    let status = '11';
 
     if (scrollTop === 0) {
       status = offsetHeight >= scrollHeight ? '00' : '01';
@@ -42,7 +44,7 @@ function useLockScroll(rootRef, shouldLock) {
     }
   };
 
-  var lock = function lock() {
+  const lock = () => {
     document.addEventListener('touchstart', touch.start);
     document.addEventListener('touchmove', onTouchMove, _supportsPassive.supportsPassive ? {
       passive: false
@@ -55,7 +57,7 @@ function useLockScroll(rootRef, shouldLock) {
     totalLockCount++;
   };
 
-  var unlock = function unlock() {
+  const unlock = () => {
     if (totalLockCount) {
       document.removeEventListener('touchstart', touch.start);
       document.removeEventListener('touchmove', onTouchMove);
@@ -67,10 +69,10 @@ function useLockScroll(rootRef, shouldLock) {
     }
   };
 
-  (0, _react.useEffect)(function () {
+  (0, _react.useEffect)(() => {
     if (shouldLock) {
       lock();
-      return function () {
+      return () => {
         unlock();
       };
     }

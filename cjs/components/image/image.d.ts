@@ -11,5 +11,6 @@ export declare type ImageProps = {
     lazy?: boolean;
     onClick?: (event: React.MouseEvent<HTMLImageElement, Event>) => void;
     onError?: (event: React.SyntheticEvent<HTMLImageElement, Event>) => void;
+    onLoad?: (event: React.SyntheticEvent<HTMLImageElement, Event>) => void;
 } & NativeProps<'--width' | '--height'> & Pick<React.ImgHTMLAttributes<HTMLImageElement>, 'crossOrigin' | 'decoding' | 'loading' | 'referrerPolicy' | 'sizes' | 'srcSet' | 'useMap'>;
 export declare const Image: React.FC<ImageProps>;

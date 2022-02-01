@@ -16,7 +16,7 @@ declare const _default: import("react").ForwardRefExoticComponent<{
     stuckAtBoundary?: boolean | undefined;
     rubberband?: boolean | undefined;
     children?: import("react").ReactElement<any, string | ((props: any) => import("react").ReactElement<any, any> | null) | (new (props: any) => import("react").Component<any, any, any>)> | import("react").ReactElement<any, string | ((props: any) => import("react").ReactElement<any, any> | null) | (new (props: any) => import("react").Component<any, any, any>)>[] | undefined;
-} & import("../../utils/native-props").NativeProps<"--border-radius" | "--height" | "--width" | "--track-padding"> & import("react").RefAttributes<import("./swiper").SwiperRef>> & {
+} & import("../../utils/native-props").NativeProps<"--border-radius" | "--width" | "--height" | "--track-padding"> & import("react").RefAttributes<import("./swiper").SwiperRef>> & {
     Item: import("react").FC<{
         onClick?: ((e: import("react").MouseEvent<HTMLDivElement, MouseEvent>) => void) | undefined;
     } & import("../../utils/native-props").NativeProps<never>>;

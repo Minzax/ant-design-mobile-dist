@@ -1,7 +1,8 @@
 import "./popover.css";
+import "./popover-menu.css";
 import { attachPropertiesToComponent } from '../../utils/attach-properties-to-component';
-import { PopMenu } from './pop-menu';
+import { PopoverMenu } from './popover-menu';
 import { Popover } from './popover';
 export default attachPropertiesToComponent(Popover, {
-  Menu: PopMenu
+  Menu: PopoverMenu
 });

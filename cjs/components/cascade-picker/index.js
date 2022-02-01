@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports["default"] = void 0;
+exports.default = void 0;
 
 var _attachPropertiesToComponent = require("../../utils/attach-properties-to-component");
 
@@ -15,4 +15,4 @@ var _default = (0, _attachPropertiesToComponent.attachPropertiesToComponent)(_ca
   prompt: _prompt.prompt
 });
 
-exports["default"] = _default;
+exports.default = _default;

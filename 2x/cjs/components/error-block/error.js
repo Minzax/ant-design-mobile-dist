@@ -13,12 +13,12 @@ var _disconnected = _interopRequireDefault(require("../../assets/disconnected.sv
 
 var _empty = _interopRequireDefault(require("../../assets/empty.svg"));
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var iconRecord = {
-  "default": _default["default"],
-  busy: _busy["default"],
-  disconnected: _disconnected["default"],
-  empty: _empty["default"]
+const iconRecord = {
+  default: _default.default,
+  busy: _busy.default,
+  disconnected: _disconnected.default,
+  empty: _empty.default
 };
 exports.iconRecord = iconRecord;

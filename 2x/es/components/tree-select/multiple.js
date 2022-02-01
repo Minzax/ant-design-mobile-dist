@@ -6,42 +6,36 @@ import { mergeProps } from '../../utils/with-default-props';
 import Checkbox from '../checkbox';
 import { usePropsValue } from '../../utils/use-props-value';
 import { devWarning } from '../../utils/dev-log';
-var classPrefix = "adm-tree-select-multiple";
-export var Multiple = function Multiple(p) {
-  var props = mergeProps({
+const classPrefix = `adm-tree-select-multiple`;
+export const Multiple = p => {
+  const props = mergeProps({
     options: [],
     fieldNames: {},
     allSelectText: [],
     defaultExpandKeys: [],
     defaultValue: []
   }, p);
-  useEffect(function () {
+  useEffect(() => {
     devWarning('TreeSelect', 'TreeSelect.Multiple has been deprecated.');
   }, []);
-  var labelName = props.fieldNames.label || 'label';
-  var valueName = props.fieldNames.value || 'value';
-  var childrenName = props.fieldNames.children || 'children'; // 打开的 keys
+  const labelName = props.fieldNames.label || 'label';
+  const valueName = props.fieldNames.value || 'value';
+  const childrenName = props.fieldNames.children || 'children'; // 打开的 keys
 
-  var _usePropsValue = usePropsValue({
+  const [expandKeys, setExpandKeys] = usePropsValue({
     value: props.expandKeys,
     defaultValue: props.defaultExpandKeys
-  }),
-      expandKeys = _usePropsValue[0],
-      setExpandKeys = _usePropsValue[1]; // 选中的 value（聚合后）
+  }); // 选中的 value（聚合后）
 
-
-  var _usePropsValue2 = usePropsValue({
+  const [value, setValue] = usePropsValue({
     value: props.value,
     defaultValue: props.defaultValue
-  }),
-      value = _usePropsValue2[0],
-      setValue = _usePropsValue2[1]; // 获取目标所有叶子节点 key 集合
+  }); // 获取目标所有叶子节点 key 集合
 
+  const getLeafKeys = option => {
+    const keys = [];
 
-  var getLeafKeys = function getLeafKeys(option) {
-    var keys = [];
-
-    var walker = function walker(op) {
+    const walker = op => {
       var _a;
 
       if (!op) {
@@ -49,9 +43,7 @@ export var Multiple = function Multiple(p) {
       }
 
       if ((_a = op[childrenName]) === null || _a === void 0 ? void 0 : _a.length) {
-        op[childrenName].forEach(function (i) {
-          return walker(i);
-        });
+        op[childrenName].forEach(i => walker(i));
       } else {
         keys.push(op[valueName]);
       }
@@ -61,13 +53,13 @@ export var Multiple = function Multiple(p) {
     return keys;
   };
 
-  var _useMemo = useMemo(function () {
-    var deep = getTreeDeep(props.options, childrenName);
-    var optionsMap = new Map();
-    var optionsParentMap = new Map();
+  const [deep, optionsMap, optionsParentMap] = useMemo(() => {
+    const deep = getTreeDeep(props.options, childrenName);
+    const optionsMap = new Map();
+    const optionsParentMap = new Map();
 
     function traverse(current, children) {
-      children.forEach(function (item) {
+      children.forEach(item => {
         optionsParentMap.set(item[valueName], current);
         optionsMap.set(item[valueName], item);
 
@@ -79,26 +71,22 @@ export var Multiple = function Multiple(p) {
 
     traverse(undefined, props.options);
     return [deep, optionsMap, optionsParentMap];
-  }, [props.options]),
-      deep = _useMemo[0],
-      optionsMap = _useMemo[1],
-      optionsParentMap = _useMemo[2]; // 将聚合的 value 拆分开，获得叶子节点的 value 集合
+  }, [props.options]); // 将聚合的 value 拆分开，获得叶子节点的 value 集合
 
-
-  var allSelectedLeafKeys = useMemo(function () {
-    var leafKeys = [];
-    value.forEach(function (v) {
-      var option = optionsMap.get(v);
+  const allSelectedLeafKeys = useMemo(() => {
+    let leafKeys = [];
+    value.forEach(v => {
+      const option = optionsMap.get(v);
       leafKeys = leafKeys.concat(getLeafKeys(option));
     });
     return leafKeys;
   }, [value, optionsMap]); // 子级有被选中的节点集合
 
-  var dotMap = useMemo(function () {
-    var map = new Map(); // 遍历 allChildrenValues, 向上递归
+  const dotMap = useMemo(() => {
+    const map = new Map(); // 遍历 allChildrenValues, 向上递归
 
-    var walker = function walker(key) {
-      var parentOption = optionsParentMap.get(key);
+    const walker = key => {
+      const parentOption = optionsParentMap.get(key);
 
       if (!parentOption) {
         return;
@@ -108,40 +96,36 @@ export var Multiple = function Multiple(p) {
       walker(parentOption[valueName]);
     };
 
-    allSelectedLeafKeys.forEach(function (key) {
+    allSelectedLeafKeys.forEach(key => {
       map.set(key, true);
       walker(key);
     });
     return map;
   }, [optionsParentMap, value]);
 
-  var onChange = function onChange(targetKeys) {
+  const onChange = targetKeys => {
     var _a;
 
-    var groupKeys = [].concat(targetKeys);
-    var unusedKeys = [];
+    let groupKeys = [...targetKeys];
+    let unusedKeys = [];
 
-    var walker = function walker(keys) {
-      keys.forEach(function (key) {
+    const walker = keys => {
+      keys.forEach(key => {
         var _a;
 
         if (unusedKeys.includes(key)) {
           return;
         }
 
-        var parent = optionsParentMap.get(key);
+        const parent = optionsParentMap.get(key);
 
         if (!parent) {
           return;
         }
 
-        var childrenKeys = ((_a = parent[childrenName]) === null || _a === void 0 ? void 0 : _a.map(function (i) {
-          return i[valueName];
-        })) || [];
+        const childrenKeys = ((_a = parent[childrenName]) === null || _a === void 0 ? void 0 : _a.map(i => i[valueName])) || [];
 
-        if (childrenKeys.every(function (i) {
-          return groupKeys.includes(i);
-        })) {
+        if (childrenKeys.every(i => groupKeys.includes(i))) {
           groupKeys.push(parent[valueName]);
           unusedKeys = unusedKeys.concat(childrenKeys);
         }
@@ -149,189 +133,165 @@ export var Multiple = function Multiple(p) {
     }; // 遍历 deep 次 groupKeys，每次往上聚合一层
 
 
-    for (var i = 0; i < deep; i++) {
+    for (let i = 0; i < deep; i++) {
       walker(groupKeys);
     }
 
-    groupKeys = groupKeys.filter(function (i) {
-      return !unusedKeys.includes(i);
-    });
-    var groupOptions = groupKeys.map(function (i) {
-      return optionsMap.get(i);
-    });
+    groupKeys = groupKeys.filter(i => !unusedKeys.includes(i));
+    const groupOptions = groupKeys.map(i => optionsMap.get(i));
     setValue(groupKeys);
     (_a = props.onChange) === null || _a === void 0 ? void 0 : _a.call(props, groupKeys, groupOptions);
   };
 
-  var onItemSelect = function onItemSelect(option) {
+  const onItemSelect = option => {
     var _a;
 
-    var parentNodes = [];
-    var current = option;
+    const parentNodes = [];
+    let current = option;
 
     while (current) {
       parentNodes.unshift(current);
-      var next = optionsParentMap.get(current[valueName]);
+      const next = optionsParentMap.get(current[valueName]);
       current = next;
     }
 
-    var keys = parentNodes.map(function (i) {
-      return i[valueName];
-    });
+    const keys = parentNodes.map(i => i[valueName]);
     setExpandKeys(keys);
     (_a = props.onExpand) === null || _a === void 0 ? void 0 : _a.call(props, keys, parentNodes);
   }; // 渲染全选节点
 
 
-  var renderSelectAllItem = function renderSelectAllItem(columnOptions, index) {
+  const renderSelectAllItem = (columnOptions, index) => {
     var _a;
 
-    var text = (_a = props.selectAllText) === null || _a === void 0 ? void 0 : _a[index];
+    const text = (_a = props.selectAllText) === null || _a === void 0 ? void 0 : _a[index];
 
     if (!text) {
       return;
     }
 
-    var currentLeafKeys = [];
-    columnOptions.forEach(function (option) {
+    let currentLeafKeys = [];
+    columnOptions.forEach(option => {
       currentLeafKeys = currentLeafKeys.concat(getLeafKeys(option));
     });
-    var allSelected = currentLeafKeys.every(function (i) {
-      return allSelectedLeafKeys.includes(i);
-    });
-    return /*#__PURE__*/React.createElement("div", {
-      onClick: function onClick() {
+    const allSelected = currentLeafKeys.every(i => allSelectedLeafKeys.includes(i));
+    return React.createElement("div", {
+      onClick: () => {
         if (allSelected) {
-          onChange(allSelectedLeafKeys.filter(function (i) {
-            return !currentLeafKeys.includes(i);
-          }));
+          onChange(allSelectedLeafKeys.filter(i => !currentLeafKeys.includes(i)));
         } else {
           onChange(allSelectedLeafKeys.concat(currentLeafKeys));
         }
       },
-      className: classPrefix + "-item"
+      className: `${classPrefix}-item`
     }, text);
   }; // 渲染
 
 
-  var renderSelectAllLeafItem = function renderSelectAllLeafItem(columnOptions, index) {
+  const renderSelectAllLeafItem = (columnOptions, index) => {
     var _a;
 
-    var text = (_a = props.selectAllText) === null || _a === void 0 ? void 0 : _a[index];
+    const text = (_a = props.selectAllText) === null || _a === void 0 ? void 0 : _a[index];
 
     if (!text) {
       return;
     }
 
-    var currentLeafKeys = columnOptions.map(function (i) {
-      return i[valueName];
-    });
-    var allSelected = currentLeafKeys.every(function (i) {
-      return allSelectedLeafKeys.includes(i);
-    });
-    var halfSelected = allSelected ? false : currentLeafKeys.some(function (i) {
-      return allSelectedLeafKeys.includes(i);
-    });
-    return /*#__PURE__*/React.createElement("div", {
-      onClick: function onClick() {
+    const currentLeafKeys = columnOptions.map(i => i[valueName]);
+    const allSelected = currentLeafKeys.every(i => allSelectedLeafKeys.includes(i));
+    const halfSelected = allSelected ? false : currentLeafKeys.some(i => allSelectedLeafKeys.includes(i));
+    return React.createElement("div", {
+      onClick: () => {
         if (allSelected) {
-          onChange(allSelectedLeafKeys.filter(function (i) {
-            return !currentLeafKeys.includes(i);
-          }));
+          onChange(allSelectedLeafKeys.filter(i => !currentLeafKeys.includes(i)));
         } else {
           onChange(allSelectedLeafKeys.concat(currentLeafKeys));
         }
       },
-      className: classNames(classPrefix + "-item", classPrefix + "-item-leaf")
-    }, /*#__PURE__*/React.createElement(Checkbox, {
-      className: classPrefix + "-item-checkbox",
+      className: classNames(`${classPrefix}-item`, `${classPrefix}-item-leaf`)
+    }, React.createElement(Checkbox, {
+      className: `${classPrefix}-item-checkbox`,
       checked: allSelected,
       indeterminate: halfSelected
     }), text);
   }; // 渲染节点
 
 
-  var renderItem = function renderItem(option) {
-    var _classNames;
-
-    var isExpand = expandKeys.includes(option[valueName]);
-    return /*#__PURE__*/React.createElement("div", {
+  const renderItem = option => {
+    const isExpand = expandKeys.includes(option[valueName]);
+    return React.createElement("div", {
       key: option[valueName],
-      onClick: function onClick() {
+      onClick: () => {
         if (!isExpand) {
           onItemSelect(option);
         }
       },
-      className: classNames(classPrefix + "-item", (_classNames = {}, _classNames[classPrefix + "-item-expand"] = isExpand, _classNames))
-    }, option[labelName], !!dotMap.get(option[valueName]) && /*#__PURE__*/React.createElement("div", {
-      className: classPrefix + "-dot"
+      className: classNames(`${classPrefix}-item`, {
+        [`${classPrefix}-item-expand`]: isExpand
+      })
+    }, option[labelName], !!dotMap.get(option[valueName]) && React.createElement("div", {
+      className: `${classPrefix}-dot`
     }));
   }; // 渲染叶子节点
 
 
-  var renderLeafItem = function renderLeafItem(option) {
-    var isSelected = allSelectedLeafKeys.includes(option[valueName]);
-    return /*#__PURE__*/React.createElement("div", {
+  const renderLeafItem = option => {
+    const isSelected = allSelectedLeafKeys.includes(option[valueName]);
+    return React.createElement("div", {
       key: option[valueName],
-      onClick: function onClick() {
+      onClick: () => {
         if (isSelected) {
-          onChange(allSelectedLeafKeys.filter(function (val) {
-            return val !== option[valueName];
-          }));
+          onChange(allSelectedLeafKeys.filter(val => val !== option[valueName]));
         } else {
-          onChange([].concat(allSelectedLeafKeys, [option[valueName]]));
+          onChange([...allSelectedLeafKeys, option[valueName]]);
         }
       },
-      className: classNames(classPrefix + "-item", classPrefix + "-item-leaf")
-    }, /*#__PURE__*/React.createElement(Checkbox, {
-      className: classPrefix + "-item-checkbox",
+      className: classNames(`${classPrefix}-item`, `${classPrefix}-item-leaf`)
+    }, React.createElement(Checkbox, {
+      className: `${classPrefix}-item-checkbox`,
       checked: isSelected
     }), option[labelName]);
   };
 
-  var renderItems = function renderItems(columnOptions, index) {
-    if (columnOptions === void 0) {
-      columnOptions = [];
-    }
-
+  const renderItems = (columnOptions = [], index) => {
     if (columnOptions.length === 0) {
       return;
     }
 
-    var isLeaf = deep === index + 1;
+    const isLeaf = deep === index + 1;
 
     if (isLeaf) {
-      return /*#__PURE__*/React.createElement(React.Fragment, null, renderSelectAllLeafItem(columnOptions, index), columnOptions.map(function (option) {
+      return React.createElement(React.Fragment, null, renderSelectAllLeafItem(columnOptions, index), columnOptions.map(option => {
         return renderLeafItem(option);
       }));
     }
 
-    return /*#__PURE__*/React.createElement(React.Fragment, null, renderSelectAllItem(columnOptions, index), columnOptions.map(function (option) {
+    return React.createElement(React.Fragment, null, renderSelectAllItem(columnOptions, index), columnOptions.map(option => {
       return renderItem(option);
     }));
   };
 
-  var renderColumns = function renderColumns() {
+  const renderColumns = () => {
     var _a;
 
-    var columns = [];
+    const columns = [];
 
-    for (var i = 0; i < deep; i++) {
-      var width = 100 / deep + "%"; // 两列的第一列宽度为 33.33，两列的第二列为 66.67%
+    for (let i = 0; i < deep; i++) {
+      let width = `${100 / deep}%`; // 两列的第一列宽度为 33.33，两列的第二列为 66.67%
 
       if (deep === 2 && i === 0) {
-        width = "33.33%";
+        width = `33.33%`;
       }
 
       if (deep === 2 && i === 1) {
-        width = "66.67%";
+        width = `66.67%`;
       }
 
-      var column = /*#__PURE__*/React.createElement("div", {
+      const column = React.createElement("div", {
         key: i,
-        className: classNames(classPrefix + "-column"),
+        className: classNames(`${classPrefix}-column`),
         style: {
-          width: width
+          width
         }
       }, renderItems(i === 0 ? props.options : (_a = optionsMap.get(expandKeys[i - 1])) === null || _a === void 0 ? void 0 : _a[childrenName], i));
       columns.push(column);
@@ -340,7 +300,7 @@ export var Multiple = function Multiple(p) {
     return columns;
   };
 
-  return withNativeProps(props, /*#__PURE__*/React.createElement("div", {
+  return withNativeProps(props, React.createElement("div", {
     className: classPrefix
   }, renderColumns()));
 };

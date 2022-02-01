@@ -7,37 +7,35 @@ import { useSpring, animated } from '@react-spring/web';
 import { usePropsValue } from '../../utils/use-props-value';
 import { useMount, useUpdateLayoutEffect } from 'ahooks';
 import { useShouldRender } from '../../utils/use-should-render';
-var classPrefix = "adm-collapse";
-export var CollapsePanel = function CollapsePanel() {
+const classPrefix = `adm-collapse`;
+export const CollapsePanel = () => {
   return null;
 };
 
-var CollapsePanelContent = function CollapsePanelContent(props) {
-  var visible = props.visible;
-  var innerRef = useRef(null);
-  var shouldRender = useShouldRender(visible, props.forceRender, props.destroyOnClose);
-
-  var _useSpring = useSpring(function () {
-    return {
-      from: {
-        height: 0
-      }
-    };
-  }),
-      height = _useSpring[0].height,
-      api = _useSpring[1];
-
-  useMount(function () {
+const CollapsePanelContent = props => {
+  const {
+    visible
+  } = props;
+  const innerRef = useRef(null);
+  const shouldRender = useShouldRender(visible, props.forceRender, props.destroyOnClose);
+  const [{
+    height
+  }, api] = useSpring(() => ({
+    from: {
+      height: 0
+    }
+  }));
+  useMount(() => {
     if (!visible) return;
-    var inner = innerRef.current;
+    const inner = innerRef.current;
     if (!inner) return;
     api.start({
       height: inner.offsetHeight,
       immediate: true
     });
   });
-  useUpdateLayoutEffect(function () {
-    var inner = innerRef.current;
+  useUpdateLayoutEffect(() => {
+    const inner = innerRef.current;
     if (!inner) return;
 
     if (visible) {
@@ -54,10 +52,10 @@ var CollapsePanelContent = function CollapsePanelContent(props) {
       });
     }
   }, [visible]);
-  return /*#__PURE__*/React.createElement(animated.div, {
-    className: classPrefix + "-panel-content",
+  return React.createElement(animated.div, {
+    className: `${classPrefix}-panel-content`,
     style: {
-      height: height.to(function (v) {
+      height: height.to(v => {
         if (height.idle && visible) {
           return 'auto';
         } else {
@@ -65,27 +63,26 @@ var CollapsePanelContent = function CollapsePanelContent(props) {
         }
       })
     }
-  }, /*#__PURE__*/React.createElement("div", {
-    className: classPrefix + "-panel-content-inner",
+  }, React.createElement("div", {
+    className: `${classPrefix}-panel-content-inner`,
     ref: innerRef
-  }, /*#__PURE__*/React.createElement(List.Item, null, shouldRender && props.children)));
+  }, React.createElement(List.Item, null, shouldRender && props.children)));
 };
 
-export var Collapse = function Collapse(props) {
+export const Collapse = props => {
   var _a;
 
-  var panels = [];
-  React.Children.forEach(props.children, function (child) {
-    if (! /*#__PURE__*/React.isValidElement(child)) return;
-    var key = child.key;
+  const panels = [];
+  React.Children.forEach(props.children, child => {
+    if (!React.isValidElement(child)) return;
+    const key = child.key;
     if (typeof key !== 'string') return;
     panels.push(child);
   });
-
-  var _usePropsValue = usePropsValue(props.accordion ? {
+  const [activeKey, setActiveKey] = usePropsValue(props.accordion ? {
     value: props.activeKey === undefined ? undefined : props.activeKey === null ? [] : [props.activeKey],
     defaultValue: props.defaultActiveKey === undefined || props.defaultActiveKey === null ? [] : [props.defaultActiveKey],
-    onChange: function onChange(v) {
+    onChange: v => {
       var _a, _b;
 
       (_a = props.onChange) === null || _a === void 0 ? void 0 : _a.call(props, (_b = v[0]) !== null && _b !== void 0 ? _b : null);
@@ -94,18 +91,13 @@ export var Collapse = function Collapse(props) {
     value: props.activeKey,
     defaultValue: (_a = props.defaultActiveKey) !== null && _a !== void 0 ? _a : [],
     onChange: props.onChange
-  }),
-      activeKey = _usePropsValue[0],
-      setActiveKey = _usePropsValue[1];
-
-  var activeKeyList = activeKey === null ? [] : Array.isArray(activeKey) ? activeKey : [activeKey];
-  return withNativeProps(props, /*#__PURE__*/React.createElement("div", {
+  });
+  const activeKeyList = activeKey === null ? [] : Array.isArray(activeKey) ? activeKey : [activeKey];
+  return withNativeProps(props, React.createElement("div", {
     className: classPrefix
-  }, /*#__PURE__*/React.createElement(List, null, panels.map(function (panel) {
-    var _classNames2;
-
-    var key = panel.key;
-    var active = activeKeyList.includes(key);
+  }, React.createElement(List, null, panels.map(panel => {
+    const key = panel.key;
+    const active = activeKeyList.includes(key);
 
     function handleClick(event) {
       var _a, _b;
@@ -118,21 +110,17 @@ export var Collapse = function Collapse(props) {
         }
       } else {
         if (active) {
-          setActiveKey(activeKeyList.filter(function (v) {
-            return v !== key;
-          }));
+          setActiveKey(activeKeyList.filter(v => v !== key));
         } else {
-          setActiveKey([].concat(activeKeyList, [key]));
+          setActiveKey([...activeKeyList, key]);
         }
       }
 
       (_b = (_a = panel.props).onClick) === null || _b === void 0 ? void 0 : _b.call(_a, event);
     }
 
-    var renderArrow = function renderArrow() {
-      var _classNames;
-
-      var arrow = /*#__PURE__*/React.createElement(DownOutline, null);
+    const renderArrow = () => {
+      let arrow = React.createElement(DownOutline, null);
 
       if (props.arrow !== undefined) {
         arrow = props.arrow;
@@ -142,18 +130,21 @@ export var Collapse = function Collapse(props) {
         arrow = panel.props.arrow;
       }
 
-      return typeof arrow === 'function' ? arrow(active) : /*#__PURE__*/React.createElement("div", {
-        className: classNames(classPrefix + "-arrow", (_classNames = {}, _classNames[classPrefix + "-arrow-active"] = active, _classNames))
+      return typeof arrow === 'function' ? arrow(active) : React.createElement("div", {
+        className: classNames(`${classPrefix}-arrow`, {
+          [`${classPrefix}-arrow-active`]: active
+        })
       }, arrow);
     };
 
-    return /*#__PURE__*/React.createElement(React.Fragment, {
+    return React.createElement(React.Fragment, {
       key: key
-    }, withNativeProps(panel.props, /*#__PURE__*/React.createElement(List.Item, {
-      className: classNames(classPrefix + "-panel-header", (_classNames2 = {}, _classNames2[classPrefix + "-panel-header-disabled"] = panel.props.disabled, _classNames2)),
-      onClick: panel.props.disabled ? undefined : handleClick,
+    }, withNativeProps(panel.props, React.createElement(List.Item, {
+      className: `${classPrefix}-panel-header`,
+      onClick: handleClick,
+      disabled: panel.props.disabled,
       arrow: renderArrow()
-    }, panel.props.title)), /*#__PURE__*/React.createElement(CollapsePanelContent, {
+    }, panel.props.title)), React.createElement(CollapsePanelContent, {
       visible: active,
       forceRender: !!panel.props.forceRender,
       destroyOnClose: !!panel.props.destroyOnClose

@@ -1,25 +1,30 @@
 .adm-list {
+  --header-font-size: 14px;
   --prefix-width: 'auto';
+  --prefix-padding-right: 12px;
   --align-items: center;
   --active-background-color: var(--adm-border-color);
   --border-inner: solid 1px var(--adm-border-color);
   --border-top: solid 1px var(--adm-border-color);
   --border-bottom: solid 1px var(--adm-border-color);
   --padding-left: 12px;
+  --padding-right: 12px;
+  --font-size: 17px;
 }
 .adm-list-header {
   color: var(--adm-color-weak);
-  font-size: 14px;
-  padding-left: 12px;
+  font-size: var(--header-font-size);
+  padding-left: var(--padding-left);
+  padding-right: var(--padding-right);
   margin: 16px 0 4px;
 }
 .adm-list-body {
   background-color: #ffffff;
   overflow: hidden;
-  font-size: 17px;
+  font-size: var(--font-size);
 }
 .adm-list-body-inner {
-  margin-bottom: -1px;
+  margin-top: -1px;
 }
 .adm-list-default .adm-list-body {
   border-top: var(--border-top);
@@ -34,6 +39,7 @@
 .adm-list-item {
   display: block;
   padding-left: var(--padding-left);
+  position: relative;
 }
 .adm-list-item-title,
 .adm-list-item-description {
@@ -44,16 +50,17 @@
   display: flex;
   align-items: var(--align-items);
   justify-content: flex-start;
-  padding: 12px 12px 12px 0;
-  border-bottom: var(--border-inner);
+  border-top: var(--border-inner);
+  padding-right: var(--padding-right);
 }
 .adm-list-item-content-prefix {
   width: var(--prefix-width);
   flex: none;
-  padding-right: 12px;
+  padding-right: var(--prefix-padding-right);
 }
 .adm-list-item-content-main {
   flex: auto;
+  padding: 12px 0;
 }
 .adm-list-item-content-extra {
   flex: none;
@@ -67,7 +74,7 @@
   align-items: center;
   margin-left: 4px;
   color: var(--adm-color-light);
-  font-size: 18px;
+  font-size: 19px;
 }
 .adm-list-item-disabled {
   cursor: not-allowed;
@@ -76,9 +83,15 @@
   opacity: 0.4;
   pointer-events: none;
 }
-a.adm-list-item:active {
+a.adm-list-item:active:not(.adm-list-item-disabled) {
   background-color: var(--active-background-color);
 }
-a.adm-list-item.adm-list-item-disabled:active {
-  background-color: unset;
+a.adm-list-item:active:not(.adm-list-item-disabled)::after {
+  content: ' ';
+  display: block;
+  position: absolute;
+  width: 100%;
+  bottom: -1px;
+  left: 0;
+  border-bottom: var(--border-inner);
 }

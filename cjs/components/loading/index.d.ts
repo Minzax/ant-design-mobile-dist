@@ -1,4 +1,5 @@
-import './loading.less';
-import { Loading } from './loading';
-export type { LoadingProps } from './loading';
-export default Loading;
+import '../dot-loading/dot-loading.less';
+import { DotLoading } from '../dot-loading/dot-loading';
+import type { DotLoadingProps } from '../dot-loading';
+export declare type LoadingProps = DotLoadingProps;
+export default DotLoading;

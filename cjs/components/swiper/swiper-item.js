@@ -9,10 +9,10 @@ var _react = _interopRequireDefault(require("react"));
 
 var _nativeProps = require("../../utils/native-props");
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var SwiperItem = function SwiperItem(props) {
-  return (0, _nativeProps.withNativeProps)(props, /*#__PURE__*/_react["default"].createElement("div", {
+const SwiperItem = props => {
+  return (0, _nativeProps.withNativeProps)(props, _react.default.createElement("div", {
     className: 'adm-swiper-item',
     onClick: props.onClick
   }, props.children));

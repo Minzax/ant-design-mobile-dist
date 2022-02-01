@@ -6,47 +6,40 @@ import { ItemChildrenWrap } from './item';
 import { withNativeProps } from '../../utils/native-props';
 import { mergeProps } from '../../utils/with-default-props';
 import { usePropsValue } from '../../utils/use-props-value';
-var classPrefix = "adm-dropdown";
-var defaultProps = {
+const classPrefix = `adm-dropdown`;
+const defaultProps = {
   defaultActiveKey: null,
-  closeOnMaskClick: true
+  closeOnMaskClick: true,
+  closeOnClickAway: false
 };
-var Dropdown = /*#__PURE__*/forwardRef(function (p, ref) {
-  var _classNames;
-
-  var props = mergeProps(defaultProps, p);
-
-  var _usePropsValue = usePropsValue({
+const Dropdown = forwardRef((p, ref) => {
+  const props = mergeProps(defaultProps, p);
+  const [value, setValue] = usePropsValue({
     value: props.activeKey,
     defaultValue: props.defaultActiveKey,
     onChange: props.onChange
-  }),
-      value = _usePropsValue[0],
-      setValue = _usePropsValue[1];
+  });
+  const navRef = useRef(null);
+  const contentRef = useRef(null); // 点击外部区域，关闭
 
-  var navRef = useRef(null);
-  var contentRef = useRef(null); // 点击外部区域，关闭
-
-  useClickAway(function () {
+  useClickAway(() => {
+    if (!props.closeOnClickAway) return;
     setValue(null);
   }, [navRef, contentRef]); // 计算 navs 的 top 值
 
-  var _useState = useState(),
-      top = _useState[0],
-      setTop = _useState[1];
-
-  var containerRef = useRef(null);
-  useEffect(function () {
-    var container = containerRef.current;
+  const [top, setTop] = useState();
+  const containerRef = useRef(null);
+  useEffect(() => {
+    const container = containerRef.current;
     if (!container) return;
 
     if (value) {
-      var rect = container.getBoundingClientRect();
+      const rect = container.getBoundingClientRect();
       setTop(rect.bottom);
     }
   }, [value]);
 
-  var changeActive = function changeActive(key) {
+  const changeActive = key => {
     if (value === key) {
       setValue(null);
     } else {
@@ -54,12 +47,12 @@ var Dropdown = /*#__PURE__*/forwardRef(function (p, ref) {
     }
   };
 
-  var popupForceRender = false;
-  var items = [];
-  var navs = React.Children.map(props.children, function (child) {
-    if ( /*#__PURE__*/React.isValidElement(child)) {
-      var childProps = Object.assign(Object.assign({}, child.props), {
-        onClick: function onClick() {
+  let popupForceRender = false;
+  const items = [];
+  const navs = React.Children.map(props.children, child => {
+    if (React.isValidElement(child)) {
+      const childProps = Object.assign(Object.assign({}, child.props), {
+        onClick: () => {
           changeActive(child.key);
         },
         active: child.key === value,
@@ -67,42 +60,42 @@ var Dropdown = /*#__PURE__*/forwardRef(function (p, ref) {
       });
       items.push(child);
       if (child.props.forceRender) popupForceRender = true;
-      return /*#__PURE__*/cloneElement(child, childProps);
+      return cloneElement(child, childProps);
     } else {
       return child;
     }
   });
-  useImperativeHandle(ref, function () {
-    return {
-      close: function close() {
-        setValue(null);
-      }
-    };
-  }, [setValue]);
-  return withNativeProps(props, /*#__PURE__*/React.createElement("div", {
-    className: classNames(classPrefix, (_classNames = {}, _classNames[classPrefix + "-open"] = !!value, _classNames)),
+  useImperativeHandle(ref, () => ({
+    close: () => {
+      setValue(null);
+    }
+  }), [setValue]);
+  return withNativeProps(props, React.createElement("div", {
+    className: classNames(classPrefix, {
+      [`${classPrefix}-open`]: !!value
+    }),
     ref: containerRef
-  }, /*#__PURE__*/React.createElement("div", {
-    className: classPrefix + "-nav",
+  }, React.createElement("div", {
+    className: `${classPrefix}-nav`,
     ref: navRef
-  }, navs), /*#__PURE__*/React.createElement(Popup, {
+  }, navs), React.createElement(Popup, {
     visible: !!value,
     position: 'top',
-    className: classPrefix + "-popup",
-    maskClassName: classPrefix + "-popup-mask",
-    bodyClassName: classPrefix + "-popup-body",
+    className: `${classPrefix}-popup`,
+    maskClassName: `${classPrefix}-popup-mask`,
+    bodyClassName: `${classPrefix}-popup-body`,
     style: {
-      top: top
+      top
     },
     forceRender: popupForceRender,
-    onMaskClick: props.closeOnMaskClick ? function () {
+    onMaskClick: props.closeOnMaskClick ? () => {
       changeActive(null);
     } : undefined
-  }, /*#__PURE__*/React.createElement("div", {
+  }, React.createElement("div", {
     ref: contentRef
-  }, items.map(function (item) {
-    var isActive = item.key === value;
-    return /*#__PURE__*/React.createElement(ItemChildrenWrap, {
+  }, items.map(item => {
+    const isActive = item.key === value;
+    return React.createElement(ItemChildrenWrap, {
       key: item.key,
       active: isActive,
       forceRender: item.props.forceRender,

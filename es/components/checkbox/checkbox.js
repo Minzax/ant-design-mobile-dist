@@ -6,28 +6,23 @@ import { usePropsValue } from '../../utils/use-props-value';
 import { mergeProps } from '../../utils/with-default-props';
 import { devWarning } from '../../utils/dev-log';
 import { CheckIcon } from './check-icon';
-var classPrefix = "adm-checkbox";
-var defaultProps = {
+import { IndeterminateIcon } from './indeterminate-icon';
+const classPrefix = `adm-checkbox`;
+const defaultProps = {
   defaultChecked: false,
   indeterminate: false
 };
-export var Checkbox = function Checkbox(p) {
-  var _classNames;
-
-  var groupContext = useContext(CheckboxGroupContext);
-  var props = mergeProps(defaultProps, p);
-
-  var _usePropsValue = usePropsValue({
+export const Checkbox = p => {
+  const groupContext = useContext(CheckboxGroupContext);
+  const props = mergeProps(defaultProps, p);
+  let [checked, setChecked] = usePropsValue({
     value: props.checked,
     defaultValue: props.defaultChecked,
     onChange: props.onChange
-  }),
-      checked = _usePropsValue[0],
-      setChecked = _usePropsValue[1];
+  });
+  let disabled = props.disabled;
 
-  var disabled = props.disabled;
-
-  var usageWarning = function usageWarning() {
+  const usageWarning = () => {
     if (p.checked !== undefined) {
       devWarning('Checkbox', 'When used with `Checkbox.Group`, the `checked` prop of `Checkbox` will not work if `value` prop of `Checkbox` is not undefined.');
     }
@@ -37,13 +32,15 @@ export var Checkbox = function Checkbox(p) {
     }
   };
 
-  var value = props.value;
+  const {
+    value
+  } = props;
 
   if (groupContext && value !== undefined) {
     usageWarning();
     checked = groupContext.value.includes(value);
 
-    setChecked = function setChecked(checked) {
+    setChecked = checked => {
       var _a;
 
       if (checked) {
@@ -58,37 +55,38 @@ export var Checkbox = function Checkbox(p) {
     disabled = disabled || groupContext.disabled;
   }
 
-  var renderIcon = function renderIcon() {
+  const renderIcon = () => {
     if (props.icon) {
-      return /*#__PURE__*/React.createElement("div", {
-        className: classPrefix + "-custom-icon"
+      return React.createElement("div", {
+        className: `${classPrefix}-custom-icon`
       }, props.icon(checked, props.indeterminate));
     }
 
-    return /*#__PURE__*/React.createElement("div", {
-      className: classPrefix + "-icon"
-    }, props.indeterminate ? /*#__PURE__*/React.createElement("div", {
-      className: classPrefix + "-indeterminate-checked"
-    }) : checked && /*#__PURE__*/React.createElement(CheckIcon, {
-      className: classPrefix + "-icon-checked"
-    }));
+    return React.createElement("div", {
+      className: `${classPrefix}-icon`
+    }, props.indeterminate ? React.createElement(IndeterminateIcon, null) : checked && React.createElement(CheckIcon, null));
   };
 
-  return withNativeProps(props, /*#__PURE__*/React.createElement("label", {
-    className: classNames(classPrefix, (_classNames = {}, _classNames[classPrefix + "-checked"] = checked, _classNames[classPrefix + "-indeterminate"] = props.indeterminate, _classNames[classPrefix + "-disabled"] = disabled, _classNames[classPrefix + "-block"] = props.block, _classNames))
-  }, /*#__PURE__*/React.createElement("input", {
+  return withNativeProps(props, React.createElement("label", {
+    className: classNames(classPrefix, {
+      [`${classPrefix}-checked`]: checked && !props.indeterminate,
+      [`${classPrefix}-indeterminate`]: props.indeterminate,
+      [`${classPrefix}-disabled`]: disabled,
+      [`${classPrefix}-block`]: props.block
+    })
+  }, React.createElement("input", {
     type: 'checkbox',
     checked: checked,
-    onChange: function onChange(e) {
+    onChange: e => {
       setChecked(e.target.checked);
     },
-    onClick: function onClick(e) {
+    onClick: e => {
       e.stopPropagation();
       e.nativeEvent.stopImmediatePropagation();
     },
     disabled: disabled,
     id: props.id
-  }), renderIcon(), props.children && /*#__PURE__*/React.createElement("div", {
-    className: classPrefix + "-content"
+  }), renderIcon(), props.children && React.createElement("div", {
+    className: `${classPrefix}-content`
   }, props.children)));
 };

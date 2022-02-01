@@ -7,70 +7,63 @@ import Grid from '../grid';
 import { convertPx } from '../../utils/convert-px';
 import { usePropsValue } from '../../utils/use-props-value';
 import { CheckMark } from './check-mark';
-var classPrefix = "adm-selector";
-var defaultProps = {
+const classPrefix = `adm-selector`;
+const defaultProps = {
   multiple: false,
   defaultValue: []
 };
-export var Selector = function Selector(p) {
-  var props = mergeProps(defaultProps, p);
-
-  var _usePropsValue = usePropsValue({
+export const Selector = p => {
+  const props = mergeProps(defaultProps, p);
+  const [value, setValue] = usePropsValue({
     value: props.value,
     defaultValue: props.defaultValue,
-    onChange: function onChange(val) {
+    onChange: val => {
       var _a;
 
-      var extend = {
+      const extend = {
         get items() {
-          return props.options.filter(function (option) {
-            return val.includes(option.value);
-          });
+          return props.options.filter(option => val.includes(option.value));
         }
 
       };
       (_a = props.onChange) === null || _a === void 0 ? void 0 : _a.call(props, val, extend);
     }
-  }),
-      value = _usePropsValue[0],
-      setValue = _usePropsValue[1];
-
-  var items = props.options.map(function (option) {
-    var _classNames;
-
-    var active = (value || []).includes(option.value);
-    var disabled = option.disabled || props.disabled;
-    var itemCls = classNames(classPrefix + "-item", (_classNames = {}, _classNames[classPrefix + "-item-active"] = active && !props.multiple, _classNames[classPrefix + "-item-multiple-active"] = active && props.multiple, _classNames[classPrefix + "-item-disabled"] = disabled, _classNames));
-    return /*#__PURE__*/React.createElement("div", {
+  });
+  const items = props.options.map(option => {
+    const active = (value || []).includes(option.value);
+    const disabled = option.disabled || props.disabled;
+    const itemCls = classNames(`${classPrefix}-item`, {
+      [`${classPrefix}-item-active`]: active && !props.multiple,
+      [`${classPrefix}-item-multiple-active`]: active && props.multiple,
+      [`${classPrefix}-item-disabled`]: disabled
+    });
+    return React.createElement("div", {
       key: option.value,
       className: itemCls,
-      onClick: function onClick() {
+      onClick: () => {
         if (disabled) {
           return;
         }
 
         if (props.multiple) {
-          var val = active ? value.filter(function (v) {
-            return v !== option.value;
-          }) : [].concat(value, [option.value]);
+          const val = active ? value.filter(v => v !== option.value) : [...value, option.value];
           setValue(val);
         } else {
-          var _val = active ? [] : [option.value];
-
-          setValue(_val);
+          const val = active ? [] : [option.value];
+          setValue(val);
         }
       }
-    }, option.label, option.description && /*#__PURE__*/React.createElement("div", {
-      className: classPrefix + "-item-description"
-    }, option.description), active && /*#__PURE__*/React.createElement("div", {
-      className: classPrefix + "-check-mark-wrapper"
-    }, /*#__PURE__*/React.createElement(CheckMark, null)));
+    }, option.label, option.description && React.createElement("div", {
+      className: `${classPrefix}-item-description`
+    }, option.description), active && React.createElement("div", {
+      className: `${classPrefix}-check-mark-wrapper`
+    }, React.createElement(CheckMark, null)));
   });
-  return withNativeProps(props, /*#__PURE__*/React.createElement("div", {
+  return withNativeProps(props, React.createElement("div", {
     className: classPrefix
-  }, !props.columns && /*#__PURE__*/React.createElement(Space, {
+  }, !props.columns && React.createElement(Space, {
     wrap: true
-  }, items), props.columns && /*#__PURE__*/React.createElement(Grid, {
+  }, items), props.columns && React.createElement(Grid, {
     columns: props.columns,
     gap: convertPx(8)
   }, items)));

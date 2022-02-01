@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports["default"] = void 0;
+exports.default = void 0;
 
 require("./grid.css");
 
@@ -15,4 +15,4 @@ var _default = (0, _attachPropertiesToComponent.attachPropertiesToComponent)(_gr
   Item: _grid2.GridItem
 });
 
-exports["default"] = _default;
+exports.default = _default;

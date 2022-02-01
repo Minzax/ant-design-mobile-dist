@@ -1,7 +1,17 @@
 .adm-form .adm-list.adm-list {
-  --padding-left: 40px;
+  --padding-left: 32px;
+  --padding-right: 24px;
+}
+
+.adm-form-horizontal .adm-list.adm-list {
+  --prefix-width: 6em;
+  --align-items: stretch;
+}
+
+.adm-form-horizontal .adm-list.adm-list .adm-list-item-content-extra {
+  align-self: center;
 }
 
 .adm-form .adm-form-footer {
-  padding: 24px;
+  padding: 40px 24px;
 }

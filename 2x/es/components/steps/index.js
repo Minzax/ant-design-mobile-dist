@@ -3,5 +3,5 @@ import { attachPropertiesToComponent } from '../../utils/attach-properties-to-co
 import { Step } from './step';
 import { Steps } from './steps';
 export default attachPropertiesToComponent(Steps, {
-  Step: Step
+  Step
 });

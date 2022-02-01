@@ -13,15 +13,17 @@ var _nativeProps = require("../../utils/native-props");
 
 var _toCssLength = require("../../utils/to-css-length");
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var classPrefix = "adm-grid";
+const classPrefix = `adm-grid`;
 
-var Grid = function Grid(props) {
-  var style = {
+const Grid = props => {
+  const style = {
     '--columns': props.columns.toString()
   };
-  var gap = props.gap;
+  const {
+    gap
+  } = props;
 
   if (gap !== undefined) {
     if (Array.isArray(gap)) {
@@ -32,7 +34,7 @@ var Grid = function Grid(props) {
     }
   }
 
-  return (0, _nativeProps.withNativeProps)(props, /*#__PURE__*/_react["default"].createElement("div", {
+  return (0, _nativeProps.withNativeProps)(props, _react.default.createElement("div", {
     className: classPrefix,
     style: style
   }, props.children));
@@ -40,15 +42,15 @@ var Grid = function Grid(props) {
 
 exports.Grid = Grid;
 
-var GridItem = function GridItem(p) {
-  var props = (0, _withDefaultProps.mergeProps)({
+const GridItem = p => {
+  const props = (0, _withDefaultProps.mergeProps)({
     span: 1
   }, p);
-  var itemStyle = {
+  const itemStyle = {
     '--item-span': props.span
   };
-  return (0, _nativeProps.withNativeProps)(props, /*#__PURE__*/_react["default"].createElement("div", {
-    className: classPrefix + "-item",
+  return (0, _nativeProps.withNativeProps)(props, _react.default.createElement("div", {
+    className: `${classPrefix}-item`,
     style: itemStyle,
     onClick: props.onClick
   }, props.children));

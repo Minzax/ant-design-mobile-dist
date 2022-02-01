@@ -8,12 +8,9 @@ exports.useRefState = useRefState;
 var _react = require("react");
 
 function useRefState(initialState) {
-  var _useState = (0, _react.useState)(initialState),
-      state = _useState[0],
-      setState = _useState[1];
-
-  var ref = (0, _react.useRef)(state);
-  (0, _react.useLayoutEffect)(function () {
+  const [state, setState] = (0, _react.useState)(initialState);
+  const ref = (0, _react.useRef)(state);
+  (0, _react.useLayoutEffect)(() => {
     ref.current = state;
   }, [state]);
   return [state, setState, ref];

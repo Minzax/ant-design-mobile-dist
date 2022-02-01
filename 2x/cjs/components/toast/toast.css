@@ -43,5 +43,6 @@
 }
 
 .adm-toast-loading {
-  font-size: 48px;
+  --size: 96px;
+  margin: 0 auto 16px;
 }

@@ -1,9 +1,5 @@
-.adm-collapse-panel-header-disabled {
-  color: var(--adm-color-light);
-  cursor: not-allowed;
-}
-.adm-collapse-panel-header-disabled .adm-collapse-arrow {
-  color: var(--adm-color-light);
+.adm-collapse-panel-header .adm-list-item-content-main {
+  padding: 12px 0;
 }
 .adm-collapse-arrow {
   transform: rotate(0deg);

@@ -3,22 +3,20 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports["default"] = void 0;
+exports.default = void 0;
 
 var _mergeLocale = require("../utils/merge-locale");
 
 var _base = require("./base");
 
-var zhCN = (0, _mergeLocale.mergeLocale)(_base.base, {
+const zhCN = (0, _mergeLocale.mergeLocale)(_base.base, {
   common: {
     confirm: '确定',
     cancel: '取消'
   },
   Calendar: {
     markItems: ['一', '二', '三', '四', '五', '六', '日'],
-    renderYearAndMonth: function renderYearAndMonth(year, month) {
-      return year + "\u5E74" + month + "\u6708";
-    }
+    renderYearAndMonth: (year, month) => `${year}年${month}月`
   },
   Cascader: {
     placeholder: '请选择'
@@ -27,7 +25,7 @@ var zhCN = (0, _mergeLocale.mergeLocale)(_base.base, {
     ok: '我知道了'
   },
   ErrorBlock: {
-    "default": {
+    default: {
       title: '页面遇到一些小问题',
       description: '待会来试试'
     },
@@ -55,4 +53,4 @@ var zhCN = (0, _mergeLocale.mergeLocale)(_base.base, {
   }
 });
 var _default = zhCN;
-exports["default"] = _default;
+exports.default = _default;

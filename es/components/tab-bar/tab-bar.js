@@ -5,22 +5,22 @@ import { mergeProps } from '../../utils/with-default-props';
 import Badge from '../badge';
 import SafeArea from '../safe-area';
 import { usePropsValue } from '../../utils/use-props-value';
-export var TabBarItem = function TabBarItem() {
+export const TabBarItem = () => {
   return null;
 };
-var classPrefix = "adm-tab-bar";
-var defaultProps = {
+const classPrefix = `adm-tab-bar`;
+const defaultProps = {
   safeArea: false
 };
-export var TabBar = function TabBar(p) {
+export const TabBar = p => {
   var _a;
 
-  var props = mergeProps(defaultProps, p);
-  var firstActiveKey = null;
-  var items = [];
-  React.Children.forEach(props.children, function (child, index) {
-    if (! /*#__PURE__*/React.isValidElement(child)) return;
-    var key = child.key;
+  const props = mergeProps(defaultProps, p);
+  let firstActiveKey = null;
+  const items = [];
+  React.Children.forEach(props.children, (child, index) => {
+    if (!React.isValidElement(child)) return;
+    const key = child.key;
     if (typeof key !== 'string') return;
 
     if (index === 0) {
@@ -29,57 +29,60 @@ export var TabBar = function TabBar(p) {
 
     items.push(child);
   });
-
-  var _usePropsValue = usePropsValue({
+  const [activeKey, setActiveKey] = usePropsValue({
     value: props.activeKey,
     defaultValue: (_a = props.defaultActiveKey) !== null && _a !== void 0 ? _a : firstActiveKey,
-    onChange: props.onChange
-  }),
-      activeKey = _usePropsValue[0],
-      setActiveKey = _usePropsValue[1];
+    onChange: v => {
+      var _a;
 
-  return withNativeProps(props, /*#__PURE__*/React.createElement("div", {
+      if (v === null) return;
+      (_a = props.onChange) === null || _a === void 0 ? void 0 : _a.call(props, v);
+    }
+  });
+  return withNativeProps(props, React.createElement("div", {
     className: classPrefix
-  }, /*#__PURE__*/React.createElement("div", {
-    className: classPrefix + "-wrap"
-  }, items.map(function (item) {
-    var _classNames;
-
-    var active = item.key === activeKey;
+  }, React.createElement("div", {
+    className: `${classPrefix}-wrap`
+  }, items.map(item => {
+    const active = item.key === activeKey;
 
     function renderContent() {
-      var iconElement = item.props.icon && /*#__PURE__*/React.createElement("div", {
-        className: classPrefix + "-item-icon"
+      const iconElement = item.props.icon && React.createElement("div", {
+        className: `${classPrefix}-item-icon`
       }, typeof item.props.icon === 'function' ? item.props.icon(active) : item.props.icon);
-      var titleElement = item.props.title && /*#__PURE__*/React.createElement("div", {
-        className: classPrefix + "-item-title"
+      const titleElement = item.props.title && React.createElement("div", {
+        className: `${classPrefix}-item-title`
       }, item.props.title);
 
       if (iconElement) {
-        return /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement(Badge, {
+        return React.createElement(React.Fragment, null, React.createElement(Badge, {
           content: item.props.badge,
-          className: classPrefix + "-icon-badge"
+          className: `${classPrefix}-icon-badge`
         }, iconElement), titleElement);
       } else if (titleElement) {
-        return /*#__PURE__*/React.createElement(Badge, {
+        return React.createElement(Badge, {
           content: item.props.badge,
-          className: classPrefix + "-title-badge"
+          className: `${classPrefix}-title-badge`
         }, titleElement);
       }
 
       return null;
     }
 
-    return withNativeProps(item.props, /*#__PURE__*/React.createElement("div", {
+    return withNativeProps(item.props, React.createElement("div", {
       key: item.key,
-      onClick: function onClick() {
-        var key = item.key;
+      onClick: () => {
+        const {
+          key
+        } = item;
         if (key === undefined || key === null) return;
         setActiveKey(key.toString());
       },
-      className: classNames(classPrefix + "-item", (_classNames = {}, _classNames[classPrefix + "-item-active"] = active, _classNames))
+      className: classNames(`${classPrefix}-item`, {
+        [`${classPrefix}-item-active`]: active
+      })
     }, renderContent()));
-  })), props.safeArea && /*#__PURE__*/React.createElement(SafeArea, {
+  })), props.safeArea && React.createElement(SafeArea, {
     position: 'bottom'
   })));
 };

@@ -4,26 +4,26 @@ import { withNativeProps } from '../../utils/native-props';
 import { CheckListContext } from './context';
 import { devWarning } from '../../utils/dev-log';
 import classNames from 'classnames';
-var classPrefix = "adm-check-list-item";
-export var CheckListItem = function CheckListItem(props) {
-  var context = useContext(CheckListContext);
+const classPrefix = `adm-check-list-item`;
+export const CheckListItem = props => {
+  const context = useContext(CheckListContext);
 
   if (context === null) {
     devWarning('CheckList.Item', 'CheckList.Item can only be used inside CheckList.');
     return null;
   }
 
-  var active = context.value.includes(props.value);
-  var readOnly = props.readOnly || context.readOnly;
-  var extra = /*#__PURE__*/React.createElement("div", {
-    className: classPrefix + "-extra"
+  const active = context.value.includes(props.value);
+  const readOnly = props.readOnly || context.readOnly;
+  const extra = React.createElement("div", {
+    className: `${classPrefix}-extra`
   }, active ? context.activeIcon : null);
-  return withNativeProps(props, /*#__PURE__*/React.createElement(List.Item, {
+  return withNativeProps(props, React.createElement(List.Item, {
     title: props.title,
-    className: classNames(classPrefix, readOnly && classPrefix + "-readonly"),
+    className: classNames(classPrefix, readOnly && `${classPrefix}-readonly`),
     description: props.description,
     prefix: props.prefix,
-    onClick: function onClick(e) {
+    onClick: e => {
       var _a;
 
       if (readOnly) return;

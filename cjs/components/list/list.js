@@ -13,23 +13,23 @@ var _nativeProps = require("../../utils/native-props");
 
 var _withDefaultProps = require("../../utils/with-default-props");
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var classPrefix = "adm-list";
-var defaultProps = {
+const classPrefix = `adm-list`;
+const defaultProps = {
   mode: 'default'
 };
 
-var List = function List(p) {
-  var props = (0, _withDefaultProps.mergeProps)(defaultProps, p);
-  return (0, _nativeProps.withNativeProps)(props, /*#__PURE__*/_react["default"].createElement("div", {
-    className: (0, _classnames["default"])(classPrefix, classPrefix + "-" + props.mode)
-  }, props.header && /*#__PURE__*/_react["default"].createElement("div", {
-    className: classPrefix + "-header"
-  }, props.header), /*#__PURE__*/_react["default"].createElement("div", {
-    className: classPrefix + "-body"
-  }, /*#__PURE__*/_react["default"].createElement("div", {
-    className: classPrefix + "-body-inner"
+const List = p => {
+  const props = (0, _withDefaultProps.mergeProps)(defaultProps, p);
+  return (0, _nativeProps.withNativeProps)(props, _react.default.createElement("div", {
+    className: (0, _classnames.default)(classPrefix, `${classPrefix}-${props.mode}`)
+  }, props.header && _react.default.createElement("div", {
+    className: `${classPrefix}-header`
+  }, props.header), _react.default.createElement("div", {
+    className: `${classPrefix}-body`
+  }, _react.default.createElement("div", {
+    className: `${classPrefix}-body-inner`
   }, props.children))));
 };
 

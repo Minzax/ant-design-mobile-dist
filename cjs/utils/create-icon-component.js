@@ -6,7 +6,7 @@ Object.defineProperty(exports, "__esModule", {
 exports.createIconComponent = createIconComponent;
 
 function createIconComponent(svg) {
-  var Icon = function Icon() {
+  const Icon = () => {
     return svg;
   };
 

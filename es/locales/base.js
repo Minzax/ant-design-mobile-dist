@@ -1,13 +1,11 @@
-export var base = {
+export const base = {
   common: {
     confirm: 'Confirm',
     cancel: 'Cancel'
   },
   Calendar: {
     markItems: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
-    renderYearAndMonth: function renderYearAndMonth(year, month) {
-      return year + "/" + month;
-    }
+    renderYearAndMonth: (year, month) => `${year}/${month}`
   },
   Cascader: {
     placeholder: 'Selecting'
@@ -16,7 +14,7 @@ export var base = {
     ok: 'OK'
   },
   ErrorBlock: {
-    "default": {
+    default: {
       title: 'Oops, something went wrong',
       description: 'Please wait a minute and try again'
     },

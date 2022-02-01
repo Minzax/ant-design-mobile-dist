@@ -34,13 +34,10 @@
 
 .adm-stepper .adm-stepper-input {
   height: var(--height);
-  background-color: var(--input-background-color);
-}
-
-.adm-stepper .adm-stepper-input > input {
-  text-align: center;
-  font-size: var(--input-font-size);
-  color: var(--input-font-color);
+  --background-color: var(--input-background-color);
+  --font-size: var(--input-font-size);
+  --color: var(--input-font-color);
+  --text-align: center;
 }
 
 .adm-stepper-minus,

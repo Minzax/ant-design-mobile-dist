@@ -1,5 +1,5 @@
 export function createIconComponent(svg) {
-  var Icon = function Icon() {
+  const Icon = () => {
     return svg;
   };
 

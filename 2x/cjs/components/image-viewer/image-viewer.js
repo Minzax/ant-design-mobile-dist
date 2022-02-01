@@ -5,7 +5,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.MultiImageViewer = exports.ImageViewer = void 0;
 
-var _react = _interopRequireDefault(require("react"));
+var _react = _interopRequireWildcard(require("react"));
 
 var _withDefaultProps = require("../../utils/with-default-props");
 
@@ -17,28 +17,32 @@ var _slide = require("./slide");
 
 var _slides = require("./slides");
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var classPrefix = "adm-image-viewer";
-var defaultProps = {
+function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function (nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
+
+function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
+
+const classPrefix = `adm-image-viewer`;
+const defaultProps = {
   maxZoom: 3,
   getContainer: null,
   visible: false
 };
 
-var ImageViewer = function ImageViewer(p) {
-  var props = (0, _withDefaultProps.mergeProps)(defaultProps, p);
+const ImageViewer = p => {
+  const props = (0, _withDefaultProps.mergeProps)(defaultProps, p);
 
-  var node = /*#__PURE__*/_react["default"].createElement(_mask["default"], {
+  const node = _react.default.createElement(_mask.default, {
     visible: props.visible,
     disableBodyScroll: false,
     opacity: 'thick',
     afterClose: props.afterClose
-  }, /*#__PURE__*/_react["default"].createElement("div", {
-    className: classPrefix + "-content"
-  }, props.image && /*#__PURE__*/_react["default"].createElement(_slide.Slide, {
+  }, _react.default.createElement("div", {
+    className: `${classPrefix}-content`
+  }, props.image && _react.default.createElement(_slide.Slide, {
     image: props.image,
-    onTap: function onTap() {
+    onTap: () => {
       var _a;
 
       (_a = props.onClose) === null || _a === void 0 ? void 0 : _a.call(props);
@@ -50,25 +54,25 @@ var ImageViewer = function ImageViewer(p) {
 };
 
 exports.ImageViewer = ImageViewer;
-var multiDefaultProps = Object.assign(Object.assign({}, defaultProps), {
+const multiDefaultProps = Object.assign(Object.assign({}, defaultProps), {
   defaultIndex: 0
 });
+const MultiImageViewer = (0, _react.forwardRef)((p, ref) => {
+  const props = (0, _withDefaultProps.mergeProps)(multiDefaultProps, p);
 
-var MultiImageViewer = function MultiImageViewer(p) {
-  var props = (0, _withDefaultProps.mergeProps)(multiDefaultProps, p);
-
-  var node = /*#__PURE__*/_react["default"].createElement(_mask["default"], {
+  const node = _react.default.createElement(_mask.default, {
     visible: props.visible,
     disableBodyScroll: false,
     opacity: 'thick',
     afterClose: props.afterClose
-  }, /*#__PURE__*/_react["default"].createElement("div", {
-    className: classPrefix + "-content"
-  }, props.images && /*#__PURE__*/_react["default"].createElement(_slides.Slides, {
+  }, _react.default.createElement("div", {
+    className: `${classPrefix}-content`
+  }, props.images && _react.default.createElement(_slides.Slides, {
+    ref: ref,
     defaultIndex: props.defaultIndex,
     onIndexChange: props.onIndexChange,
     images: props.images,
-    onTap: function onTap() {
+    onTap: () => {
       var _a;
 
       (_a = props.onClose) === null || _a === void 0 ? void 0 : _a.call(props);
@@ -77,6 +81,5 @@ var MultiImageViewer = function MultiImageViewer(p) {
   })));
 
   return (0, _renderToContainer.renderToContainer)(props.getContainer, node);
-};
-
+});
 exports.MultiImageViewer = MultiImageViewer;

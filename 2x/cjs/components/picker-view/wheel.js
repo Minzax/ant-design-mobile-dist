@@ -19,146 +19,139 @@ var _bound = require("../../utils/bound");
 
 var _isEqual = _interopRequireDefault(require("lodash/isEqual"));
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function _getRequireWildcardCache(nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
+function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function (nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
 
-function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { "default": obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj["default"] = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
+function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
 
-var classPrefix = "adm-picker-view";
-var Wheel = /*#__PURE__*/(0, _react.memo)(function (props) {
-  var itemHeight = (0, _convertPx.convertPx)(34);
-  var value = props.value,
-      column = props.column;
+const classPrefix = `adm-picker-view`;
+const Wheel = (0, _react.memo)(props => {
+  const itemHeight = (0, _convertPx.convertPx)(34);
+  const {
+    value,
+    column
+  } = props;
 
   function onSelect(val) {
     props.onSelect(val, props.index);
   }
 
-  var _useSpring = (0, _web.useSpring)(function () {
-    return {
-      from: {
-        y: 0
-      },
-      config: {
-        tension: 400,
-        mass: 0.8
-      }
-    };
-  }),
-      y = _useSpring[0].y,
-      api = _useSpring[1];
-
-  var draggingRef = (0, _react.useRef)(false);
-  (0, _react.useLayoutEffect)(function () {
+  const [{
+    y
+  }, api] = (0, _web.useSpring)(() => ({
+    from: {
+      y: 0
+    },
+    config: {
+      tension: 400,
+      mass: 0.8
+    }
+  }));
+  const draggingRef = (0, _react.useRef)(false);
+  (0, _react.useLayoutEffect)(() => {
     if (draggingRef.current) return;
     if (!value) return;
-    var targetIndex = column.findIndex(function (item) {
-      return item.value === value;
-    });
+    const targetIndex = column.findIndex(item => item.value === value);
     if (targetIndex < 0) return;
-    var finalPosition = targetIndex * -itemHeight;
+    const finalPosition = targetIndex * -itemHeight;
     api.start({
       y: finalPosition,
       immediate: y.goal !== finalPosition
     });
   }, [value, column]);
-  (0, _react.useLayoutEffect)(function () {
+  (0, _react.useLayoutEffect)(() => {
     if (column.length === 0) {
       if (value !== null) {
         onSelect(null);
       }
     } else {
-      if (!column.some(function (item) {
-        return item.value === value;
-      })) {
-        var firstItem = column[0];
+      if (!column.some(item => item.value === value)) {
+        const firstItem = column[0];
         onSelect(firstItem.value);
       }
     }
   }, [column, value]);
 
   function scrollSelect(index) {
-    var finalPosition = index * -itemHeight;
+    const finalPosition = index * -itemHeight;
     api.start({
       y: finalPosition
     });
-    var item = column[index];
+    const item = column[index];
     if (!item) return;
     onSelect(item.value);
   }
 
-  var bind = (0, _react2.useDrag)(function (state) {
+  const bind = (0, _react2.useDrag)(state => {
     draggingRef.current = true;
-    var min = -((column.length - 1) * itemHeight);
-    var max = 0;
+    const min = -((column.length - 1) * itemHeight);
+    const max = 0;
 
     if (state.last) {
       draggingRef.current = false;
-      var position = state.offset[1] + state.velocity[1] * state.direction[1] * 50;
-      var targetIndex = min < max ? -Math.round((0, _bound.bound)(position, min, max) / itemHeight) : 0;
+      const position = state.offset[1] + state.velocity[1] * state.direction[1] * 50;
+      const targetIndex = min < max ? -Math.round((0, _bound.bound)(position, min, max) / itemHeight) : 0;
       scrollSelect(targetIndex);
     } else {
-      var _position = state.offset[1];
+      const position = state.offset[1];
       api.start({
-        y: (0, _rubberband.rubberbandIfOutOfBounds)(_position, min, max, itemHeight * 50, 0.2)
+        y: (0, _rubberband.rubberbandIfOutOfBounds)(position, min, max, itemHeight * 50, 0.2)
       });
     }
   }, {
     axis: 'y',
-    from: function from() {
-      return [0, y.get()];
-    },
+    from: () => [0, y.get()],
     filterTaps: true,
     pointer: {
       touch: true
     }
   });
-  var selectedIndex = null;
+  let selectedIndex = null;
 
   function renderAccessible() {
     if (selectedIndex === null) {
       return null;
     }
 
-    var current = column[selectedIndex];
-    var previousIndex = selectedIndex - 1;
-    var nextIndex = selectedIndex + 1;
-    var previous = column[previousIndex];
-    var next = column[nextIndex];
-    return /*#__PURE__*/_react["default"].createElement("div", {
+    const current = column[selectedIndex];
+    const previousIndex = selectedIndex - 1;
+    const nextIndex = selectedIndex + 1;
+    const previous = column[previousIndex];
+    const next = column[nextIndex];
+    return _react.default.createElement("div", {
       className: 'adm-picker-view-column-accessible'
-    }, /*#__PURE__*/_react["default"].createElement("div", {
+    }, _react.default.createElement("div", {
       className: 'adm-picker-view-column-accessible-current',
       role: 'button',
-      "aria-label": current ? "\u5F53\u524D\u9009\u62E9\u7684\u662F\uFF1A" + current.label : '当前未选择'
-    }, "-"), /*#__PURE__*/_react["default"].createElement("div", null, previous && /*#__PURE__*/_react["default"].createElement("div", {
+      "aria-label": current ? `当前选择的是：${current.label}` : '当前未选择'
+    }, "-"), _react.default.createElement("div", null, previous && _react.default.createElement("div", {
       className: 'adm-picker-view-column-accessible-button',
-      onClick: function onClick() {
+      onClick: () => {
         scrollSelect(previousIndex);
       },
       role: 'button',
-      "aria-label": "\u9009\u62E9\u4E0A\u4E00\u9879\uFF1A" + previous.label
-    }, "-")), /*#__PURE__*/_react["default"].createElement("div", null, next && /*#__PURE__*/_react["default"].createElement("div", {
+      "aria-label": `选择上一项：${previous.label}`
+    }, "-")), _react.default.createElement("div", null, next && _react.default.createElement("div", {
       className: 'adm-picker-view-column-accessible-button',
-      onClick: function onClick() {
+      onClick: () => {
         scrollSelect(nextIndex);
       },
       role: 'button',
-      "aria-label": "\u9009\u62E9\u4E0B\u4E00\u9879\uFF1A" + next.label
+      "aria-label": `选择下一项：${next.label}`
     }, "-")));
   }
 
-  return /*#__PURE__*/_react["default"].createElement("div", Object.assign({
-    className: classPrefix + "-column"
-  }, bind()), /*#__PURE__*/_react["default"].createElement(_web.animated.div, {
+  return _react.default.createElement("div", Object.assign({
+    className: `${classPrefix}-column`
+  }, bind()), _react.default.createElement(_web.animated.div, {
     style: {
-      y: y
+      translateY: y
     },
-    className: classPrefix + "-column-wheel",
+    className: `${classPrefix}-column-wheel`,
     "aria-hidden": true
-  }, column.map(function (item, index) {
-    var selected = props.value === item.value;
+  }, column.map((item, index) => {
+    const selected = props.value === item.value;
     if (selected) selectedIndex = index;
 
     function handleClick() {
@@ -166,23 +159,23 @@ var Wheel = /*#__PURE__*/(0, _react.memo)(function (props) {
       scrollSelect(index);
     }
 
-    return /*#__PURE__*/_react["default"].createElement("div", {
+    return _react.default.createElement("div", {
       key: item.value,
       "data-selected": item.value === value,
-      className: classPrefix + "-column-item",
+      className: `${classPrefix}-column-item`,
       onClick: handleClick,
       "aria-hidden": !selected,
       "aria-label": selected ? 'active' : ''
-    }, /*#__PURE__*/_react["default"].createElement("div", {
-      className: classPrefix + "-column-item-label"
+    }, _react.default.createElement("div", {
+      className: `${classPrefix}-column-item-label`
     }, item.label));
   })), renderAccessible());
-}, function (prev, next) {
+}, (prev, next) => {
   if (prev.index !== next.index) return false;
   if (prev.value !== next.value) return false;
   if (prev.onSelect !== next.onSelect) return false;
 
-  if (!(0, _isEqual["default"])(prev.column, next.column)) {
+  if (!(0, _isEqual.default)(prev.column, next.column)) {
     return false;
   }
 

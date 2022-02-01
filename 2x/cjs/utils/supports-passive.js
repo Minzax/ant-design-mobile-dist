@@ -7,16 +7,17 @@ exports.supportsPassive = void 0;
 
 var _canUseDom = require("./can-use-dom");
 
-var supportsPassive = false;
+let supportsPassive = false;
 exports.supportsPassive = supportsPassive;
 
 if (_canUseDom.canUseDom) {
   try {
-    var opts = {};
+    const opts = {};
     Object.defineProperty(opts, 'passive', {
-      get: function get() {
+      get() {
         exports.supportsPassive = supportsPassive = true;
       }
+
     });
     window.addEventListener('test-passive', null, opts);
   } catch (e) {}

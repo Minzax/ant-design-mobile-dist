@@ -5,10 +5,6 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.sleep = void 0;
 
-var sleep = function sleep(time) {
-  return new Promise(function (resolve) {
-    return setTimeout(resolve, time);
-  });
-};
+const sleep = time => new Promise(resolve => setTimeout(resolve, time));
 
 exports.sleep = sleep;

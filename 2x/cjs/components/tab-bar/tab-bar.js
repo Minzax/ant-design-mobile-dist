@@ -17,30 +17,30 @@ var _badge = _interopRequireDefault(require("../badge"));
 
 var _safeArea = _interopRequireDefault(require("../safe-area"));
 
-var _usePropsValue2 = require("../../utils/use-props-value");
+var _usePropsValue = require("../../utils/use-props-value");
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var TabBarItem = function TabBarItem() {
+const TabBarItem = () => {
   return null;
 };
 
 exports.TabBarItem = TabBarItem;
-var classPrefix = "adm-tab-bar";
-var defaultProps = {
+const classPrefix = `adm-tab-bar`;
+const defaultProps = {
   safeArea: false
 };
 
-var TabBar = function TabBar(p) {
+const TabBar = p => {
   var _a;
 
-  var props = (0, _withDefaultProps.mergeProps)(defaultProps, p);
-  var firstActiveKey = null;
-  var items = [];
+  const props = (0, _withDefaultProps.mergeProps)(defaultProps, p);
+  let firstActiveKey = null;
+  const items = [];
 
-  _react["default"].Children.forEach(props.children, function (child, index) {
-    if (! /*#__PURE__*/_react["default"].isValidElement(child)) return;
-    var key = child.key;
+  _react.default.Children.forEach(props.children, (child, index) => {
+    if (!_react.default.isValidElement(child)) return;
+    const key = child.key;
     if (typeof key !== 'string') return;
 
     if (index === 0) {
@@ -50,57 +50,61 @@ var TabBar = function TabBar(p) {
     items.push(child);
   });
 
-  var _usePropsValue = (0, _usePropsValue2.usePropsValue)({
+  const [activeKey, setActiveKey] = (0, _usePropsValue.usePropsValue)({
     value: props.activeKey,
     defaultValue: (_a = props.defaultActiveKey) !== null && _a !== void 0 ? _a : firstActiveKey,
-    onChange: props.onChange
-  }),
-      activeKey = _usePropsValue[0],
-      setActiveKey = _usePropsValue[1];
+    onChange: v => {
+      var _a;
 
-  return (0, _nativeProps.withNativeProps)(props, /*#__PURE__*/_react["default"].createElement("div", {
+      if (v === null) return;
+      (_a = props.onChange) === null || _a === void 0 ? void 0 : _a.call(props, v);
+    }
+  });
+  return (0, _nativeProps.withNativeProps)(props, _react.default.createElement("div", {
     className: classPrefix
-  }, /*#__PURE__*/_react["default"].createElement("div", {
-    className: classPrefix + "-wrap"
-  }, items.map(function (item) {
-    var _classNames;
-
-    var active = item.key === activeKey;
+  }, _react.default.createElement("div", {
+    className: `${classPrefix}-wrap`
+  }, items.map(item => {
+    const active = item.key === activeKey;
 
     function renderContent() {
-      var iconElement = item.props.icon && /*#__PURE__*/_react["default"].createElement("div", {
-        className: classPrefix + "-item-icon"
+      const iconElement = item.props.icon && _react.default.createElement("div", {
+        className: `${classPrefix}-item-icon`
       }, typeof item.props.icon === 'function' ? item.props.icon(active) : item.props.icon);
 
-      var titleElement = item.props.title && /*#__PURE__*/_react["default"].createElement("div", {
-        className: classPrefix + "-item-title"
+      const titleElement = item.props.title && _react.default.createElement("div", {
+        className: `${classPrefix}-item-title`
       }, item.props.title);
 
       if (iconElement) {
-        return /*#__PURE__*/_react["default"].createElement(_react["default"].Fragment, null, /*#__PURE__*/_react["default"].createElement(_badge["default"], {
+        return _react.default.createElement(_react.default.Fragment, null, _react.default.createElement(_badge.default, {
           content: item.props.badge,
-          className: classPrefix + "-icon-badge"
+          className: `${classPrefix}-icon-badge`
         }, iconElement), titleElement);
       } else if (titleElement) {
-        return /*#__PURE__*/_react["default"].createElement(_badge["default"], {
+        return _react.default.createElement(_badge.default, {
           content: item.props.badge,
-          className: classPrefix + "-title-badge"
+          className: `${classPrefix}-title-badge`
         }, titleElement);
       }
 
       return null;
     }
 
-    return (0, _nativeProps.withNativeProps)(item.props, /*#__PURE__*/_react["default"].createElement("div", {
+    return (0, _nativeProps.withNativeProps)(item.props, _react.default.createElement("div", {
       key: item.key,
-      onClick: function onClick() {
-        var key = item.key;
+      onClick: () => {
+        const {
+          key
+        } = item;
         if (key === undefined || key === null) return;
         setActiveKey(key.toString());
       },
-      className: (0, _classnames["default"])(classPrefix + "-item", (_classNames = {}, _classNames[classPrefix + "-item-active"] = active, _classNames))
+      className: (0, _classnames.default)(`${classPrefix}-item`, {
+        [`${classPrefix}-item-active`]: active
+      })
     }, renderContent()));
-  })), props.safeArea && /*#__PURE__*/_react["default"].createElement(_safeArea["default"], {
+  })), props.safeArea && _react.default.createElement(_safeArea.default, {
     position: 'bottom'
   })));
 };

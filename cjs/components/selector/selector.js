@@ -19,77 +19,70 @@ var _grid = _interopRequireDefault(require("../grid"));
 
 var _convertPx = require("../../utils/convert-px");
 
-var _usePropsValue2 = require("../../utils/use-props-value");
+var _usePropsValue = require("../../utils/use-props-value");
 
 var _checkMark = require("./check-mark");
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var classPrefix = "adm-selector";
-var defaultProps = {
+const classPrefix = `adm-selector`;
+const defaultProps = {
   multiple: false,
   defaultValue: []
 };
 
-var Selector = function Selector(p) {
-  var props = (0, _withDefaultProps.mergeProps)(defaultProps, p);
-
-  var _usePropsValue = (0, _usePropsValue2.usePropsValue)({
+const Selector = p => {
+  const props = (0, _withDefaultProps.mergeProps)(defaultProps, p);
+  const [value, setValue] = (0, _usePropsValue.usePropsValue)({
     value: props.value,
     defaultValue: props.defaultValue,
-    onChange: function onChange(val) {
+    onChange: val => {
       var _a;
 
-      var extend = {
+      const extend = {
         get items() {
-          return props.options.filter(function (option) {
-            return val.includes(option.value);
-          });
+          return props.options.filter(option => val.includes(option.value));
         }
 
       };
       (_a = props.onChange) === null || _a === void 0 ? void 0 : _a.call(props, val, extend);
     }
-  }),
-      value = _usePropsValue[0],
-      setValue = _usePropsValue[1];
-
-  var items = props.options.map(function (option) {
-    var _classNames;
-
-    var active = (value || []).includes(option.value);
-    var disabled = option.disabled || props.disabled;
-    var itemCls = (0, _classnames["default"])(classPrefix + "-item", (_classNames = {}, _classNames[classPrefix + "-item-active"] = active && !props.multiple, _classNames[classPrefix + "-item-multiple-active"] = active && props.multiple, _classNames[classPrefix + "-item-disabled"] = disabled, _classNames));
-    return /*#__PURE__*/_react["default"].createElement("div", {
+  });
+  const items = props.options.map(option => {
+    const active = (value || []).includes(option.value);
+    const disabled = option.disabled || props.disabled;
+    const itemCls = (0, _classnames.default)(`${classPrefix}-item`, {
+      [`${classPrefix}-item-active`]: active && !props.multiple,
+      [`${classPrefix}-item-multiple-active`]: active && props.multiple,
+      [`${classPrefix}-item-disabled`]: disabled
+    });
+    return _react.default.createElement("div", {
       key: option.value,
       className: itemCls,
-      onClick: function onClick() {
+      onClick: () => {
         if (disabled) {
           return;
         }
 
         if (props.multiple) {
-          var val = active ? value.filter(function (v) {
-            return v !== option.value;
-          }) : [].concat(value, [option.value]);
+          const val = active ? value.filter(v => v !== option.value) : [...value, option.value];
           setValue(val);
         } else {
-          var _val = active ? [] : [option.value];
-
-          setValue(_val);
+          const val = active ? [] : [option.value];
+          setValue(val);
         }
       }
-    }, option.label, option.description && /*#__PURE__*/_react["default"].createElement("div", {
-      className: classPrefix + "-item-description"
-    }, option.description), active && /*#__PURE__*/_react["default"].createElement("div", {
-      className: classPrefix + "-check-mark-wrapper"
-    }, /*#__PURE__*/_react["default"].createElement(_checkMark.CheckMark, null)));
+    }, option.label, option.description && _react.default.createElement("div", {
+      className: `${classPrefix}-item-description`
+    }, option.description), active && _react.default.createElement("div", {
+      className: `${classPrefix}-check-mark-wrapper`
+    }, _react.default.createElement(_checkMark.CheckMark, null)));
   });
-  return (0, _nativeProps.withNativeProps)(props, /*#__PURE__*/_react["default"].createElement("div", {
+  return (0, _nativeProps.withNativeProps)(props, _react.default.createElement("div", {
     className: classPrefix
-  }, !props.columns && /*#__PURE__*/_react["default"].createElement(_space["default"], {
+  }, !props.columns && _react.default.createElement(_space.default, {
     wrap: true
-  }, items), props.columns && /*#__PURE__*/_react["default"].createElement(_grid["default"], {
+  }, items), props.columns && _react.default.createElement(_grid.default, {
     columns: props.columns,
     gap: (0, _convertPx.convertPx)(8)
   }, items)));

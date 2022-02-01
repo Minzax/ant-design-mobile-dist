@@ -5,457 +5,469 @@ Object.defineProperty(exports, "__esModule", {
 });
 Object.defineProperty(exports, "ActionSheet", {
   enumerable: true,
-  get: function get() {
-    return _actionSheet["default"];
+  get: function () {
+    return _actionSheet.default;
   }
 });
 Object.defineProperty(exports, "AutoCenter", {
   enumerable: true,
-  get: function get() {
-    return _autoCenter["default"];
+  get: function () {
+    return _autoCenter.default;
+  }
+});
+Object.defineProperty(exports, "Avatar", {
+  enumerable: true,
+  get: function () {
+    return _avatar.default;
   }
 });
 Object.defineProperty(exports, "Badge", {
   enumerable: true,
-  get: function get() {
-    return _badge["default"];
+  get: function () {
+    return _badge.default;
   }
 });
 Object.defineProperty(exports, "Button", {
   enumerable: true,
-  get: function get() {
-    return _button["default"];
+  get: function () {
+    return _button.default;
   }
 });
 Object.defineProperty(exports, "Calendar", {
   enumerable: true,
-  get: function get() {
-    return _calendar["default"];
+  get: function () {
+    return _calendar.default;
   }
 });
 Object.defineProperty(exports, "CapsuleTabs", {
   enumerable: true,
-  get: function get() {
-    return _capsuleTabs["default"];
+  get: function () {
+    return _capsuleTabs.default;
   }
 });
 Object.defineProperty(exports, "Card", {
   enumerable: true,
-  get: function get() {
-    return _card["default"];
+  get: function () {
+    return _card.default;
   }
 });
 Object.defineProperty(exports, "CascadePicker", {
   enumerable: true,
-  get: function get() {
-    return _cascadePicker["default"];
+  get: function () {
+    return _cascadePicker.default;
   }
 });
 Object.defineProperty(exports, "CascadePickerView", {
   enumerable: true,
-  get: function get() {
-    return _cascadePickerView["default"];
+  get: function () {
+    return _cascadePickerView.default;
   }
 });
 Object.defineProperty(exports, "Cascader", {
   enumerable: true,
-  get: function get() {
-    return _cascader["default"];
+  get: function () {
+    return _cascader.default;
   }
 });
 Object.defineProperty(exports, "CascaderView", {
   enumerable: true,
-  get: function get() {
-    return _cascaderView["default"];
+  get: function () {
+    return _cascaderView.default;
   }
 });
 Object.defineProperty(exports, "CheckList", {
   enumerable: true,
-  get: function get() {
-    return _checkList["default"];
+  get: function () {
+    return _checkList.default;
   }
 });
 Object.defineProperty(exports, "Checkbox", {
   enumerable: true,
-  get: function get() {
-    return _checkbox["default"];
+  get: function () {
+    return _checkbox.default;
   }
 });
 Object.defineProperty(exports, "Collapse", {
   enumerable: true,
-  get: function get() {
-    return _collapse["default"];
+  get: function () {
+    return _collapse.default;
   }
 });
 Object.defineProperty(exports, "ConfigProvider", {
   enumerable: true,
-  get: function get() {
-    return _configProvider["default"];
+  get: function () {
+    return _configProvider.default;
   }
 });
 Object.defineProperty(exports, "DatePicker", {
   enumerable: true,
-  get: function get() {
-    return _datePicker["default"];
+  get: function () {
+    return _datePicker.default;
   }
 });
 Object.defineProperty(exports, "DatePickerView", {
   enumerable: true,
-  get: function get() {
-    return _datePickerView["default"];
+  get: function () {
+    return _datePickerView.default;
   }
 });
 Object.defineProperty(exports, "Dialog", {
   enumerable: true,
-  get: function get() {
-    return _dialog["default"];
+  get: function () {
+    return _dialog.default;
   }
 });
 Object.defineProperty(exports, "Divider", {
   enumerable: true,
-  get: function get() {
-    return _divider["default"];
+  get: function () {
+    return _divider.default;
+  }
+});
+Object.defineProperty(exports, "DotLoading", {
+  enumerable: true,
+  get: function () {
+    return _dotLoading.default;
   }
 });
 Object.defineProperty(exports, "Dropdown", {
   enumerable: true,
-  get: function get() {
-    return _dropdown["default"];
+  get: function () {
+    return _dropdown.default;
   }
 });
 Object.defineProperty(exports, "Ellipsis", {
   enumerable: true,
-  get: function get() {
-    return _ellipsis["default"];
+  get: function () {
+    return _ellipsis.default;
   }
 });
 Object.defineProperty(exports, "Empty", {
   enumerable: true,
-  get: function get() {
-    return _empty["default"];
+  get: function () {
+    return _empty.default;
   }
 });
 Object.defineProperty(exports, "ErrorBlock", {
   enumerable: true,
-  get: function get() {
-    return _errorBlock["default"];
+  get: function () {
+    return _errorBlock.default;
   }
 });
 Object.defineProperty(exports, "FloatingBubble", {
   enumerable: true,
-  get: function get() {
-    return _floatingBubble["default"];
+  get: function () {
+    return _floatingBubble.default;
   }
 });
 Object.defineProperty(exports, "FloatingPanel", {
   enumerable: true,
-  get: function get() {
-    return _floatingPanel["default"];
+  get: function () {
+    return _floatingPanel.default;
   }
 });
 Object.defineProperty(exports, "Form", {
   enumerable: true,
-  get: function get() {
-    return _form["default"];
+  get: function () {
+    return _form.default;
   }
 });
 Object.defineProperty(exports, "Grid", {
   enumerable: true,
-  get: function get() {
-    return _grid["default"];
+  get: function () {
+    return _grid.default;
   }
 });
 Object.defineProperty(exports, "Image", {
   enumerable: true,
-  get: function get() {
-    return _image["default"];
+  get: function () {
+    return _image.default;
   }
 });
 Object.defineProperty(exports, "ImageUploader", {
   enumerable: true,
-  get: function get() {
-    return _imageUploader["default"];
+  get: function () {
+    return _imageUploader.default;
   }
 });
 Object.defineProperty(exports, "ImageViewer", {
   enumerable: true,
-  get: function get() {
-    return _imageViewer["default"];
+  get: function () {
+    return _imageViewer.default;
   }
 });
 Object.defineProperty(exports, "IndexBar", {
   enumerable: true,
-  get: function get() {
-    return _indexBar["default"];
+  get: function () {
+    return _indexBar.default;
   }
 });
 Object.defineProperty(exports, "InfiniteScroll", {
   enumerable: true,
-  get: function get() {
-    return _infiniteScroll["default"];
+  get: function () {
+    return _infiniteScroll.default;
   }
 });
 Object.defineProperty(exports, "Input", {
   enumerable: true,
-  get: function get() {
-    return _input["default"];
+  get: function () {
+    return _input.default;
   }
 });
 Object.defineProperty(exports, "JumboTabs", {
   enumerable: true,
-  get: function get() {
-    return _jumboTabs["default"];
+  get: function () {
+    return _jumboTabs.default;
   }
 });
 Object.defineProperty(exports, "List", {
   enumerable: true,
-  get: function get() {
-    return _list["default"];
+  get: function () {
+    return _list.default;
   }
 });
 Object.defineProperty(exports, "Loading", {
   enumerable: true,
-  get: function get() {
-    return _loading["default"];
+  get: function () {
+    return _loading.default;
   }
 });
 Object.defineProperty(exports, "Mask", {
   enumerable: true,
-  get: function get() {
-    return _mask["default"];
+  get: function () {
+    return _mask.default;
   }
 });
 Object.defineProperty(exports, "Modal", {
   enumerable: true,
-  get: function get() {
-    return _modal["default"];
+  get: function () {
+    return _modal.default;
   }
 });
 Object.defineProperty(exports, "NavBar", {
   enumerable: true,
-  get: function get() {
-    return _navBar["default"];
+  get: function () {
+    return _navBar.default;
   }
 });
 Object.defineProperty(exports, "NoticeBar", {
   enumerable: true,
-  get: function get() {
-    return _noticeBar["default"];
+  get: function () {
+    return _noticeBar.default;
   }
 });
 Object.defineProperty(exports, "NumberKeyboard", {
   enumerable: true,
-  get: function get() {
-    return _numberKeyboard["default"];
+  get: function () {
+    return _numberKeyboard.default;
   }
 });
 Object.defineProperty(exports, "PageIndicator", {
   enumerable: true,
-  get: function get() {
-    return _pageIndicator["default"];
+  get: function () {
+    return _pageIndicator.default;
   }
 });
 Object.defineProperty(exports, "PasscodeInput", {
   enumerable: true,
-  get: function get() {
-    return _passcodeInput["default"];
+  get: function () {
+    return _passcodeInput.default;
   }
 });
 Object.defineProperty(exports, "Picker", {
   enumerable: true,
-  get: function get() {
-    return _picker["default"];
+  get: function () {
+    return _picker.default;
   }
 });
 Object.defineProperty(exports, "PickerView", {
   enumerable: true,
-  get: function get() {
-    return _pickerView["default"];
+  get: function () {
+    return _pickerView.default;
   }
 });
 Object.defineProperty(exports, "Popover", {
   enumerable: true,
-  get: function get() {
-    return _popover["default"];
+  get: function () {
+    return _popover.default;
   }
 });
 Object.defineProperty(exports, "Popup", {
   enumerable: true,
-  get: function get() {
-    return _popup["default"];
+  get: function () {
+    return _popup.default;
   }
 });
 Object.defineProperty(exports, "ProgressBar", {
   enumerable: true,
-  get: function get() {
-    return _progressBar["default"];
+  get: function () {
+    return _progressBar.default;
   }
 });
 Object.defineProperty(exports, "ProgressCircle", {
   enumerable: true,
-  get: function get() {
-    return _progressCircle["default"];
+  get: function () {
+    return _progressCircle.default;
   }
 });
 Object.defineProperty(exports, "PullToRefresh", {
   enumerable: true,
-  get: function get() {
-    return _pullToRefresh["default"];
+  get: function () {
+    return _pullToRefresh.default;
   }
 });
 Object.defineProperty(exports, "Radio", {
   enumerable: true,
-  get: function get() {
-    return _radio["default"];
+  get: function () {
+    return _radio.default;
   }
 });
 Object.defineProperty(exports, "Rate", {
   enumerable: true,
-  get: function get() {
-    return _rate["default"];
+  get: function () {
+    return _rate.default;
   }
 });
 Object.defineProperty(exports, "Result", {
   enumerable: true,
-  get: function get() {
-    return _result["default"];
+  get: function () {
+    return _result.default;
   }
 });
 Object.defineProperty(exports, "SafeArea", {
   enumerable: true,
-  get: function get() {
-    return _safeArea["default"];
+  get: function () {
+    return _safeArea.default;
   }
 });
 Object.defineProperty(exports, "ScrollMask", {
   enumerable: true,
-  get: function get() {
-    return _scrollMask["default"];
-  }
-});
-Object.defineProperty(exports, "Search", {
-  enumerable: true,
-  get: function get() {
-    return _searchBar["default"];
+  get: function () {
+    return _scrollMask.default;
   }
 });
 Object.defineProperty(exports, "SearchBar", {
   enumerable: true,
-  get: function get() {
-    return _searchBar["default"];
+  get: function () {
+    return _searchBar.default;
   }
 });
 Object.defineProperty(exports, "Selector", {
   enumerable: true,
-  get: function get() {
-    return _selector["default"];
+  get: function () {
+    return _selector.default;
   }
 });
 Object.defineProperty(exports, "SideBar", {
   enumerable: true,
-  get: function get() {
-    return _sideBar["default"];
+  get: function () {
+    return _sideBar.default;
   }
 });
 Object.defineProperty(exports, "Skeleton", {
   enumerable: true,
-  get: function get() {
-    return _skeleton["default"];
+  get: function () {
+    return _skeleton.default;
   }
 });
 Object.defineProperty(exports, "Slider", {
   enumerable: true,
-  get: function get() {
-    return _slider["default"];
+  get: function () {
+    return _slider.default;
   }
 });
 Object.defineProperty(exports, "Space", {
   enumerable: true,
-  get: function get() {
-    return _space["default"];
+  get: function () {
+    return _space.default;
+  }
+});
+Object.defineProperty(exports, "SpinLoading", {
+  enumerable: true,
+  get: function () {
+    return _spinLoading.default;
   }
 });
 Object.defineProperty(exports, "Stepper", {
   enumerable: true,
-  get: function get() {
-    return _stepper["default"];
+  get: function () {
+    return _stepper.default;
   }
 });
 Object.defineProperty(exports, "Steps", {
   enumerable: true,
-  get: function get() {
-    return _steps["default"];
+  get: function () {
+    return _steps.default;
   }
 });
 Object.defineProperty(exports, "SwipeAction", {
   enumerable: true,
-  get: function get() {
-    return _swipeAction["default"];
+  get: function () {
+    return _swipeAction.default;
   }
 });
 Object.defineProperty(exports, "Swiper", {
   enumerable: true,
-  get: function get() {
-    return _swiper["default"];
+  get: function () {
+    return _swiper.default;
   }
 });
 Object.defineProperty(exports, "Switch", {
   enumerable: true,
-  get: function get() {
-    return _switch["default"];
+  get: function () {
+    return _switch.default;
   }
 });
 Object.defineProperty(exports, "TabBar", {
   enumerable: true,
-  get: function get() {
-    return _tabBar["default"];
+  get: function () {
+    return _tabBar.default;
   }
 });
 Object.defineProperty(exports, "Tabs", {
   enumerable: true,
-  get: function get() {
-    return _tabs["default"];
+  get: function () {
+    return _tabs.default;
   }
 });
 Object.defineProperty(exports, "Tag", {
   enumerable: true,
-  get: function get() {
-    return _tag["default"];
+  get: function () {
+    return _tag.default;
   }
 });
 Object.defineProperty(exports, "TextArea", {
   enumerable: true,
-  get: function get() {
-    return _textArea["default"];
+  get: function () {
+    return _textArea.default;
   }
 });
 Object.defineProperty(exports, "Toast", {
   enumerable: true,
-  get: function get() {
-    return _toast["default"];
+  get: function () {
+    return _toast.default;
   }
 });
 Object.defineProperty(exports, "TreeSelect", {
   enumerable: true,
-  get: function get() {
-    return _treeSelect["default"];
+  get: function () {
+    return _treeSelect.default;
   }
 });
 Object.defineProperty(exports, "VirtualInput", {
   enumerable: true,
-  get: function get() {
-    return _virtualInput["default"];
+  get: function () {
+    return _virtualInput.default;
   }
 });
 Object.defineProperty(exports, "WaterMark", {
   enumerable: true,
-  get: function get() {
-    return _waterMark["default"];
+  get: function () {
+    return _waterMark.default;
   }
 });
 Object.defineProperty(exports, "setDefaultConfig", {
   enumerable: true,
-  get: function get() {
+  get: function () {
     return _configProvider.setDefaultConfig;
   }
 });
@@ -467,6 +479,8 @@ var _configProvider = _interopRequireWildcard(require("./components/config-provi
 var _actionSheet = _interopRequireDefault(require("./components/action-sheet"));
 
 var _autoCenter = _interopRequireDefault(require("./components/auto-center"));
+
+var _avatar = _interopRequireDefault(require("./components/avatar"));
 
 var _badge = _interopRequireDefault(require("./components/badge"));
 
@@ -499,6 +513,8 @@ var _datePickerView = _interopRequireDefault(require("./components/date-picker-v
 var _dialog = _interopRequireDefault(require("./components/dialog"));
 
 var _divider = _interopRequireDefault(require("./components/divider"));
+
+var _dotLoading = _interopRequireDefault(require("./components/dot-loading"));
 
 var _dropdown = _interopRequireDefault(require("./components/dropdown"));
 
@@ -584,6 +600,8 @@ var _slider = _interopRequireDefault(require("./components/slider"));
 
 var _space = _interopRequireDefault(require("./components/space"));
 
+var _spinLoading = _interopRequireDefault(require("./components/spin-loading"));
+
 var _stepper = _interopRequireDefault(require("./components//stepper"));
 
 var _steps = _interopRequireDefault(require("./components/steps"));
@@ -610,8 +628,8 @@ var _virtualInput = _interopRequireDefault(require("./components/virtual-input")
 
 var _waterMark = _interopRequireDefault(require("./components/water-mark"));
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function _getRequireWildcardCache(nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
+function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function (nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
 
-function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { "default": obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj["default"] = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
+function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }

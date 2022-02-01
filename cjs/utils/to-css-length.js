@@ -6,5 +6,5 @@ Object.defineProperty(exports, "__esModule", {
 exports.toCSSLength = toCSSLength;
 
 function toCSSLength(val) {
-  return typeof val === 'number' ? val + "px" : val;
+  return typeof val === 'number' ? `${val}px` : val;
 }

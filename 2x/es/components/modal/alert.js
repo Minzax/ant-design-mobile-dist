@@ -2,11 +2,11 @@ import { show } from './show';
 import { mergeProps } from '../../utils/with-default-props';
 import { getDefaultConfig } from '../config-provider';
 export function alert(p) {
-  var defaultProps = {
+  const defaultProps = {
     confirmText: getDefaultConfig().locale.Modal.ok
   };
-  var props = mergeProps(defaultProps, p);
-  return new Promise(function (resolve) {
+  const props = mergeProps(defaultProps, p);
+  return new Promise(resolve => {
     show(Object.assign(Object.assign({}, props), {
       closeOnAction: true,
       actions: [{
@@ -15,7 +15,10 @@ export function alert(p) {
         primary: true
       }],
       onAction: props.onConfirm,
-      onClose: function onClose() {
+      onClose: () => {
+        var _a;
+
+        (_a = props.onClose) === null || _a === void 0 ? void 0 : _a.call(props);
         resolve();
       }
     }));

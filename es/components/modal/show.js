@@ -2,12 +2,9 @@ import React, { createRef, forwardRef, useEffect, useImperativeHandle, useState 
 import { renderToBody } from '../../utils/render-to-body';
 import { Modal } from './modal';
 export function show(props) {
-  var Wrapper = /*#__PURE__*/forwardRef(function (_, ref) {
-    var _useState = useState(false),
-        visible = _useState[0],
-        setVisible = _useState[1];
-
-    useEffect(function () {
+  const Wrapper = forwardRef((_, ref) => {
+    const [visible, setVisible] = useState(false);
+    useEffect(() => {
       setVisible(true);
     }, []);
 
@@ -18,15 +15,13 @@ export function show(props) {
       setVisible(false);
     }
 
-    useImperativeHandle(ref, function () {
-      return {
-        close: handleClose
-      };
-    });
-    return /*#__PURE__*/React.createElement(Modal, Object.assign({}, props, {
+    useImperativeHandle(ref, () => ({
+      close: handleClose
+    }));
+    return React.createElement(Modal, Object.assign({}, props, {
       visible: visible,
       onClose: handleClose,
-      afterClose: function afterClose() {
+      afterClose: () => {
         var _a;
 
         (_a = props.afterClose) === null || _a === void 0 ? void 0 : _a.call(props);
@@ -34,12 +29,12 @@ export function show(props) {
       }
     }));
   });
-  var ref = /*#__PURE__*/createRef();
-  var unmount = renderToBody( /*#__PURE__*/React.createElement(Wrapper, {
+  const ref = createRef();
+  const unmount = renderToBody(React.createElement(Wrapper, {
     ref: ref
   }));
   return {
-    close: function close() {
+    close: () => {
       var _a;
 
       (_a = ref.current) === null || _a === void 0 ? void 0 : _a.close();

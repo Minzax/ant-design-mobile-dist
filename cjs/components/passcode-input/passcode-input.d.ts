@@ -14,7 +14,7 @@ export declare type PasscodeInputProps = {
     onFocus?: () => void;
     keyboard?: ReactElement<NumberKeyboardProps>;
     onFill?: (val: string) => void;
-} & NativeProps<'--cell-gap' | '--cell-size'>;
+} & NativeProps<'--cell-gap' | '--cell-size' | '--dot-size' | '--border-color' | '--border-radius'>;
 export declare type PasscodeInputRef = {
     focus: () => void;
     blur: () => void;
@@ -32,4 +32,4 @@ export declare const PasscodeInput: React.ForwardRefExoticComponent<{
     onFocus?: (() => void) | undefined;
     keyboard?: React.ReactElement<NumberKeyboardProps, string | ((props: any) => React.ReactElement<any, any> | null) | (new (props: any) => React.Component<any, any, any>)> | undefined;
     onFill?: ((val: string) => void) | undefined;
-} & NativeProps<"--cell-size" | "--cell-gap"> & React.RefAttributes<PasscodeInputRef>>;
+} & NativeProps<"--border-radius" | "--border-color" | "--cell-size" | "--dot-size" | "--cell-gap"> & React.RefAttributes<PasscodeInputRef>>;

@@ -6,6 +6,10 @@
   line-height: 1.4;
 }
 
+.adm-selector .adm-space.adm-space {
+  --gap: 24px;
+}
+
 .adm-selector-item {
   padding: 16px 32px;
   position: relative;

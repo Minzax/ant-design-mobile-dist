@@ -13,7 +13,8 @@
 .adm-form-item-label-required {
   position: absolute;
   left: -0.6em;
-  top: 0.2em;
+  top: 0;
+  font-family: SimSun, sans-serif;
   color: var(--adm-color-danger);
   user-select: none;
 }
@@ -27,12 +28,17 @@
 }
 
 .adm-form-vertical .adm-form-item-label {
-  margin-bottom: 8px;
   font-size: 30px;
+  margin-bottom: 8px;
 }
 
 .adm-form-vertical .adm-form-item-footer {
   margin-top: 8px;
+}
+
+.adm-form-horizontal .adm-list-item-content-prefix {
+  padding-top: 24px;
+  padding-bottom: 24px;
 }
 
 .adm-form-item-label {

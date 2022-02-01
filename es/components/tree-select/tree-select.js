@@ -4,32 +4,28 @@ import { withNativeProps } from '../../utils/native-props';
 import { getTreeDeep } from '../../utils/tree';
 import { mergeProps } from '../../utils/with-default-props';
 import { usePropsValue } from '../../utils/use-props-value';
-var classPrefix = "adm-tree-select";
-var defaultProps = {
+const classPrefix = `adm-tree-select`;
+const defaultProps = {
   options: [],
   fieldNames: {},
   defaultValue: []
 };
-export var TreeSelect = function TreeSelect(p) {
-  var props = mergeProps(defaultProps, p);
-  var labelName = props.fieldNames.label || 'label';
-  var valueName = props.fieldNames.value || 'value';
-  var childrenName = props.fieldNames.children || 'children';
-
-  var _usePropsValue = usePropsValue({
+export const TreeSelect = p => {
+  const props = mergeProps(defaultProps, p);
+  const labelName = props.fieldNames.label || 'label';
+  const valueName = props.fieldNames.value || 'value';
+  const childrenName = props.fieldNames.children || 'children';
+  const [value, setValue] = usePropsValue({
     value: props.value,
     defaultValue: props.defaultValue
-  }),
-      value = _usePropsValue[0],
-      setValue = _usePropsValue[1];
-
-  var _useMemo = useMemo(function () {
-    var deep = getTreeDeep(props.options, childrenName);
-    var optionsMap = new Map();
-    var optionsParentMap = new Map();
+  });
+  const [deep, optionsMap, optionsParentMap] = useMemo(() => {
+    const deep = getTreeDeep(props.options, childrenName);
+    const optionsMap = new Map();
+    const optionsParentMap = new Map();
 
     function traverse(current, children) {
-      children.forEach(function (item) {
+      children.forEach(item => {
         optionsParentMap.set(item[valueName], current);
         optionsMap.set(item[valueName], item);
 
@@ -41,46 +37,37 @@ export var TreeSelect = function TreeSelect(p) {
 
     traverse(undefined, props.options);
     return [deep, optionsMap, optionsParentMap];
-  }, [props.options]),
-      deep = _useMemo[0],
-      optionsMap = _useMemo[1],
-      optionsParentMap = _useMemo[2];
+  }, [props.options]);
 
-  var onItemSelect = function onItemSelect(node) {
+  const onItemSelect = node => {
     var _a; // 找到父级节点
 
 
-    var parentNodes = [];
-    var current = node;
+    const parentNodes = [];
+    let current = node;
 
     while (current) {
       parentNodes.unshift(current);
-      var next = optionsParentMap.get(current[valueName]);
+      const next = optionsParentMap.get(current[valueName]);
       current = next;
     }
 
-    var values = parentNodes.map(function (i) {
-      return i[valueName];
-    });
+    const values = parentNodes.map(i => i[valueName]);
     setValue(values);
     (_a = props.onChange) === null || _a === void 0 ? void 0 : _a.call(props, values, {
       options: parentNodes
     });
   };
 
-  var renderItems = function renderItems(columnOptions, index) {
-    if (columnOptions === void 0) {
-      columnOptions = [];
-    }
-
-    return columnOptions.map(function (item) {
-      var _classNames;
-
-      var isActive = item[valueName] === value[index];
-      return /*#__PURE__*/React.createElement("div", {
+  const renderItems = (columnOptions = [], index) => {
+    return columnOptions.map(item => {
+      const isActive = item[valueName] === value[index];
+      return React.createElement("div", {
         key: item[valueName],
-        className: classNames(classPrefix + "-item", (_classNames = {}, _classNames[classPrefix + "-item-active"] = isActive, _classNames)),
-        onClick: function onClick() {
+        className: classNames(`${classPrefix}-item`, {
+          [`${classPrefix}-item-active`]: isActive
+        }),
+        onClick: () => {
           if (!isActive) {
             onItemSelect(item);
           }
@@ -89,27 +76,27 @@ export var TreeSelect = function TreeSelect(p) {
     });
   };
 
-  var renderColumns = function renderColumns() {
+  const renderColumns = () => {
     var _a;
 
-    var columns = [];
+    const columns = [];
 
-    for (var i = 0; i < deep; i++) {
-      var width = 100 / deep + "%"; // 两列的第一列宽度为 33.33，两列的第二列为 66.67%
+    for (let i = 0; i < deep; i++) {
+      let width = `${100 / deep}%`; // 两列的第一列宽度为 33.33，两列的第二列为 66.67%
 
       if (deep === 2 && i === 0) {
-        width = "33.33%";
+        width = `33.33%`;
       }
 
       if (deep === 2 && i === 1) {
-        width = "66.67%";
+        width = `66.67%`;
       }
 
-      var column = /*#__PURE__*/React.createElement("div", {
+      const column = React.createElement("div", {
         key: i,
-        className: classNames(classPrefix + "-column"),
+        className: classNames(`${classPrefix}-column`),
         style: {
-          width: width
+          width
         }
       }, renderItems(i === 0 ? props.options : (_a = optionsMap.get(value[i - 1])) === null || _a === void 0 ? void 0 : _a[childrenName], i));
       columns.push(column);
@@ -118,7 +105,7 @@ export var TreeSelect = function TreeSelect(p) {
     return columns;
   };
 
-  return withNativeProps(props, /*#__PURE__*/React.createElement("div", {
+  return withNativeProps(props, React.createElement("div", {
     className: classPrefix
   }, renderColumns()));
 };

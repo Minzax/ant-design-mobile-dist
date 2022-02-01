@@ -3,5 +3,5 @@ import { attachPropertiesToComponent } from '../../utils/attach-properties-to-co
 import { Panel } from './panel';
 import { IndexBar } from './index-bar';
 export default attachPropertiesToComponent(IndexBar, {
-  Panel: Panel
+  Panel
 });

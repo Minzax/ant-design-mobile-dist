@@ -11,73 +11,64 @@ var _rcTooltip = _interopRequireDefault(require("rc-tooltip"));
 
 var _classnames = _interopRequireDefault(require("classnames"));
 
-var _usePropsValue2 = require("../../utils/use-props-value");
+var _usePropsValue = require("../../utils/use-props-value");
 
 var _withDefaultProps = require("../../utils/with-default-props");
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+var _withStopPropagation = require("../../utils/with-stop-propagation");
 
-function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function _getRequireWildcardCache(nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
+var _arrow = require("./arrow");
 
-function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { "default": obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj["default"] = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var classPrefix = "adm-popover";
-var enterClassName = 'entering';
-var leaveClassName = 'leaving';
-var defaultProps = {
-  defaultVisible: false
+function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function (nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
+
+function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
+
+const classPrefix = `adm-popover`;
+const defaultProps = {
+  placement: 'top',
+  defaultVisible: false,
+  stopPropagation: ['click'],
+  getContainer: () => document.body
 };
-var Popover = /*#__PURE__*/(0, _react.forwardRef)(function (p, ref) {
-  var props = (0, _withDefaultProps.mergeProps)(defaultProps, p);
-  var _props$mode = props.mode,
-      mode = _props$mode === void 0 ? 'light' : _props$mode;
+const Popover = (0, _react.forwardRef)((p, ref) => {
+  var _a;
 
-  var _usePropsValue = (0, _usePropsValue2.usePropsValue)({
+  const props = (0, _withDefaultProps.mergeProps)(defaultProps, p);
+  const {
+    mode = 'light'
+  } = props;
+  const [visible, setVisible] = (0, _usePropsValue.usePropsValue)({
     value: props.visible,
     defaultValue: props.defaultVisible,
     onChange: props.onVisibleChange
-  }),
-      visible = _usePropsValue[0],
-      setVisible = _usePropsValue[1];
-
-  (0, _react.useImperativeHandle)(ref, function () {
+  });
+  (0, _react.useImperativeHandle)(ref, () => {
     return {
-      show: function show() {
-        return setVisible(true);
-      },
-      hide: function hide() {
-        return setVisible(false);
-      },
-      visible: visible
+      show: () => setVisible(true),
+      hide: () => setVisible(false),
+      visible
     };
   }, [visible]);
-  return /*#__PURE__*/_react["default"].createElement(_rcTooltip["default"], Object.assign({}, props, {
-    overlayClassName: (0, _classnames["default"])(classPrefix + "-" + mode, props.overlayClassName),
+  const overlay = (0, _withStopPropagation.withStopPropagation)(props.stopPropagation, _react.default.createElement("div", {
+    className: `${classPrefix}-inner-content`
+  }, props.content));
+  return _react.default.createElement(_rcTooltip.default, Object.assign({}, props, {
+    placement: props.placement,
+    align: props.align,
+    overlayClassName: (0, _classnames.default)(`${classPrefix}-${mode}`, props.className),
+    overlayStyle: props.style,
     destroyTooltipOnHide: props.destroyOnHide,
     prefixCls: classPrefix,
-    getTooltipContainer: props.getContainer || function () {
-      return document.body;
-    },
+    getTooltipContainer: props.getContainer || (() => document.body),
     visible: visible,
-    arrowContent: /*#__PURE__*/_react["default"].createElement("span", {
-      className: classPrefix + "-arrow-content"
+    arrowContent: _react.default.createElement(_arrow.Arrow, {
+      className: `${classPrefix}-arrow-icon`
     }),
     onVisibleChange: setVisible,
-    trigger: props.trigger,
-    motion: {
-      motionName: {
-        appear: enterClassName,
-        appearActive: enterClassName,
-        enter: enterClassName,
-        enterActive: enterClassName,
-        leaveActive: leaveClassName,
-        leave: leaveClassName
-      },
-      motionDeadline: 200
-    },
-    overlay: /*#__PURE__*/_react["default"].createElement("div", {
-      className: classPrefix + "-inner-content"
-    }, props.content)
+    trigger: (_a = props.trigger) !== null && _a !== void 0 ? _a : [],
+    overlay: overlay
   }), props.children);
 });
 exports.Popover = Popover;

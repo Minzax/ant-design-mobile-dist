@@ -15,7 +15,7 @@ export declare type SearchBarProps = Pick<InputProps, 'onFocus' | 'onBlur' | 'on
     onSearch?: (val: string) => void;
     onChange?: (val: string) => void;
     onCancel?: () => void;
-} & NativeProps<'--background' | '--border-radius' | '--placeholder-color'>;
+} & NativeProps<'--background' | '--border-radius' | '--placeholder-color' | '--height' | '--padding-left'>;
 export declare const SearchBar: React.ForwardRefExoticComponent<Pick<InputProps, "onFocus" | "onBlur" | "onClear"> & {
     value?: string | undefined;
     defaultValue?: string | undefined;
@@ -29,4 +29,4 @@ export declare const SearchBar: React.ForwardRefExoticComponent<Pick<InputProps,
     onSearch?: ((val: string) => void) | undefined;
     onChange?: ((val: string) => void) | undefined;
     onCancel?: (() => void) | undefined;
-} & NativeProps<"--border-radius" | "--placeholder-color" | "--background"> & React.RefAttributes<InputRef>>;
+} & NativeProps<"--border-radius" | "--height" | "--padding-left" | "--placeholder-color" | "--background"> & React.RefAttributes<InputRef>>;

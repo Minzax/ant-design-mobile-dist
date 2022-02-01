@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports["default"] = void 0;
+exports.default = void 0;
 
 require("./image-viewer.css");
 
@@ -13,14 +13,14 @@ var _imageViewer2 = require("./image-viewer");
 
 var _methods = require("./methods");
 
-var Multi = (0, _attachPropertiesToComponent.attachPropertiesToComponent)(_imageViewer2.MultiImageViewer, {
+const Multi = (0, _attachPropertiesToComponent.attachPropertiesToComponent)(_imageViewer2.MultiImageViewer, {
   show: _methods.showMultiImageViewer
 });
 
 var _default = (0, _attachPropertiesToComponent.attachPropertiesToComponent)(_imageViewer2.ImageViewer, {
-  Multi: Multi,
+  Multi,
   show: _methods.showImageViewer,
   clear: _methods.clearImageViewer
 });
 
-exports["default"] = _default;
+exports.default = _default;

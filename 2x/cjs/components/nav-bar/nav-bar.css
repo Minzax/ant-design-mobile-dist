@@ -24,14 +24,14 @@
 .adm-nav-bar-back {
   display: flex;
   align-items: center;
-  margin-right: 24px;
+  margin-right: 32px;
   padding: 12px 0;
   cursor: pointer;
 }
 
 .adm-nav-bar-back-arrow {
-  font-size: 36px;
-  margin-right: 12px;
+  font-size: 48px;
+  margin-right: 8px;
 }
 
 .adm-nav-bar-left {

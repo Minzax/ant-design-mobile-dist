@@ -3,30 +3,32 @@ import classNames from 'classnames';
 import { LeftOutline } from 'antd-mobile-icons';
 import { withNativeProps } from '../../utils/native-props';
 import { mergeProps } from '../../utils/with-default-props';
-var classPrefix = "adm-nav-bar";
-var defaultProps = {
+const classPrefix = `adm-nav-bar`;
+const defaultProps = {
   back: '',
   backArrow: true
 };
-export var NavBar = function NavBar(p) {
-  var props = mergeProps(defaultProps, p);
-  var back = props.back,
-      backArrow = props.backArrow;
-  return withNativeProps(props, /*#__PURE__*/React.createElement("div", {
+export const NavBar = p => {
+  const props = mergeProps(defaultProps, p);
+  const {
+    back,
+    backArrow
+  } = props;
+  return withNativeProps(props, React.createElement("div", {
     className: classNames(classPrefix)
-  }, /*#__PURE__*/React.createElement("div", {
-    className: classPrefix + "-left",
+  }, React.createElement("div", {
+    className: `${classPrefix}-left`,
     role: 'button'
-  }, back !== null && /*#__PURE__*/React.createElement("div", {
-    className: classPrefix + "-back",
+  }, back !== null && React.createElement("div", {
+    className: `${classPrefix}-back`,
     onClick: props.onBack
-  }, backArrow && /*#__PURE__*/React.createElement("span", {
-    className: classPrefix + "-back-arrow"
-  }, backArrow === true ? /*#__PURE__*/React.createElement(LeftOutline, null) : backArrow), /*#__PURE__*/React.createElement("span", {
+  }, backArrow && React.createElement("span", {
+    className: `${classPrefix}-back-arrow`
+  }, backArrow === true ? React.createElement(LeftOutline, null) : backArrow), React.createElement("span", {
     "aria-hidden": 'true'
-  }, back)), props.left), /*#__PURE__*/React.createElement("div", {
-    className: classPrefix + "-title"
-  }, props.children), /*#__PURE__*/React.createElement("div", {
-    className: classPrefix + "-right"
+  }, back)), props.left), React.createElement("div", {
+    className: `${classPrefix}-title`
+  }, props.children), React.createElement("div", {
+    className: `${classPrefix}-right`
   }, props.right)));
 };

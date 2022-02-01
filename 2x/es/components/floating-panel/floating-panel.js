@@ -4,52 +4,50 @@ import { useDrag } from '@use-gesture/react';
 import { useSpring, animated } from '@react-spring/web';
 import { supportsPassive } from '../../utils/supports-passive';
 import { nearest } from '../../utils/nearest';
-export var FloatingPanel = /*#__PURE__*/forwardRef(function (props, ref) {
+export const FloatingPanel = forwardRef((props, ref) => {
   var _a;
 
-  var anchors = props.anchors;
-  var maxHeight = (_a = anchors[anchors.length - 1]) !== null && _a !== void 0 ? _a : window.innerHeight;
-  var possibles = anchors.map(function (x) {
-    return -x;
-  });
-  var elementRef = useRef(null);
-  var headerRef = useRef(null);
-  var contentRef = useRef(null);
-
-  var _useState = useState(false),
-      pulling = _useState[0],
-      setPulling = _useState[1];
-
-  var pullingRef = useRef(false);
-  var bounds = {
+  const {
+    anchors,
+    headerChildren,
+    onIndexDragEndChange
+  } = props;
+  const maxHeight = (_a = anchors[anchors.length - 1]) !== null && _a !== void 0 ? _a : window.innerHeight;
+  const possibles = anchors.map(x => -x);
+  const elementRef = useRef(null);
+  const headerRef = useRef(null);
+  const contentRef = useRef(null);
+  const [pulling, setPulling] = useState(false);
+  const pullingRef = useRef(false);
+  const bounds = {
     top: possibles[possibles.length - 1],
     bottom: possibles[0]
   };
+  const [{
+    y
+  }, api] = useSpring(() => ({
+    y: bounds.bottom,
+    config: {
+      tension: 300
+    },
+    onChange: result => {
+      var _a;
 
-  var _useSpring = useSpring(function () {
-    return {
-      y: bounds.bottom,
-      config: {
-        tension: 300
-      }
-    };
-  }),
-      y = _useSpring[0].y,
-      api = _useSpring[1];
-
-  useDrag(function (state) {
-    var _state$offset = state.offset,
-        offsetY = _state$offset[1];
+      (_a = props.onHeightChange) === null || _a === void 0 ? void 0 : _a.call(props, result.value.y, y.isAnimating);
+    }
+  }));
+  useDrag(state => {
+    const [, offsetY] = state.offset;
 
     if (state.first) {
-      var target = state.event.target;
-      var header = headerRef.current;
+      const target = state.event.target;
+      const header = headerRef.current;
 
       if (header === target || (header === null || header === void 0 ? void 0 : header.contains(target))) {
         pullingRef.current = true;
       } else {
-        var reachedTop = y.goal <= bounds.top;
-        var content = contentRef.current;
+        const reachedTop = y.goal <= bounds.top;
+        const content = contentRef.current;
         if (!content) return;
 
         if (reachedTop) {
@@ -64,19 +62,22 @@ export var FloatingPanel = /*#__PURE__*/forwardRef(function (props, ref) {
 
     setPulling(pullingRef.current);
     if (!pullingRef.current) return;
-    var event = state.event;
+    const {
+      event
+    } = state;
 
     if (event.cancelable) {
       event.preventDefault();
     }
 
     event.stopPropagation();
-    var nextY = offsetY;
+    let nextY = offsetY;
 
     if (state.last) {
       pullingRef.current = false;
       setPulling(false);
       nextY = nearest(possibles, offsetY);
+      onIndexDragEndChange === null || onIndexDragEndChange === void 0 ? void 0 : onIndexDragEndChange(possibles.indexOf(nextY));
     }
 
     api.start({
@@ -84,11 +85,9 @@ export var FloatingPanel = /*#__PURE__*/forwardRef(function (props, ref) {
     });
   }, {
     axis: 'y',
-    bounds: bounds,
+    bounds,
     rubberband: true,
-    from: function from() {
-      return [0, y.get()];
-    },
+    from: () => [0, y.get()],
     pointer: {
       touch: true
     },
@@ -97,34 +96,32 @@ export var FloatingPanel = /*#__PURE__*/forwardRef(function (props, ref) {
       passive: false
     } : false
   });
-  useImperativeHandle(ref, function () {
-    return {
-      setHeight: function setHeight(height, options) {
-        api.start({
-          y: -height,
-          immediate: options === null || options === void 0 ? void 0 : options.immediate
-        });
-      }
-    };
-  }, [api]);
-  return withNativeProps(props, /*#__PURE__*/React.createElement(animated.div, {
+  useImperativeHandle(ref, () => ({
+    setHeight: (height, options) => {
+      api.start({
+        y: -height,
+        immediate: options === null || options === void 0 ? void 0 : options.immediate
+      });
+    }
+  }), [api]);
+  return withNativeProps(props, React.createElement(animated.div, {
     ref: elementRef,
     className: 'adm-floating-panel',
     style: {
       height: maxHeight,
-      y: y
+      y
     }
-  }, /*#__PURE__*/React.createElement("div", {
+  }, React.createElement("div", {
     className: 'adm-floating-panel-mask',
     style: {
       display: pulling ? 'block' : 'none'
     }
-  }), /*#__PURE__*/React.createElement("div", {
+  }), React.createElement("div", {
     className: 'adm-floating-panel-header',
     ref: headerRef
-  }, /*#__PURE__*/React.createElement("div", {
+  }, headerChildren || React.createElement("div", {
     className: 'adm-floating-panel-bar'
-  })), /*#__PURE__*/React.createElement("div", {
+  })), React.createElement("div", {
     className: 'adm-floating-panel-content',
     ref: contentRef
   }, props.children)));

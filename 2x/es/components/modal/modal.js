@@ -1,35 +1,4 @@
-var __awaiter = this && this.__awaiter || function (thisArg, _arguments, P, generator) {
-  function adopt(value) {
-    return value instanceof P ? value : new P(function (resolve) {
-      resolve(value);
-    });
-  }
-
-  return new (P || (P = Promise))(function (resolve, reject) {
-    function fulfilled(value) {
-      try {
-        step(generator.next(value));
-      } catch (e) {
-        reject(e);
-      }
-    }
-
-    function rejected(value) {
-      try {
-        step(generator["throw"](value));
-      } catch (e) {
-        reject(e);
-      }
-    }
-
-    function step(result) {
-      result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected);
-    }
-
-    step((generator = generator.apply(thisArg, _arguments || [])).next());
-  });
-};
-
+import { __awaiter } from "tslib";
 import React, { useState } from 'react';
 import { mergeProps } from '../../utils/with-default-props';
 import classNames from 'classnames';
@@ -44,8 +13,8 @@ import AutoCenter from '../auto-center';
 import { useSpring, animated } from '@react-spring/web';
 import { withNativeProps } from '../../utils/native-props';
 import { CloseOutline } from 'antd-mobile-icons';
-var classPrefix = "adm-modal";
-var defaultProps = {
+const classPrefix = `adm-modal`;
+const defaultProps = {
   visible: false,
   actions: [],
   closeOnAction: false,
@@ -54,10 +23,10 @@ var defaultProps = {
   showCloseButton: false,
   getContainer: null
 };
-export var Modal = function Modal(p) {
-  var props = mergeProps(defaultProps, p);
-  var unmountedRef = useUnmountedRef();
-  var style = useSpring({
+export const Modal = p => {
+  const props = mergeProps(defaultProps, p);
+  const unmountedRef = useUnmountedRef();
+  const style = useSpring({
     scale: props.visible ? 1 : 0.8,
     opacity: props.visible ? 1 : 0,
     config: {
@@ -66,10 +35,10 @@ export var Modal = function Modal(p) {
       friction: 30,
       clamp: true
     },
-    onStart: function onStart() {
+    onStart: () => {
       setActive(true);
     },
-    onRest: function onRest() {
+    onRest: () => {
       var _a, _b;
 
       if (unmountedRef.current) return;
@@ -82,87 +51,64 @@ export var Modal = function Modal(p) {
       }
     }
   });
-
-  var _useState = useState(props.visible),
-      active = _useState[0],
-      setActive = _useState[1];
-
-  var node = withStopPropagation(props.stopPropagation, withNativeProps(props, /*#__PURE__*/React.createElement("div", {
+  const [active, setActive] = useState(props.visible);
+  const node = withStopPropagation(props.stopPropagation, withNativeProps(props, React.createElement("div", {
     className: classPrefix,
     style: {
       display: active ? 'unset' : 'none'
     }
-  }, /*#__PURE__*/React.createElement(Mask, {
+  }, React.createElement(Mask, {
     visible: props.visible,
     onMaskClick: props.closeOnMaskClick ? props.onClose : undefined,
     style: props.maskStyle,
-    className: classNames(classPrefix + "-mask", props.maskClassName)
-  }), /*#__PURE__*/React.createElement("div", {
-    className: classPrefix + "-wrap",
+    className: classNames(`${classPrefix}-mask`, props.maskClassName)
+  }), React.createElement("div", {
+    className: `${classPrefix}-wrap`,
     style: {
       pointerEvents: props.visible ? 'unset' : 'none'
     }
-  }, /*#__PURE__*/React.createElement(animated.div, {
+  }, React.createElement(animated.div, {
     style: Object.assign({}, style),
-    onClick: function onClick(e) {
-      return e.stopPropagation();
-    },
-    className: classPrefix + "-main"
-  }, !!props.image && /*#__PURE__*/React.createElement(Image, {
+    onClick: e => e.stopPropagation(),
+    className: `${classPrefix}-main`
+  }, props.showCloseButton && React.createElement("a", {
+    className: classNames(`${classPrefix}-close`, 'adm-plain-anchor'),
+    onClick: props.onClose
+  }, React.createElement(CloseOutline, null)), !!props.image && React.createElement("div", {
+    className: `${classPrefix}-image-container`
+  }, React.createElement(Image, {
     src: props.image,
     alt: 'modal header image',
     width: '100%'
-  }), /*#__PURE__*/React.createElement("div", {
+  })), React.createElement("div", {
     style: props.bodyStyle,
-    className: classNames(classPrefix + "-body", props.bodyClassName)
-  }, props.showCloseButton && /*#__PURE__*/React.createElement("a", {
-    className: classNames(classPrefix + "-close", 'adm-plain-anchor'),
-    onClick: props.onClose
-  }, /*#__PURE__*/React.createElement(CloseOutline, null)), /*#__PURE__*/React.createElement(Space, {
+    className: classNames(`${classPrefix}-body`, props.bodyClassName)
+  }, !!props.header && React.createElement("div", {
+    className: `${classPrefix}-body-header-wrapper`
+  }, React.createElement("div", {
+    className: `${classPrefix}-body-header`
+  }, props.header)), !!props.title && React.createElement("div", {
+    className: `${classPrefix}-body-title`
+  }, props.title), !!props.content && React.createElement("div", {
+    className: `${classPrefix}-body-content`
+  }, typeof props.content === 'string' ? React.createElement(AutoCenter, null, props.content) : props.content)), React.createElement(Space, {
     direction: 'vertical',
-    block: true
-  }, !!props.header && /*#__PURE__*/React.createElement("div", {
-    className: classPrefix + "-body-header-wrapper"
-  }, /*#__PURE__*/React.createElement("div", {
-    className: classPrefix + "-body-header"
-  }, props.header)), !!props.title && /*#__PURE__*/React.createElement("div", {
-    className: classPrefix + "-body-title"
-  }, props.title), !!props.content && /*#__PURE__*/React.createElement("div", {
-    className: classPrefix + "-body-content"
-  }, typeof props.content === 'string' ? /*#__PURE__*/React.createElement(AutoCenter, null, props.content) : props.content))), /*#__PURE__*/React.createElement("div", {
-    className: classPrefix + "-footer"
-  }, /*#__PURE__*/React.createElement(Space, {
-    direction: 'vertical',
-    block: true
-  }, props.actions.map(function (action, index) {
-    return /*#__PURE__*/React.createElement(ModalActionButton, {
+    block: true,
+    className: `${classPrefix}-footer`
+  }, props.actions.map((action, index) => {
+    return React.createElement(ModalActionButton, {
       key: action.key,
       action: action,
-      onAction: function onAction() {
-        return __awaiter(void 0, void 0, void 0, /*#__PURE__*/regeneratorRuntime.mark(function _callee() {
-          var _a, _b, _c;
+      onAction: () => __awaiter(void 0, void 0, void 0, function* () {
+        var _a, _b, _c;
 
-          return regeneratorRuntime.wrap(function _callee$(_context) {
-            while (1) {
-              switch (_context.prev = _context.next) {
-                case 0:
-                  _context.next = 2;
-                  return Promise.all([(_a = action.onClick) === null || _a === void 0 ? void 0 : _a.call(action), (_b = props.onAction) === null || _b === void 0 ? void 0 : _b.call(props, action, index)]);
+        yield Promise.all([(_a = action.onClick) === null || _a === void 0 ? void 0 : _a.call(action), (_b = props.onAction) === null || _b === void 0 ? void 0 : _b.call(props, action, index)]);
 
-                case 2:
-                  if (props.closeOnAction) {
-                    (_c = props.onClose) === null || _c === void 0 ? void 0 : _c.call(props);
-                  }
-
-                case 3:
-                case "end":
-                  return _context.stop();
-              }
-            }
-          }, _callee);
-        }));
-      }
+        if (props.closeOnAction) {
+          (_c = props.onClose) === null || _c === void 0 ? void 0 : _c.call(props);
+        }
+      })
     });
-  }))))))));
+  })))))));
   return renderToContainer(props.getContainer, node);
 };

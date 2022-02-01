@@ -2,28 +2,28 @@ import { CascadePicker } from './cascade-picker';
 import React, { useEffect, useState } from 'react';
 import { renderToBody } from '../../utils/render-to-body';
 export function prompt(props) {
-  return new Promise(function (resolve) {
-    var Wrapper = function Wrapper() {
-      var _useState = useState(false),
-          visible = _useState[0],
-          setVisible = _useState[1];
-
-      useEffect(function () {
+  return new Promise(resolve => {
+    const Wrapper = () => {
+      const [visible, setVisible] = useState(false);
+      useEffect(() => {
         setVisible(true);
       }, []);
-      return /*#__PURE__*/React.createElement(CascadePicker, Object.assign({}, props, {
+      return React.createElement(CascadePicker, Object.assign({}, props, {
         visible: visible,
-        onConfirm: function onConfirm(val) {
+        onConfirm: (val, extend) => {
+          var _a;
+
+          (_a = props.onConfirm) === null || _a === void 0 ? void 0 : _a.call(props, val, extend);
           resolve(val);
         },
-        onClose: function onClose() {
+        onClose: () => {
           var _a;
 
           (_a = props.onClose) === null || _a === void 0 ? void 0 : _a.call(props);
           setVisible(false);
           resolve(null);
         },
-        afterClose: function afterClose() {
+        afterClose: () => {
           var _a;
 
           (_a = props.afterClose) === null || _a === void 0 ? void 0 : _a.call(props);
@@ -32,6 +32,6 @@ export function prompt(props) {
       }));
     };
 
-    var unmount = renderToBody( /*#__PURE__*/React.createElement(Wrapper, null));
+    const unmount = renderToBody(React.createElement(Wrapper, null));
   });
 }

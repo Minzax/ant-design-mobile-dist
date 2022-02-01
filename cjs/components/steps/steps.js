@@ -13,36 +13,38 @@ var _withDefaultProps = require("../../utils/with-default-props");
 
 var _nativeProps = require("../../utils/native-props");
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var classPrefix = "adm-steps";
-var stepClassPrefix = "adm-step";
+const classPrefix = `adm-steps`;
+const stepClassPrefix = `adm-step`;
 
-var defaultIcon = /*#__PURE__*/_react["default"].createElement("span", {
-  className: stepClassPrefix + "-icon-dot"
+const defaultIcon = _react.default.createElement("span", {
+  className: `${stepClassPrefix}-icon-dot`
 });
 
-var defaultProps = {
+const defaultProps = {
   current: 0,
   direction: 'horizontal'
 };
 
-var Steps = function Steps(p) {
-  var props = (0, _withDefaultProps.mergeProps)(defaultProps, p);
-  var direction = props.direction,
-      current = props.current;
-  var classString = (0, _classnames["default"])(classPrefix, classPrefix + "-" + direction);
-  return (0, _nativeProps.withNativeProps)(props, /*#__PURE__*/_react["default"].createElement("div", {
+const Steps = p => {
+  const props = (0, _withDefaultProps.mergeProps)(defaultProps, p);
+  const {
+    direction,
+    current
+  } = props;
+  const classString = (0, _classnames.default)(classPrefix, `${classPrefix}-${direction}`);
+  return (0, _nativeProps.withNativeProps)(props, _react.default.createElement("div", {
     className: classString
-  }, _react["default"].Children.map(props.children, function (child, index) {
+  }, _react.default.Children.map(props.children, (child, index) => {
     var _a;
 
-    if (! /*#__PURE__*/_react["default"].isValidElement(child)) {
+    if (!_react.default.isValidElement(child)) {
       return child;
     }
 
-    var props = child.props;
-    var status = props.status || 'wait';
+    const props = child.props;
+    let status = props.status || 'wait';
 
     if (index < current) {
       status = props.status || 'finish';
@@ -50,10 +52,10 @@ var Steps = function Steps(p) {
       status = props.status || 'process';
     }
 
-    var icon = (_a = props.icon) !== null && _a !== void 0 ? _a : defaultIcon;
-    return /*#__PURE__*/_react["default"].cloneElement(child, {
-      status: status,
-      icon: icon
+    const icon = (_a = props.icon) !== null && _a !== void 0 ? _a : defaultIcon;
+    return _react.default.cloneElement(child, {
+      status,
+      icon
     });
   })));
 };

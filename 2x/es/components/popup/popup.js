@@ -9,30 +9,25 @@ import { renderToContainer } from '../../utils/render-to-container';
 import { useSpring, animated } from '@react-spring/web';
 import { useShouldRender } from '../../utils/use-should-render';
 import { withStopPropagation } from '../../utils/with-stop-propagation';
-var classPrefix = "adm-popup";
-var defaultProps = {
+const classPrefix = `adm-popup`;
+const defaultProps = {
   position: 'bottom',
   visible: false,
-  getContainer: function getContainer() {
-    return document.body;
-  },
+  getContainer: () => document.body,
   mask: true,
   stopPropagation: ['click']
 };
-export var Popup = function Popup(p) {
-  var props = mergeProps(defaultProps, p);
-  var bodyCls = classNames(classPrefix + "-body", props.bodyClassName, classPrefix + "-body-position-" + props.position);
-  var ref = useRef(null);
-
-  var _useState = useState(props.visible),
-      active = _useState[0],
-      setActive = _useState[1];
-
+export const Popup = p => {
+  const props = mergeProps(defaultProps, p);
+  const bodyCls = classNames(`${classPrefix}-body`, props.bodyClassName, `${classPrefix}-body-position-${props.position}`);
+  const ref = useRef(null);
+  const [active, setActive] = useState(props.visible);
   useLockScroll(ref, active);
-  var shouldRender = useShouldRender(active, props.forceRender, props.destroyOnClose);
-  var unmountedRef = useUnmountedRef();
-
-  var _useSpring = useSpring({
+  const shouldRender = useShouldRender(active, props.forceRender, props.destroyOnClose);
+  const unmountedRef = useUnmountedRef();
+  const {
+    percent
+  } = useSpring({
     percent: props.visible ? 0 : 100,
     config: {
       precision: 0.1,
@@ -40,10 +35,10 @@ export var Popup = function Popup(p) {
       tension: 300,
       friction: 30
     },
-    onStart: function onStart() {
+    onStart: () => {
       setActive(true);
     },
-    onRest: function onRest() {
+    onRest: () => {
       var _a, _b;
 
       if (unmountedRef.current) return;
@@ -55,40 +50,38 @@ export var Popup = function Popup(p) {
         (_b = props.afterClose) === null || _b === void 0 ? void 0 : _b.call(props);
       }
     }
-  }),
-      percent = _useSpring.percent;
-
-  var node = withStopPropagation(props.stopPropagation, withNativeProps(props, /*#__PURE__*/React.createElement("div", {
+  });
+  const node = withStopPropagation(props.stopPropagation, withNativeProps(props, React.createElement("div", {
     className: classPrefix,
     onClick: props.onClick,
     style: {
       display: active ? 'unset' : 'none'
     }
-  }, props.mask && /*#__PURE__*/React.createElement(Mask, {
+  }, props.mask && React.createElement(Mask, {
     visible: props.visible,
     onMaskClick: props.onMaskClick,
     className: props.maskClassName,
     style: props.maskStyle,
     disableBodyScroll: false,
     stopPropagation: props.stopPropagation
-  }), /*#__PURE__*/React.createElement(animated.div, {
+  }), React.createElement(animated.div, {
     className: bodyCls,
     style: Object.assign(Object.assign({}, props.bodyStyle), {
-      transform: percent.to(function (v) {
+      transform: percent.to(v => {
         if (props.position === 'bottom') {
-          return "translate(0, " + v + "%)";
+          return `translate(0, ${v}%)`;
         }
 
         if (props.position === 'top') {
-          return "translate(0, -" + v + "%)";
+          return `translate(0, -${v}%)`;
         }
 
         if (props.position === 'left') {
-          return "translate(-" + v + "%, 0)";
+          return `translate(-${v}%, 0)`;
         }
 
         if (props.position === 'right') {
-          return "translate(" + v + "%, 0)";
+          return `translate(${v}%, 0)`;
         }
 
         return 'none';

@@ -7,55 +7,44 @@ import { mergeProps } from '../../utils/with-default-props';
 import { SearchOutline } from 'antd-mobile-icons';
 import { usePropsValue } from '../../utils/use-props-value';
 import { useConfig } from '../config-provider';
-var classPrefix = "adm-search-bar";
-var defaultProps = {
+const classPrefix = `adm-search-bar`;
+const defaultProps = {
   clearable: true,
   showCancelButton: false,
   defaultValue: '',
   clearOnCancel: true,
-  icon: /*#__PURE__*/React.createElement(SearchOutline, null)
+  icon: React.createElement(SearchOutline, null)
 };
-export var SearchBar = /*#__PURE__*/forwardRef(function (p, ref) {
-  var _classNames, _classNames2;
-
-  var _useConfig = useConfig(),
-      locale = _useConfig.locale;
-
-  var props = mergeProps(defaultProps, {
+export const SearchBar = forwardRef((p, ref) => {
+  const {
+    locale
+  } = useConfig();
+  const props = mergeProps(defaultProps, {
     cancelText: locale.common.cancel
   }, p);
+  const [value, setValue] = usePropsValue(props);
+  const [hasFocus, setHasFocus] = useState(false);
+  const inputRef = useRef(null);
+  useImperativeHandle(ref, () => ({
+    clear: () => {
+      var _a;
 
-  var _usePropsValue = usePropsValue(props),
-      value = _usePropsValue[0],
-      setValue = _usePropsValue[1];
+      return (_a = inputRef.current) === null || _a === void 0 ? void 0 : _a.clear();
+    },
+    focus: () => {
+      var _a;
 
-  var _useState = useState(false),
-      hasFocus = _useState[0],
-      setHasFocus = _useState[1];
+      return (_a = inputRef.current) === null || _a === void 0 ? void 0 : _a.focus();
+    },
+    blur: () => {
+      var _a;
 
-  var inputRef = useRef(null);
-  useImperativeHandle(ref, function () {
-    return {
-      clear: function clear() {
-        var _a;
+      return (_a = inputRef.current) === null || _a === void 0 ? void 0 : _a.blur();
+    }
+  }));
 
-        return (_a = inputRef.current) === null || _a === void 0 ? void 0 : _a.clear();
-      },
-      focus: function focus() {
-        var _a;
-
-        return (_a = inputRef.current) === null || _a === void 0 ? void 0 : _a.focus();
-      },
-      blur: function blur() {
-        var _a;
-
-        return (_a = inputRef.current) === null || _a === void 0 ? void 0 : _a.blur();
-      }
-    };
-  });
-
-  var renderCancelButton = function renderCancelButton() {
-    var isShowCancel = false;
+  const renderCancelButton = () => {
+    let isShowCancel = false;
 
     if (typeof props.showCancelButton === 'function') {
       isShowCancel = props.showCancelButton(hasFocus, value);
@@ -63,18 +52,18 @@ export var SearchBar = /*#__PURE__*/forwardRef(function (p, ref) {
       isShowCancel = props.showCancelButton && hasFocus;
     }
 
-    return isShowCancel && /*#__PURE__*/React.createElement("div", {
-      className: classPrefix + "-suffix",
-      onMouseDown: function onMouseDown(e) {
+    return isShowCancel && React.createElement("div", {
+      className: `${classPrefix}-suffix`,
+      onMouseDown: e => {
         e.preventDefault();
       },
-      onTouchStart: function onTouchStart(e) {
+      onTouchStart: e => {
         e.preventDefault();
       }
-    }, /*#__PURE__*/React.createElement(Button, {
+    }, React.createElement(Button, {
       fill: 'none',
-      className: classPrefix + "-cancel-button",
-      onClick: function onClick() {
+      className: `${classPrefix}-cancel-button`,
+      onClick: () => {
         var _a, _b, _c;
 
         if (props.clearOnCancel) {
@@ -87,27 +76,31 @@ export var SearchBar = /*#__PURE__*/forwardRef(function (p, ref) {
     }, props.cancelText));
   };
 
-  return withNativeProps(props, /*#__PURE__*/React.createElement("div", {
-    className: classNames(classPrefix, (_classNames = {}, _classNames[classPrefix + "-active"] = hasFocus, _classNames))
-  }, /*#__PURE__*/React.createElement("div", {
-    className: classPrefix + "-input-box"
-  }, props.icon && /*#__PURE__*/React.createElement("div", {
-    className: classPrefix + "-input-box-icon"
-  }, props.icon), /*#__PURE__*/React.createElement(Input, {
+  return withNativeProps(props, React.createElement("div", {
+    className: classNames(classPrefix, {
+      [`${classPrefix}-active`]: hasFocus
+    })
+  }, React.createElement("div", {
+    className: `${classPrefix}-input-box`
+  }, props.icon && React.createElement("div", {
+    className: `${classPrefix}-input-box-icon`
+  }, props.icon), React.createElement(Input, {
     ref: inputRef,
-    className: classNames(classPrefix + "-input", (_classNames2 = {}, _classNames2[classPrefix + "-input-without-icon"] = !props.icon, _classNames2)),
+    className: classNames(`${classPrefix}-input`, {
+      [`${classPrefix}-input-without-icon`]: !props.icon
+    }),
     value: value,
     onChange: setValue,
     maxLength: props.maxLength,
     placeholder: props.placeholder,
     clearable: props.clearable,
-    onFocus: function onFocus(e) {
+    onFocus: e => {
       var _a;
 
       setHasFocus(true);
       (_a = props.onFocus) === null || _a === void 0 ? void 0 : _a.call(props, e);
     },
-    onBlur: function onBlur(e) {
+    onBlur: e => {
       var _a;
 
       setHasFocus(false);
@@ -116,7 +109,7 @@ export var SearchBar = /*#__PURE__*/forwardRef(function (p, ref) {
     onClear: props.onClear,
     type: 'search',
     enterKeyHint: 'search',
-    onEnterPress: function onEnterPress() {
+    onEnterPress: () => {
       var _a, _b;
 
       (_a = inputRef.current) === null || _a === void 0 ? void 0 : _a.blur();

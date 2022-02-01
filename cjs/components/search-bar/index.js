@@ -3,11 +3,11 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports["default"] = void 0;
+exports.default = void 0;
 
 require("./search-bar.css");
 
 var _searchBar2 = require("./search-bar");
 
 var _default = _searchBar2.SearchBar;
-exports["default"] = _default;
+exports.default = _default;

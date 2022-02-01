@@ -11,8 +11,8 @@ var _isDev = require("./is-dev");
 
 var _devLog = require("./dev-log");
 
-var tenPxTester = null;
-var tester = null;
+let tenPxTester = null;
+let tester = null;
 
 if (_canUseDom.canUseDom) {
   tenPxTester = document.createElement('div');

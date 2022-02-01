@@ -1,23 +1,20 @@
 import { canUseDom } from './can-use-dom';
-var overflowScrollReg = /scroll|auto/i;
-var defaultRoot = canUseDom ? window : undefined;
+const overflowScrollReg = /scroll|auto|overlay/i;
+const defaultRoot = canUseDom ? window : undefined;
 
 function isElement(node) {
-  var ELEMENT_NODE_TYPE = 1;
+  const ELEMENT_NODE_TYPE = 1;
   return node.tagName !== 'HTML' && node.tagName !== 'BODY' && node.nodeType === ELEMENT_NODE_TYPE;
 } // https://github.com/youzan/vant/issues/3823
 
 
-export function getScrollParent(el, root) {
-  if (root === void 0) {
-    root = defaultRoot;
-  }
-
-  var node = el;
+export function getScrollParent(el, root = defaultRoot) {
+  let node = el;
 
   while (node && node !== root && isElement(node)) {
-    var _window$getComputedSt = window.getComputedStyle(node),
-        overflowY = _window$getComputedSt.overflowY;
+    const {
+      overflowY
+    } = window.getComputedStyle(node);
 
     if (overflowScrollReg.test(overflowY)) {
       return node;

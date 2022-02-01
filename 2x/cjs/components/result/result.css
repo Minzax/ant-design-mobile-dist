@@ -1,9 +1,6 @@
 .adm-result {
-  --bg-color: var(--adm-color-white);
-  --color: var(--adm-color-text);
-  --adm-color-weak: var(--adm-color-weak);
   padding: 64px 24px;
-  background-color: var(--bg-color);
+  background-color: var(--adm-color-white);
 }
 
 .adm-result-icon {
@@ -19,7 +16,7 @@
 }
 
 .adm-result-title {
-  color: var(--color);
+  color: var(--adm-color-text);
   font-size: 36px;
   line-height: 1.4;
   text-align: center;

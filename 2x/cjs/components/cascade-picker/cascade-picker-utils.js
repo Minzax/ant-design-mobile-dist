@@ -6,27 +6,23 @@ Object.defineProperty(exports, "__esModule", {
 exports.generateCascadePickerColumns = generateCascadePickerColumns;
 
 function generateCascadePickerColumns(value, options, depth, subOptionsRecord) {
-  var columns = [];
-  columns.push(options.map(function (option) {
-    return {
-      label: option.label,
-      value: option.value
-    };
-  }));
+  const columns = [];
+  columns.push(options.map(option => ({
+    label: option.label,
+    value: option.value
+  })));
 
-  for (var i = 0; i < depth - 1; i++) {
-    var x = value[i];
-    var subOptions = subOptionsRecord[x];
+  for (let i = 0; i < depth - 1; i++) {
+    const x = value[i];
+    const subOptions = subOptionsRecord[x];
 
     if (!subOptions) {
       columns.push([]);
     } else {
-      columns.push(subOptions.map(function (option) {
-        return {
-          label: option.label,
-          value: option.value
-        };
-      }));
+      columns.push(subOptions.map(option => ({
+        label: option.label,
+        value: option.value
+      })));
     }
   }
 

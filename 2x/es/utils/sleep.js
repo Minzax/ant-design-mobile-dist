@@ -1,5 +1,1 @@
-export var sleep = function sleep(time) {
-  return new Promise(function (resolve) {
-    return setTimeout(resolve, time);
-  });
-};
+export const sleep = time => new Promise(resolve => setTimeout(resolve, time));

@@ -1,42 +1,44 @@
 import React, { useMemo } from 'react';
 import classNames from 'classnames';
 import { CheckOutline, CloseOutline } from 'antd-mobile-icons';
-import Loading from '../loading';
 import Mask from '../mask';
 import { mergeProps } from '../../utils/with-default-props';
 import AutoCenter from '../auto-center';
-var classPrefix = "adm-toast";
-var defaultProps = {
+import SpinLoading from '../spin-loading';
+const classPrefix = `adm-toast`;
+const defaultProps = {
   maskClickable: true,
   stopPropagation: ['click']
 };
-export var InternalToast = function InternalToast(p) {
-  var props = mergeProps(defaultProps, p);
-  var maskClickable = props.maskClickable,
-      content = props.content,
-      icon = props.icon,
-      position = props.position;
-  var iconElement = useMemo(function () {
+export const InternalToast = p => {
+  const props = mergeProps(defaultProps, p);
+  const {
+    maskClickable,
+    content,
+    icon,
+    position
+  } = props;
+  const iconElement = useMemo(() => {
     if (icon === null || icon === undefined) return null;
 
     switch (icon) {
       case 'success':
-        return /*#__PURE__*/React.createElement(CheckOutline, null);
+        return React.createElement(CheckOutline, null);
 
       case 'fail':
-        return /*#__PURE__*/React.createElement(CloseOutline, null);
+        return React.createElement(CloseOutline, null);
 
       case 'loading':
-        return /*#__PURE__*/React.createElement(Loading, {
+        return React.createElement(SpinLoading, {
           color: 'white',
-          className: classPrefix + "-loading"
+          className: `${classPrefix}-loading`
         });
 
       default:
         return icon;
     }
   }, [icon]);
-  var top = useMemo(function () {
+  const top = useMemo(() => {
     switch (position) {
       case 'top':
         return '20%';
@@ -48,7 +50,7 @@ export var InternalToast = function InternalToast(p) {
         return '50%';
     }
   }, [position]);
-  return /*#__PURE__*/React.createElement(Mask, {
+  return React.createElement(Mask, {
     visible: props.visible,
     destroyOnClose: true,
     opacity: 0,
@@ -58,16 +60,16 @@ export var InternalToast = function InternalToast(p) {
     style: Object.assign({
       pointerEvents: maskClickable ? 'none' : 'auto'
     }, props.maskStyle),
-    className: classNames(classPrefix + "-mask", props.maskClassName),
+    className: classNames(`${classPrefix}-mask`, props.maskClassName),
     stopPropagation: props.stopPropagation
-  }, /*#__PURE__*/React.createElement("div", {
-    className: classNames(classPrefix + "-wrap")
-  }, /*#__PURE__*/React.createElement("div", {
+  }, React.createElement("div", {
+    className: classNames(`${classPrefix}-wrap`)
+  }, React.createElement("div", {
     style: {
-      top: top
+      top
     },
-    className: classNames(classPrefix + "-main", icon ? classPrefix + "-main-icon" : classPrefix + "-main-text")
-  }, iconElement && /*#__PURE__*/React.createElement("div", {
-    className: classPrefix + "-icon"
-  }, iconElement), /*#__PURE__*/React.createElement(AutoCenter, null, content))));
+    className: classNames(`${classPrefix}-main`, icon ? `${classPrefix}-main-icon` : `${classPrefix}-main-text`)
+  }, iconElement && React.createElement("div", {
+    className: `${classPrefix}-icon`
+  }, iconElement), React.createElement(AutoCenter, null, content))));
 };

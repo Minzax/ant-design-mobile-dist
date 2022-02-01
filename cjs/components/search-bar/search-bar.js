@@ -19,65 +19,54 @@ var _withDefaultProps = require("../../utils/with-default-props");
 
 var _antdMobileIcons = require("antd-mobile-icons");
 
-var _usePropsValue2 = require("../../utils/use-props-value");
+var _usePropsValue = require("../../utils/use-props-value");
 
 var _configProvider = require("../config-provider");
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function _getRequireWildcardCache(nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
+function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function (nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
 
-function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { "default": obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj["default"] = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
+function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
 
-var classPrefix = "adm-search-bar";
-var defaultProps = {
+const classPrefix = `adm-search-bar`;
+const defaultProps = {
   clearable: true,
   showCancelButton: false,
   defaultValue: '',
   clearOnCancel: true,
-  icon: /*#__PURE__*/_react["default"].createElement(_antdMobileIcons.SearchOutline, null)
+  icon: _react.default.createElement(_antdMobileIcons.SearchOutline, null)
 };
-var SearchBar = /*#__PURE__*/(0, _react.forwardRef)(function (p, ref) {
-  var _classNames, _classNames2;
-
-  var _useConfig = (0, _configProvider.useConfig)(),
-      locale = _useConfig.locale;
-
-  var props = (0, _withDefaultProps.mergeProps)(defaultProps, {
+const SearchBar = (0, _react.forwardRef)((p, ref) => {
+  const {
+    locale
+  } = (0, _configProvider.useConfig)();
+  const props = (0, _withDefaultProps.mergeProps)(defaultProps, {
     cancelText: locale.common.cancel
   }, p);
+  const [value, setValue] = (0, _usePropsValue.usePropsValue)(props);
+  const [hasFocus, setHasFocus] = (0, _react.useState)(false);
+  const inputRef = (0, _react.useRef)(null);
+  (0, _react.useImperativeHandle)(ref, () => ({
+    clear: () => {
+      var _a;
 
-  var _usePropsValue = (0, _usePropsValue2.usePropsValue)(props),
-      value = _usePropsValue[0],
-      setValue = _usePropsValue[1];
+      return (_a = inputRef.current) === null || _a === void 0 ? void 0 : _a.clear();
+    },
+    focus: () => {
+      var _a;
 
-  var _useState = (0, _react.useState)(false),
-      hasFocus = _useState[0],
-      setHasFocus = _useState[1];
+      return (_a = inputRef.current) === null || _a === void 0 ? void 0 : _a.focus();
+    },
+    blur: () => {
+      var _a;
 
-  var inputRef = (0, _react.useRef)(null);
-  (0, _react.useImperativeHandle)(ref, function () {
-    return {
-      clear: function clear() {
-        var _a;
+      return (_a = inputRef.current) === null || _a === void 0 ? void 0 : _a.blur();
+    }
+  }));
 
-        return (_a = inputRef.current) === null || _a === void 0 ? void 0 : _a.clear();
-      },
-      focus: function focus() {
-        var _a;
-
-        return (_a = inputRef.current) === null || _a === void 0 ? void 0 : _a.focus();
-      },
-      blur: function blur() {
-        var _a;
-
-        return (_a = inputRef.current) === null || _a === void 0 ? void 0 : _a.blur();
-      }
-    };
-  });
-
-  var renderCancelButton = function renderCancelButton() {
-    var isShowCancel = false;
+  const renderCancelButton = () => {
+    let isShowCancel = false;
 
     if (typeof props.showCancelButton === 'function') {
       isShowCancel = props.showCancelButton(hasFocus, value);
@@ -85,18 +74,18 @@ var SearchBar = /*#__PURE__*/(0, _react.forwardRef)(function (p, ref) {
       isShowCancel = props.showCancelButton && hasFocus;
     }
 
-    return isShowCancel && /*#__PURE__*/_react["default"].createElement("div", {
-      className: classPrefix + "-suffix",
-      onMouseDown: function onMouseDown(e) {
+    return isShowCancel && _react.default.createElement("div", {
+      className: `${classPrefix}-suffix`,
+      onMouseDown: e => {
         e.preventDefault();
       },
-      onTouchStart: function onTouchStart(e) {
+      onTouchStart: e => {
         e.preventDefault();
       }
-    }, /*#__PURE__*/_react["default"].createElement(_button["default"], {
+    }, _react.default.createElement(_button.default, {
       fill: 'none',
-      className: classPrefix + "-cancel-button",
-      onClick: function onClick() {
+      className: `${classPrefix}-cancel-button`,
+      onClick: () => {
         var _a, _b, _c;
 
         if (props.clearOnCancel) {
@@ -109,27 +98,31 @@ var SearchBar = /*#__PURE__*/(0, _react.forwardRef)(function (p, ref) {
     }, props.cancelText));
   };
 
-  return (0, _nativeProps.withNativeProps)(props, /*#__PURE__*/_react["default"].createElement("div", {
-    className: (0, _classnames["default"])(classPrefix, (_classNames = {}, _classNames[classPrefix + "-active"] = hasFocus, _classNames))
-  }, /*#__PURE__*/_react["default"].createElement("div", {
-    className: classPrefix + "-input-box"
-  }, props.icon && /*#__PURE__*/_react["default"].createElement("div", {
-    className: classPrefix + "-input-box-icon"
-  }, props.icon), /*#__PURE__*/_react["default"].createElement(_input["default"], {
+  return (0, _nativeProps.withNativeProps)(props, _react.default.createElement("div", {
+    className: (0, _classnames.default)(classPrefix, {
+      [`${classPrefix}-active`]: hasFocus
+    })
+  }, _react.default.createElement("div", {
+    className: `${classPrefix}-input-box`
+  }, props.icon && _react.default.createElement("div", {
+    className: `${classPrefix}-input-box-icon`
+  }, props.icon), _react.default.createElement(_input.default, {
     ref: inputRef,
-    className: (0, _classnames["default"])(classPrefix + "-input", (_classNames2 = {}, _classNames2[classPrefix + "-input-without-icon"] = !props.icon, _classNames2)),
+    className: (0, _classnames.default)(`${classPrefix}-input`, {
+      [`${classPrefix}-input-without-icon`]: !props.icon
+    }),
     value: value,
     onChange: setValue,
     maxLength: props.maxLength,
     placeholder: props.placeholder,
     clearable: props.clearable,
-    onFocus: function onFocus(e) {
+    onFocus: e => {
       var _a;
 
       setHasFocus(true);
       (_a = props.onFocus) === null || _a === void 0 ? void 0 : _a.call(props, e);
     },
-    onBlur: function onBlur(e) {
+    onBlur: e => {
       var _a;
 
       setHasFocus(false);
@@ -138,7 +131,7 @@ var SearchBar = /*#__PURE__*/(0, _react.forwardRef)(function (p, ref) {
     onClear: props.onClear,
     type: 'search',
     enterKeyHint: 'search',
-    onEnterPress: function onEnterPress() {
+    onEnterPress: () => {
       var _a, _b;
 
       (_a = inputRef.current) === null || _a === void 0 ? void 0 : _a.blur();

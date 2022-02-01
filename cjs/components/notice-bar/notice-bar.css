@@ -1,15 +1,18 @@
 .adm-notice-bar {
-  height: 30px;
+  --background-color: #ababab;
+  --border-color: #999999;
+  --text-color: #ffffff;
+  --font-size: 15px;
+  --icon-font-size: 18px;
+  --height: 38px;
+  height: var(--height);
   box-sizing: border-box;
-  font-size: 14px;
-  line-height: 30px;
+  font-size: var(--font-size);
+  line-height: var(--height);
   padding: 0 12px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  --background-color: #b2b2b2;
-  --border-color: #a0a0a0;
-  --text-color: #ffffff;
   border: solid 1px var(--border-color);
   border-left: none;
   border-right: none;
@@ -34,9 +37,11 @@
   --border-color: #bcd8ff;
   --text-color: #1677ff;
 }
-.adm-notice-bar .adm-notice-bar-left:not(:empty) {
+.adm-notice-bar .adm-notice-bar-left {
   flex-shrink: 0;
   margin-right: 8px;
+  font-size: var(--icon-font-size);
+  line-height: var(--height);
 }
 .adm-notice-bar .adm-notice-bar-content {
   flex: 1;
@@ -50,10 +55,12 @@
   width: auto;
   transition-timing-function: linear;
   position: absolute;
-  padding: 0 4px;
   white-space: nowrap;
 }
 .adm-notice-bar .adm-notice-bar-right {
   flex-shrink: 0;
   margin-left: 12px;
+}
+.adm-notice-bar-close-icon {
+  font-size: 18px;
 }

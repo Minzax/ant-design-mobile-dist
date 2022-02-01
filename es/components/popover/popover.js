@@ -3,62 +3,51 @@ import Tooltip from 'rc-tooltip';
 import classNames from 'classnames';
 import { usePropsValue } from '../../utils/use-props-value';
 import { mergeProps } from '../../utils/with-default-props';
-var classPrefix = "adm-popover";
-var enterClassName = 'entering';
-var leaveClassName = 'leaving';
-var defaultProps = {
-  defaultVisible: false
+import { withStopPropagation } from '../../utils/with-stop-propagation';
+import { Arrow } from './arrow';
+const classPrefix = `adm-popover`;
+const defaultProps = {
+  placement: 'top',
+  defaultVisible: false,
+  stopPropagation: ['click'],
+  getContainer: () => document.body
 };
-export var Popover = /*#__PURE__*/forwardRef(function (p, ref) {
-  var props = mergeProps(defaultProps, p);
-  var _props$mode = props.mode,
-      mode = _props$mode === void 0 ? 'light' : _props$mode;
+export const Popover = forwardRef((p, ref) => {
+  var _a;
 
-  var _usePropsValue = usePropsValue({
+  const props = mergeProps(defaultProps, p);
+  const {
+    mode = 'light'
+  } = props;
+  const [visible, setVisible] = usePropsValue({
     value: props.visible,
     defaultValue: props.defaultVisible,
     onChange: props.onVisibleChange
-  }),
-      visible = _usePropsValue[0],
-      setVisible = _usePropsValue[1];
-
-  useImperativeHandle(ref, function () {
+  });
+  useImperativeHandle(ref, () => {
     return {
-      show: function show() {
-        return setVisible(true);
-      },
-      hide: function hide() {
-        return setVisible(false);
-      },
-      visible: visible
+      show: () => setVisible(true),
+      hide: () => setVisible(false),
+      visible
     };
   }, [visible]);
-  return /*#__PURE__*/React.createElement(Tooltip, Object.assign({}, props, {
-    overlayClassName: classNames(classPrefix + "-" + mode, props.overlayClassName),
+  const overlay = withStopPropagation(props.stopPropagation, React.createElement("div", {
+    className: `${classPrefix}-inner-content`
+  }, props.content));
+  return React.createElement(Tooltip, Object.assign({}, props, {
+    placement: props.placement,
+    align: props.align,
+    overlayClassName: classNames(`${classPrefix}-${mode}`, props.className),
+    overlayStyle: props.style,
     destroyTooltipOnHide: props.destroyOnHide,
     prefixCls: classPrefix,
-    getTooltipContainer: props.getContainer || function () {
-      return document.body;
-    },
+    getTooltipContainer: props.getContainer || (() => document.body),
     visible: visible,
-    arrowContent: /*#__PURE__*/React.createElement("span", {
-      className: classPrefix + "-arrow-content"
+    arrowContent: React.createElement(Arrow, {
+      className: `${classPrefix}-arrow-icon`
     }),
     onVisibleChange: setVisible,
-    trigger: props.trigger,
-    motion: {
-      motionName: {
-        appear: enterClassName,
-        appearActive: enterClassName,
-        enter: enterClassName,
-        enterActive: enterClassName,
-        leaveActive: leaveClassName,
-        leave: leaveClassName
-      },
-      motionDeadline: 200
-    },
-    overlay: /*#__PURE__*/React.createElement("div", {
-      className: classPrefix + "-inner-content"
-    }, props.content)
+    trigger: (_a = props.trigger) !== null && _a !== void 0 ? _a : [],
+    overlay: overlay
   }), props.children);
 });
