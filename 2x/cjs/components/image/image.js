@@ -19,7 +19,7 @@ var _toCssLength = require("../../utils/to-css-length");
 
 var _lazyDetector = require("./lazy-detector");
 
-var _ahooks = require("ahooks");
+var _useIsomorphicUpdateLayoutEffect = require("../../utils/use-isomorphic-update-layout-effect");
 
 function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function (nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
 
@@ -46,7 +46,7 @@ const Image = (0, _stagedComponents.staged)(p => {
   const [initialized, setInitialized] = (0, _react.useState)(!props.lazy);
   src = initialized ? props.src : undefined;
   srcSet = initialized ? props.srcSet : undefined;
-  (0, _ahooks.useUpdateLayoutEffect)(() => {
+  (0, _useIsomorphicUpdateLayoutEffect.useIsomorphicUpdateLayoutEffect)(() => {
     setLoaded(false);
     setFailed(false);
   }, [src]);

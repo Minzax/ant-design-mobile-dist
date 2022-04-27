@@ -1,13 +1,17 @@
-import React, { useLayoutEffect, useRef, useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { mergeProps } from '../../utils/with-default-props';
 import { withNativeProps } from '../../utils/native-props';
 import { useResizeEffect } from '../../utils/use-resize-effect';
+import { useIsomorphicLayoutEffect } from 'ahooks';
+import { withStopPropagation } from '../../utils/with-stop-propagation';
 const classPrefix = `adm-ellipsis`;
 const defaultProps = {
   direction: 'end',
   rows: 1,
   expandText: '',
-  collapseText: ''
+  collapseText: '',
+  stopPropagationForActionButtons: [],
+  onContentClick: () => {}
 };
 export const Ellipsis = p => {
   const props = mergeProps(defaultProps, p);
@@ -113,19 +117,19 @@ export const Ellipsis = p => {
   }
 
   useResizeEffect(calcEllipsised, rootRef);
-  useLayoutEffect(() => {
+  useIsomorphicLayoutEffect(() => {
     calcEllipsised();
   }, [props.content, props.direction, props.rows, props.expandText, props.collapseText]);
-  const expandActionElement = exceeded && props.expandText ? React.createElement("a", {
+  const expandActionElement = exceeded && props.expandText ? withStopPropagation(props.stopPropagationForActionButtons, React.createElement("a", {
     onClick: () => {
       setExpanded(true);
     }
-  }, props.expandText) : null;
-  const collapseActionElement = exceeded && props.expandText ? React.createElement("a", {
+  }, props.expandText)) : null;
+  const collapseActionElement = exceeded && props.expandText ? withStopPropagation(props.stopPropagationForActionButtons, React.createElement("a", {
     onClick: () => {
       setExpanded(false);
     }
-  }, props.collapseText) : null;
+  }, props.collapseText)) : null;
 
   const renderContent = () => {
     if (!exceeded) {
@@ -141,7 +145,12 @@ export const Ellipsis = p => {
 
   return withNativeProps(props, React.createElement("div", {
     ref: rootRef,
-    className: classPrefix
+    className: classPrefix,
+    onClick: e => {
+      if (e.target === e.currentTarget) {
+        props.onContentClick(e);
+      }
+    }
   }, renderContent()));
 };
 

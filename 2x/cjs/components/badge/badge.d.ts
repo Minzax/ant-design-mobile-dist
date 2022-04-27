@@ -5,5 +5,6 @@ export declare type BadgeProps = {
     content?: React.ReactNode | typeof dot;
     color?: string;
     bordered?: boolean;
+    children?: React.ReactNode;
 } & NativeProps<'--right' | '--top' | '--color'>;
 export declare const Badge: FC<BadgeProps>;

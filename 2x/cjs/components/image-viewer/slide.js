@@ -7,9 +7,13 @@ exports.Slide = void 0;
 
 var _react = _interopRequireWildcard(require("react"));
 
-var _react2 = require("@use-gesture/react");
-
 var _web = require("@react-spring/web");
+
+var _rubberband = require("../../utils/rubberband");
+
+var _useDragAndPinch = require("../../utils/use-drag-and-pinch");
+
+var _bound = require("../../utils/bound");
 
 function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function (nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
 
@@ -22,6 +26,7 @@ const Slide = props => {
     dragLockRef
   } = props;
   const controlRef = (0, _react.useRef)(null);
+  const imgRef = (0, _react.useRef)(null);
   const [{
     zoom,
     x,
@@ -31,13 +36,40 @@ const Slide = props => {
     x: 0,
     y: 0,
     config: {
-      tension: 300
+      tension: 200
     }
   }));
   const pinchLockRef = (0, _react.useRef)(false);
-  (0, _react2.useGesture)({
+
+  function boundXY([x, y], rubberband) {
+    const currentZoom = zoom.get();
+    let xOffset = 0,
+        yOffset = 0;
+
+    if (imgRef.current && controlRef.current) {
+      xOffset = ((currentZoom * imgRef.current.width || 0) - controlRef.current.clientWidth) / 2;
+      yOffset = ((currentZoom * imgRef.current.height || 0) - controlRef.current.clientHeight) / 2;
+    }
+
+    xOffset = xOffset > 0 ? xOffset : 0;
+    yOffset = yOffset > 0 ? yOffset : 0;
+    const bounds = {
+      left: -xOffset,
+      right: xOffset,
+      top: -yOffset,
+      bottom: yOffset
+    };
+
+    if (rubberband) {
+      return [(0, _rubberband.rubberbandIfOutOfBounds)(x, bounds.left, bounds.right, currentZoom * 50), (0, _rubberband.rubberbandIfOutOfBounds)(y, bounds.top, bounds.bottom, currentZoom * 50)];
+    } else {
+      return [(0, _bound.bound)(x, bounds.left, bounds.right), (0, _bound.bound)(y, bounds.top, bounds.bottom)];
+    }
+  }
+
+  (0, _useDragAndPinch.useDragAndPinch)({
     onDrag: state => {
-      if (state.tap && state.elapsedTime > 0) {
+      if (state.tap && state.elapsedTime > 0 && state.elapsedTime < 1000) {
         // 判断点击时间>0是为了过滤掉非正常操作，例如用户长按选择图片之后的取消操作（也是一次点击）
         props.onTap();
         return;
@@ -55,12 +87,20 @@ const Slide = props => {
           y: 0
         });
       } else {
-        const [x, y] = state.offset;
-        api.start({
-          x,
-          y,
-          immediate: true
-        });
+        if (state.last) {
+          const [x, y] = boundXY([state.offset[0] + state.velocity[0] * state.direction[0] * 200, state.offset[1] + state.velocity[1] * state.direction[1] * 200], false);
+          api.start({
+            x,
+            y
+          });
+        } else {
+          const [x, y] = boundXY(state.offset, true);
+          api.start({
+            x,
+            y,
+            immediate: true
+          });
+        }
       }
     },
     onPinch: state => {
@@ -68,16 +108,15 @@ const Slide = props => {
 
       pinchLockRef.current = !state.last;
       const [d] = state.offset;
-      if (d < 0) return; // pinch的rubberband不会自动弹回bound，这里手动实现了
-
-      const zoom = state.last ? Math.max(Math.min(d, props.maxZoom), 1) : d;
+      if (d < 0) return;
+      const nextZoom = state.last ? (0, _bound.bound)(d, 1, props.maxZoom) : d;
       api.start({
-        zoom,
+        zoom: nextZoom,
         immediate: !state.last
       });
-      (_a = props.onZoomChange) === null || _a === void 0 ? void 0 : _a.call(props, zoom);
+      (_a = props.onZoomChange) === null || _a === void 0 ? void 0 : _a.call(props, nextZoom);
 
-      if (state.last && zoom <= 1) {
+      if (state.last && nextZoom <= 1) {
         api.start({
           x: 0,
           y: 0
@@ -96,13 +135,16 @@ const Slide = props => {
     target: controlRef,
     drag: {
       // filterTaps: true,
-      from: () => [x.get(), y.get()]
+      from: () => [x.get(), y.get()],
+      pointer: {
+        touch: true
+      }
     },
     pinch: {
-      from: () => [zoom.get(), 0]
-    },
-    pointer: {
-      touch: true
+      from: () => [zoom.get(), 0],
+      pointer: {
+        touch: true
+      }
     }
   });
   return _react.default.createElement("div", {
@@ -118,13 +160,15 @@ const Slide = props => {
   }, _react.default.createElement(_web.animated.div, {
     className: `${classPrefix}-image-wrapper`,
     style: {
-      scale: zoom,
-      x,
-      y
+      translateX: x,
+      translateY: y,
+      scale: zoom
     }
   }, _react.default.createElement("img", {
+    ref: imgRef,
     src: props.image,
-    draggable: false
+    draggable: false,
+    alt: props.image
   }))));
 };
 

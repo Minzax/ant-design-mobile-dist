@@ -17,15 +17,15 @@ var _usePropsValue = require("../../utils/use-props-value");
 
 var _pickerView = _interopRequireDefault(require("../picker-view"));
 
-var _useColumns = require("../picker-view/use-columns");
+var _columnsExtend = require("../picker-view/columns-extend");
 
 var _configProvider = require("../config-provider");
-
-var _usePickerValueExtend = require("../picker-view/use-picker-value-extend");
 
 var _ahooks = require("ahooks");
 
 var _safeArea = _interopRequireDefault(require("../safe-area"));
+
+var _pickerUtils = require("./picker-utils");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -35,7 +35,9 @@ function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && 
 
 const classPrefix = `adm-picker`;
 const defaultProps = {
-  defaultValue: []
+  defaultValue: [],
+  closeOnMaskClick: true,
+  renderLabel: _pickerUtils.defaultRenderLabel
 };
 const Picker = (0, _react.memo)(p => {
   var _a;
@@ -51,12 +53,11 @@ const Picker = (0, _react.memo)(p => {
     onChange: val => {
       var _a;
 
-      (_a = props.onConfirm) === null || _a === void 0 ? void 0 : _a.call(props, val, generateValueExtend(val));
+      const extend = (0, _columnsExtend.generateColumnsExtend)(props.columns, val);
+      (_a = props.onConfirm) === null || _a === void 0 ? void 0 : _a.call(props, val, extend);
     }
-  })); // TODO: columns generated twice in Picker and PickerView, which can be improved
-
-  const columns = (0, _useColumns.useColumns)(props.columns, value);
-  const generateValueExtend = (0, _usePickerValueExtend.usePickerValueExtend)(columns);
+  }));
+  const extend = (0, _columnsExtend.useColumnsExtend)(props.columns, value);
   const [innerValue, setInnerValue] = (0, _react.useState)(value);
   (0, _react.useEffect)(() => {
     if (innerValue !== value) {
@@ -103,7 +104,9 @@ const Picker = (0, _react.memo)(p => {
     className: `${classPrefix}-body`
   }, _react.default.createElement(_pickerView.default, {
     columns: props.columns,
+    renderLabel: props.renderLabel,
     value: innerValue,
+    mouseWheel: props.mouseWheel,
     onChange: onChange
   }))));
 
@@ -114,6 +117,7 @@ const Picker = (0, _react.memo)(p => {
     onMaskClick: () => {
       var _a, _b;
 
+      if (!props.closeOnMaskClick) return;
       (_a = props.onCancel) === null || _a === void 0 ? void 0 : _a.call(props);
       (_b = props.onClose) === null || _b === void 0 ? void 0 : _b.call(props);
     },
@@ -128,7 +132,7 @@ const Picker = (0, _react.memo)(p => {
     position: 'bottom'
   }));
 
-  return _react.default.createElement(_react.default.Fragment, null, popupElement, (_a = props.children) === null || _a === void 0 ? void 0 : _a.call(props, generateValueExtend(value).items));
+  return _react.default.createElement(_react.default.Fragment, null, popupElement, (_a = props.children) === null || _a === void 0 ? void 0 : _a.call(props, extend.items));
 });
 exports.Picker = Picker;
 Picker.displayName = 'Picker';

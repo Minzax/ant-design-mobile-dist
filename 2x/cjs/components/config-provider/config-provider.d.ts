@@ -1,7 +1,8 @@
-import { FC } from 'react';
+import React, { FC } from 'react';
 import { Locale } from '../../locales/base';
 declare type Config = {
     locale: Locale;
+    children?: React.ReactNode;
 };
 export declare const defaultConfigRef: {
     current: Config;

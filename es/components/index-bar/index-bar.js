@@ -7,6 +7,7 @@ import { Sidebar } from './sidebar';
 import { convertPx } from '../../utils/convert-px';
 import { Panel } from './panel';
 import { devWarning } from '../../utils/dev-log';
+import { traverseReactNode } from '../../utils/traverse-react-node';
 const classPrefix = `adm-index-bar`;
 const defaultProps = {
   sticky: true
@@ -15,9 +16,11 @@ export const IndexBar = forwardRef((p, ref) => {
   const props = mergeProps(defaultProps, p);
   const titleHeight = convertPx(35);
   const bodyRef = useRef(null);
-  const indexes = [];
+  const indexItems = [];
   const panels = [];
-  React.Children.forEach(props.children, child => {
+  traverseReactNode(props.children, child => {
+    var _a;
+
     if (!React.isValidElement(child)) return;
 
     if (child.type !== Panel) {
@@ -25,7 +28,10 @@ export const IndexBar = forwardRef((p, ref) => {
       return;
     }
 
-    indexes.push(child.props.index);
+    indexItems.push({
+      index: child.props.index,
+      brief: (_a = child.props.brief) !== null && _a !== void 0 ? _a : child.props.index.charAt(0)
+    });
     panels.push(withNativeProps(child.props, React.createElement("div", {
       key: child.props.index,
       "data-index": child.props.index,
@@ -34,7 +40,10 @@ export const IndexBar = forwardRef((p, ref) => {
       className: `${classPrefix}-anchor-title`
     }, child.props.title || child.props.index), child.props.children)));
   });
-  const [activeIndex, setActiveIndex] = useState(indexes[0]);
+  const [activeIndex, setActiveIndex] = useState(() => {
+    const firstItem = indexItems[0];
+    return firstItem ? firstItem.index : null;
+  });
   useImperativeHandle(ref, () => ({
     scrollTo
   }));
@@ -86,7 +95,7 @@ export const IndexBar = forwardRef((p, ref) => {
       [`${classPrefix}-sticky`]: props.sticky
     })
   }, React.createElement(Sidebar, {
-    indexes: indexes,
+    indexItems: indexItems,
     activeIndex: activeIndex,
     onActive: index => {
       scrollTo(index);

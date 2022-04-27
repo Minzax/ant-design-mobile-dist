@@ -22,19 +22,4 @@ export declare type SwiperProps = {
     rubberband?: boolean;
     children?: ReactElement | ReactElement[];
 } & NativeProps<'--height' | '--width' | '--border-radius' | '--track-padding'>;
-export declare const Swiper: React.ForwardRefExoticComponent<{
-    defaultIndex?: number | undefined;
-    allowTouchMove?: boolean | undefined;
-    autoplay?: boolean | undefined;
-    autoplayInterval?: number | undefined;
-    loop?: boolean | undefined;
-    direction?: "horizontal" | "vertical" | undefined;
-    onIndexChange?: ((index: number) => void) | undefined;
-    indicatorProps?: Pick<PageIndicatorProps, "style" | "color" | "className"> | undefined;
-    indicator?: ((total: number, current: number) => ReactNode) | undefined;
-    slideSize?: number | undefined;
-    trackOffset?: number | undefined;
-    stuckAtBoundary?: boolean | undefined;
-    rubberband?: boolean | undefined;
-    children?: React.ReactElement<any, string | ((props: any) => React.ReactElement<any, any> | null) | (new (props: any) => React.Component<any, any, any>)> | React.ReactElement<any, string | ((props: any) => React.ReactElement<any, any> | null) | (new (props: any) => React.Component<any, any, any>)>[] | undefined;
-} & NativeProps<"--border-radius" | "--width" | "--height" | "--track-padding"> & React.RefAttributes<SwiperRef>>;
+export declare const Swiper: React.ForwardRefExoticComponent<React.RefAttributes<unknown>>;

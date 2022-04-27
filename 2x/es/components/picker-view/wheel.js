@@ -1,16 +1,18 @@
-import React, { memo, useLayoutEffect, useRef } from 'react';
+import React, { memo, useRef } from 'react';
 import { useSpring, animated } from '@react-spring/web';
-import { useDrag } from '@use-gesture/react';
-import { convertPx } from '../../utils/convert-px';
+import { useDrag, useWheel } from '@use-gesture/react';
 import { rubberbandIfOutOfBounds } from '../../utils/rubberband';
 import { bound } from '../../utils/bound';
 import isEqual from 'lodash/isEqual';
+import { useIsomorphicLayoutEffect } from 'ahooks';
+import { measureCSSLength } from '../../utils/measure-css-length';
+import { supportsPassive } from '../../utils/supports-passive';
 const classPrefix = `adm-picker-view`;
 export const Wheel = memo(props => {
-  const itemHeight = convertPx(34);
   const {
     value,
-    column
+    column,
+    renderLabel
   } = props;
 
   function onSelect(val) {
@@ -29,18 +31,25 @@ export const Wheel = memo(props => {
     }
   }));
   const draggingRef = useRef(false);
-  useLayoutEffect(() => {
+  const rootRef = useRef(null);
+  const itemHeight = useRef(34);
+  useIsomorphicLayoutEffect(() => {
+    const root = rootRef.current;
+    if (!root) return;
+    itemHeight.current = measureCSSLength(window.getComputedStyle(root).getPropertyValue('--item-height'));
+  });
+  useIsomorphicLayoutEffect(() => {
     if (draggingRef.current) return;
     if (!value) return;
     const targetIndex = column.findIndex(item => item.value === value);
     if (targetIndex < 0) return;
-    const finalPosition = targetIndex * -itemHeight;
+    const finalPosition = targetIndex * -itemHeight.current;
     api.start({
       y: finalPosition,
       immediate: y.goal !== finalPosition
     });
   }, [value, column]);
-  useLayoutEffect(() => {
+  useIsomorphicLayoutEffect(() => {
     if (column.length === 0) {
       if (value !== null) {
         onSelect(null);
@@ -54,7 +63,7 @@ export const Wheel = memo(props => {
   }, [column, value]);
 
   function scrollSelect(index) {
-    const finalPosition = index * -itemHeight;
+    const finalPosition = index * -itemHeight.current;
     api.start({
       y: finalPosition
     });
@@ -63,29 +72,47 @@ export const Wheel = memo(props => {
     onSelect(item.value);
   }
 
-  const bind = useDrag(state => {
+  const handleDrag = state => {
     draggingRef.current = true;
-    const min = -((column.length - 1) * itemHeight);
+    const min = -((column.length - 1) * itemHeight.current);
     const max = 0;
 
     if (state.last) {
       draggingRef.current = false;
       const position = state.offset[1] + state.velocity[1] * state.direction[1] * 50;
-      const targetIndex = min < max ? -Math.round(bound(position, min, max) / itemHeight) : 0;
+      const targetIndex = min < max ? -Math.round(bound(position, min, max) / itemHeight.current) : 0;
       scrollSelect(targetIndex);
     } else {
       const position = state.offset[1];
       api.start({
-        y: rubberbandIfOutOfBounds(position, min, max, itemHeight * 50, 0.2)
+        y: rubberbandIfOutOfBounds(position, min, max, itemHeight.current * 50, 0.2)
       });
     }
+  };
+
+  useDrag(state => {
+    state.event.stopPropagation();
+    handleDrag(state);
   }, {
     axis: 'y',
     from: () => [0, y.get()],
     filterTaps: true,
     pointer: {
       touch: true
-    }
+    },
+    target: rootRef
+  });
+  useWheel(state => {
+    state.event.stopPropagation();
+    handleDrag(state);
+  }, {
+    axis: 'y',
+    from: () => [0, y.get()],
+    preventDefault: true,
+    target: props.mouseWheel ? rootRef : undefined,
+    eventOptions: supportsPassive ? {
+      passive: false
+    } : false
   });
   let selectedIndex = null;
 
@@ -122,15 +149,18 @@ export const Wheel = memo(props => {
     }, "-")));
   }
 
-  return React.createElement("div", Object.assign({
+  return React.createElement("div", {
+    ref: rootRef,
     className: `${classPrefix}-column`
-  }, bind()), React.createElement(animated.div, {
+  }, React.createElement(animated.div, {
     style: {
       translateY: y
     },
     className: `${classPrefix}-column-wheel`,
     "aria-hidden": true
   }, column.map((item, index) => {
+    var _a;
+
     const selected = props.value === item.value;
     if (selected) selectedIndex = index;
 
@@ -140,7 +170,7 @@ export const Wheel = memo(props => {
     }
 
     return React.createElement("div", {
-      key: item.value,
+      key: (_a = item.key) !== null && _a !== void 0 ? _a : item.value,
       "data-selected": item.value === value,
       className: `${classPrefix}-column-item`,
       onClick: handleClick,
@@ -148,7 +178,7 @@ export const Wheel = memo(props => {
       "aria-label": selected ? 'active' : ''
     }, React.createElement("div", {
       className: `${classPrefix}-column-item-label`
-    }, item.label));
+    }, renderLabel(item)));
   })), renderAccessible());
 }, (prev, next) => {
   if (prev.index !== next.index) return false;

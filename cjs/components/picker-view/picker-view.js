@@ -11,13 +11,13 @@ var _withDefaultProps = require("../../utils/with-default-props");
 
 var _wheel = require("./wheel");
 
-var _useColumns = require("./use-columns");
+var _columnsExtend = require("./columns-extend");
 
 var _nativeProps = require("../../utils/native-props");
 
-var _usePickerValueExtend = require("./use-picker-value-extend");
-
 var _ahooks = require("ahooks");
+
+var _pickerUtils = require("../picker/picker-utils");
 
 function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function (nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
 
@@ -25,21 +25,13 @@ function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && 
 
 const classPrefix = `adm-picker-view`;
 const defaultProps = {
-  defaultValue: []
+  defaultValue: [],
+  renderLabel: _pickerUtils.defaultRenderLabel,
+  mouseWheel: false
 };
 const PickerView = (0, _react.memo)(p => {
   const props = (0, _withDefaultProps.mergeProps)(defaultProps, p);
-  const [innerValue, setInnerValue] = (0, _react.useState)(props.value === undefined ? props.defaultValue : props.value);
-  (0, _ahooks.useDebounceEffect)(() => {
-    var _a;
-
-    if (props.value === innerValue) return;
-    (_a = props.onChange) === null || _a === void 0 ? void 0 : _a.call(props, innerValue, generateValueExtend(innerValue));
-  }, [innerValue], {
-    wait: 0,
-    leading: false,
-    trailing: true
-  }); // Sync `value` to `innerValue`
+  const [innerValue, setInnerValue] = (0, _react.useState)(props.value === undefined ? props.defaultValue : props.value); // Sync `value` to `innerValue`
 
   (0, _react.useEffect)(() => {
     if (props.value === undefined) return; // Uncontrolled mode
@@ -58,8 +50,18 @@ const PickerView = (0, _react.memo)(p => {
       window.clearTimeout(timeout);
     };
   }, [props.value, innerValue]);
-  const columns = (0, _useColumns.useColumns)(props.columns, innerValue);
-  const generateValueExtend = (0, _usePickerValueExtend.usePickerValueExtend)(columns);
+  const extend = (0, _columnsExtend.useColumnsExtend)(props.columns, innerValue);
+  const columns = extend.columns;
+  (0, _ahooks.useDebounceEffect)(() => {
+    var _a;
+
+    if (props.value === innerValue) return;
+    (_a = props.onChange) === null || _a === void 0 ? void 0 : _a.call(props, innerValue, extend);
+  }, [innerValue], {
+    wait: 0,
+    leading: false,
+    trailing: true
+  });
   const handleSelect = (0, _react.useCallback)((val, index) => {
     setInnerValue(prev => {
       const next = [...prev];
@@ -74,7 +76,9 @@ const PickerView = (0, _react.memo)(p => {
     index: index,
     column: column,
     value: innerValue[index],
-    onSelect: handleSelect
+    onSelect: handleSelect,
+    renderLabel: props.renderLabel,
+    mouseWheel: props.mouseWheel
   })), _react.default.createElement("div", {
     className: `${classPrefix}-mask`
   }, _react.default.createElement("div", {

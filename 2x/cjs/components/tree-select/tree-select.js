@@ -67,12 +67,12 @@ const TreeSelect = p => {
     let current = node;
 
     while (current) {
-      parentNodes.unshift(current);
+      parentNodes.push(current);
       const next = optionsParentMap.get(current[valueName]);
       current = next;
     }
 
-    const values = parentNodes.map(i => i[valueName]);
+    const values = parentNodes.reverse().map(i => i[valueName]);
     setValue(values);
     (_a = props.onChange) === null || _a === void 0 ? void 0 : _a.call(props, values, {
       options: parentNodes

@@ -1,10 +1,10 @@
 import { __awaiter } from "tslib";
 import classNames from 'classnames';
 import React, { useState } from 'react';
-import SpinIcon from '../../assets/spin.svg';
 import { withNativeProps } from '../../utils/native-props';
 import { usePropsValue } from '../../utils/use-props-value';
 import { mergeProps } from '../../utils/with-default-props';
+import { SpinIcon } from './spin-icon';
 const classPrefix = `adm-switch`;
 const defaultProps = {
   defaultChecked: false
@@ -54,10 +54,8 @@ export const Switch = p => {
     className: `${classPrefix}-checkbox`
   }, React.createElement("div", {
     className: `${classPrefix}-handle`
-  }, (props.loading || changing) && React.createElement("img", {
-    src: SpinIcon,
-    className: `${classPrefix}-icon`,
-    alt: 'switch-handle'
+  }, (props.loading || changing) && React.createElement(SpinIcon, {
+    className: `${classPrefix}-spin-icon`
   })), React.createElement("div", {
     className: `${classPrefix}-inner`
   }, checked ? props.checkedText : props.uncheckedText))));

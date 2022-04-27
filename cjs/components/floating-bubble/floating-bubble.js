@@ -20,45 +20,81 @@ function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "functio
 function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
 
 const classPrefix = `adm-floating-bubble`;
-const defaultProps = {};
+const defaultProps = {
+  axis: 'y'
+};
 
 const FloatingBubble = p => {
   const props = (0, _withDefaultProps.mergeProps)(defaultProps, p);
   const boundaryRef = (0, _react.useRef)(null);
+  const buttonRef = (0, _react.useRef)(null);
   /**
    * memoize the `to` function
    * inside a component that renders frequently
    * to prevent an unintended restart
    */
 
-  const [animationStyles, animation] = (0, _web.useSpring)(() => ({
+  const [{
+    x,
+    y,
+    opacity
+  }, api] = (0, _web.useSpring)(() => ({
+    x: 0,
     y: 0,
-    scale: 1,
     opacity: 1
   }));
   const bind = (0, _react2.useDrag)(state => {
-    if (state.down) {
-      // be movable in y axis
-      animation.start({
-        y: state.offset[1]
-      });
-    } // active status
+    let nextX = state.offset[0];
+    let nextY = state.offset[1];
 
+    if (state.last && props.magnetic) {
+      const boundary = boundaryRef.current;
+      const button = buttonRef.current;
+      if (!boundary || !button) return;
+      const boundaryRect = boundary.getBoundingClientRect();
+      const buttonRect = button.getBoundingClientRect();
 
-    animation.start({
-      scale: state.active ? 1.1 : 1,
+      if (props.magnetic === 'x') {
+        const compensation = x.goal - x.get();
+        const leftDistance = buttonRect.left + compensation - boundaryRect.left;
+        const rightDistance = boundaryRect.right - (buttonRect.right + compensation);
+
+        if (rightDistance <= leftDistance) {
+          nextX += rightDistance;
+        } else {
+          nextX -= leftDistance;
+        }
+      } else if (props.magnetic === 'y') {
+        const compensation = y.goal - y.get();
+        const topDistance = buttonRect.top + compensation - boundaryRect.top;
+        const bottomDistance = boundaryRect.bottom - (buttonRect.bottom + compensation);
+
+        if (bottomDistance <= topDistance) {
+          nextY += bottomDistance;
+        } else {
+          nextY -= topDistance;
+        }
+      }
+    }
+
+    api.start({
+      x: nextX,
+      y: nextY
+    }); // active status
+
+    api.start({
       opacity: state.active ? 0.8 : 1
     });
   }, {
-    // only trigger if a movement is detected on the specified axis.
-    axis: 'y',
+    axis: props.axis === 'xy' ? undefined : props.axis,
     pointer: {
       touch: true
     },
     // the component won't trigger drag logic if the user just clicked on the component.
     filterTaps: true,
     // set constraints to the user gesture
-    bounds: boundaryRef
+    bounds: boundaryRef,
+    from: () => [x.get(), y.get()]
   });
   return (0, _nativeProps.withNativeProps)(props, _react.default.createElement("div", {
     className: classPrefix
@@ -68,9 +104,13 @@ const FloatingBubble = p => {
     className: `${classPrefix}-boundary`,
     ref: boundaryRef
   })), _react.default.createElement(_web.animated.div, Object.assign({}, bind(), {
-    style: Object.assign({}, animationStyles),
+    style: {
+      opacity,
+      transform: (0, _web.to)([x, y], (x, y) => `translate(${x}px, ${y}px)`)
+    },
     onClick: props.onClick,
-    className: `${classPrefix}-button`
+    className: `${classPrefix}-button`,
+    ref: buttonRef
   }), props.children)));
 };
 

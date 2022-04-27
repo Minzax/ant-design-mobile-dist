@@ -5,8 +5,6 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.useTabListScroll = void 0;
 
-var _react = require("react");
-
 var _web = require("@react-spring/web");
 
 var _useMutationEffect = require("./use-mutation-effect");
@@ -14,6 +12,8 @@ var _useMutationEffect = require("./use-mutation-effect");
 var _bound = require("./bound");
 
 var _ahooks = require("ahooks");
+
+var _useIsomorphicUpdateLayoutEffect = require("./use-isomorphic-update-layout-effect");
 
 const useTabListScroll = (targetRef, activeIndex) => {
   const [{
@@ -49,10 +49,10 @@ const useTabListScroll = (targetRef, activeIndex) => {
     });
   }
 
-  (0, _react.useLayoutEffect)(() => {
+  (0, _ahooks.useIsomorphicLayoutEffect)(() => {
     animate(true);
   }, []);
-  (0, _ahooks.useUpdateLayoutEffect)(() => {
+  (0, _useIsomorphicUpdateLayoutEffect.useIsomorphicUpdateLayoutEffect)(() => {
     animate();
   }, [activeIndex]);
   (0, _useMutationEffect.useMutationEffect)(() => {

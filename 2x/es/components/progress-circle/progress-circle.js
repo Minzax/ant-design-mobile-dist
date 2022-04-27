@@ -4,8 +4,7 @@ import { mergeProps } from '../../utils/with-default-props';
 const classPrefix = `adm-progress-circle`;
 export const ProgressCircle = p => {
   const props = mergeProps({
-    percent: 0,
-    strokeColor: '#1677FF'
+    percent: 0
   }, p);
   const style = {
     '--percent': props.percent.toString()

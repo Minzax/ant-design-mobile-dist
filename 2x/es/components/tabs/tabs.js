@@ -1,13 +1,16 @@
-import React, { useRef, useLayoutEffect } from 'react';
+import React, { useRef } from 'react';
 import classNames from 'classnames';
 import { useSpring, animated } from '@react-spring/web';
 import { withNativeProps } from '../../utils/native-props';
 import { usePropsValue } from '../../utils/use-props-value';
 import { bound } from '../../utils/bound';
-import { useUpdateLayoutEffect, useThrottleFn } from 'ahooks';
+import { useThrottleFn, useIsomorphicLayoutEffect } from 'ahooks';
 import { useMutationEffect } from '../../utils/use-mutation-effect';
 import { useResizeEffect } from '../../utils/use-resize-effect';
 import { mergeProps } from '../../utils/with-default-props';
+import { useIsomorphicUpdateLayoutEffect } from '../../utils/use-isomorphic-update-layout-effect';
+import { ShouldRender } from '../../utils/should-render';
+import { traverseReactNode } from '../../utils/traverse-react-node';
 const classPrefix = `adm-tabs`;
 export const Tab = () => {
   return null;
@@ -25,7 +28,7 @@ export const Tabs = p => {
   const keyToIndexRecord = {};
   let firstActiveKey = null;
   const panes = [];
-  React.Children.forEach(props.children, (child, index) => {
+  traverseReactNode(props.children, (child, index) => {
     if (!React.isValidElement(child)) return;
     const key = child.key;
     if (typeof key !== 'string') return;
@@ -134,17 +137,17 @@ export const Tabs = p => {
     });
   }
 
-  useLayoutEffect(() => {
-    animate(true);
+  useIsomorphicLayoutEffect(() => {
+    animate(!x.isAnimating);
   }, []);
-  useUpdateLayoutEffect(() => {
+  useIsomorphicUpdateLayoutEffect(() => {
     animate();
   }, [activeKey]);
   useResizeEffect(() => {
-    animate(true);
+    animate(!x.isAnimating);
   }, tabListContainerRef);
   useMutationEffect(() => {
-    animate(true);
+    animate(!x.isAnimating);
   }, tabListContainerRef, {
     subtree: true,
     childList: true,
@@ -168,7 +171,7 @@ export const Tabs = p => {
     trailing: true,
     leading: true
   });
-  useLayoutEffect(() => {
+  useIsomorphicLayoutEffect(() => {
     updateMask(true);
   }, []);
   return withNativeProps(props, React.createElement("div", {
@@ -224,23 +227,17 @@ export const Tabs = p => {
       return null;
     }
 
-    if (pane.key === activeKey) {
-      return React.createElement("div", {
-        key: pane.key,
-        className: `${classPrefix}-content`
-      }, pane.props.children);
-    }
-
-    if (pane.props.forceRender) {
-      return React.createElement("div", {
-        key: pane.key,
-        className: `${classPrefix}-content`,
-        style: {
-          display: 'none'
-        }
-      }, pane.props.children);
-    }
-
-    return null;
+    const active = pane.key === activeKey;
+    return React.createElement(ShouldRender, {
+      key: pane.key,
+      active: active,
+      forceRender: pane.props.forceRender,
+      destroyOnClose: pane.props.destroyOnClose
+    }, React.createElement("div", {
+      className: `${classPrefix}-content`,
+      style: {
+        display: active ? 'block' : 'none'
+      }
+    }, pane.props.children));
   })));
 };

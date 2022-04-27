@@ -17,9 +17,15 @@ var _header = require("./header");
 
 var _rcFieldForm = require("rc-field-form");
 
+var _formSubscribe = require("./form-subscribe");
+
+var _formArray = require("./form-array");
+
 var _default = (0, _attachPropertiesToComponent.attachPropertiesToComponent)(_form.Form, {
   Item: _formItem.FormItem,
+  Subscribe: _formSubscribe.FormSubscribe,
   Header: _header.Header,
+  Array: _formArray.FormArray,
   useForm: _rcFieldForm.useForm
 });
 

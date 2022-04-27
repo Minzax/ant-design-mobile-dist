@@ -1,27 +1,19 @@
 import React, { memo, useCallback, useEffect, useState } from 'react';
 import { mergeProps } from '../../utils/with-default-props';
 import { Wheel } from './wheel';
-import { useColumns } from './use-columns';
+import { useColumnsExtend } from './columns-extend';
 import { withNativeProps } from '../../utils/native-props';
-import { usePickerValueExtend } from './use-picker-value-extend';
 import { useDebounceEffect } from 'ahooks';
+import { defaultRenderLabel } from '../picker/picker-utils';
 const classPrefix = `adm-picker-view`;
 const defaultProps = {
-  defaultValue: []
+  defaultValue: [],
+  renderLabel: defaultRenderLabel,
+  mouseWheel: false
 };
 export const PickerView = memo(p => {
   const props = mergeProps(defaultProps, p);
-  const [innerValue, setInnerValue] = useState(props.value === undefined ? props.defaultValue : props.value);
-  useDebounceEffect(() => {
-    var _a;
-
-    if (props.value === innerValue) return;
-    (_a = props.onChange) === null || _a === void 0 ? void 0 : _a.call(props, innerValue, generateValueExtend(innerValue));
-  }, [innerValue], {
-    wait: 0,
-    leading: false,
-    trailing: true
-  }); // Sync `value` to `innerValue`
+  const [innerValue, setInnerValue] = useState(props.value === undefined ? props.defaultValue : props.value); // Sync `value` to `innerValue`
 
   useEffect(() => {
     if (props.value === undefined) return; // Uncontrolled mode
@@ -40,8 +32,18 @@ export const PickerView = memo(p => {
       window.clearTimeout(timeout);
     };
   }, [props.value, innerValue]);
-  const columns = useColumns(props.columns, innerValue);
-  const generateValueExtend = usePickerValueExtend(columns);
+  const extend = useColumnsExtend(props.columns, innerValue);
+  const columns = extend.columns;
+  useDebounceEffect(() => {
+    var _a;
+
+    if (props.value === innerValue) return;
+    (_a = props.onChange) === null || _a === void 0 ? void 0 : _a.call(props, innerValue, extend);
+  }, [innerValue], {
+    wait: 0,
+    leading: false,
+    trailing: true
+  });
   const handleSelect = useCallback((val, index) => {
     setInnerValue(prev => {
       const next = [...prev];
@@ -56,7 +58,9 @@ export const PickerView = memo(p => {
     index: index,
     column: column,
     value: innerValue[index],
-    onSelect: handleSelect
+    onSelect: handleSelect,
+    renderLabel: props.renderLabel,
+    mouseWheel: props.mouseWheel
   })), React.createElement("div", {
     className: `${classPrefix}-mask`
   }, React.createElement("div", {

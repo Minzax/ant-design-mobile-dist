@@ -5,6 +5,7 @@ import { withNativeProps } from '../../utils/native-props';
 import { mergeProps } from '../../utils/with-default-props';
 import { usePropsValue } from '../../utils/use-props-value';
 import { convertDateToStringArray, convertStringArrayToDate, generateDatePickerColumns, defaultRenderLabel } from './date-picker-utils';
+import { bound } from '../../utils/bound';
 const thisYear = new Date().getFullYear();
 const defaultProps = {
   min: new Date(new Date().setFullYear(thisYear - 10)),
@@ -26,7 +27,11 @@ export const DatePicker = p => {
     }
   });
   const now = useMemo(() => new Date(), []);
-  const pickerValue = useMemo(() => convertDateToStringArray(value !== null && value !== void 0 ? value : now, props.precision), [value, props.precision]);
+  const pickerValue = useMemo(() => {
+    let date = value !== null && value !== void 0 ? value : now;
+    date = new Date(bound(date.getTime(), props.min.getTime(), props.max.getTime()));
+    return convertDateToStringArray(date, props.precision);
+  }, [value, props.precision, props.min, props.max]);
   const onConfirm = useCallback(val => {
     setValue(convertStringArrayToDate(val, props.precision));
   }, [setValue, props.precision]);
@@ -52,7 +57,8 @@ export const DatePicker = p => {
     afterClose: props.afterClose,
     onClick: props.onClick,
     title: props.title,
-    stopPropagation: props.stopPropagation
+    stopPropagation: props.stopPropagation,
+    mouseWheel: props.mouseWheel
   }, () => {
     var _a;
 

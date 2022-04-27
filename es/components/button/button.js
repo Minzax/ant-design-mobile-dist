@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { forwardRef, useImperativeHandle, useRef } from 'react';
 import classNames from 'classnames';
 import DotLoading from '../dot-loading';
 import { mergeProps } from '../../utils/with-default-props';
@@ -13,10 +13,18 @@ const defaultProps = {
   shape: 'default',
   size: 'middle'
 };
-export const Button = p => {
+export const Button = forwardRef((p, ref) => {
   const props = mergeProps(defaultProps, p);
   const disabled = props.disabled || props.loading;
+  const nativeButtonRef = useRef(null);
+  useImperativeHandle(ref, () => ({
+    get nativeElement() {
+      return nativeButtonRef.current;
+    }
+
+  }));
   return withNativeProps(props, React.createElement("button", {
+    ref: nativeButtonRef,
     type: props.type,
     onClick: props.onClick,
     className: classNames(classPrefix, props.color ? `${classPrefix}-${props.color}` : null, {
@@ -35,4 +43,4 @@ export const Button = p => {
   }, React.createElement(DotLoading, {
     color: 'currentColor'
   }), props.loadingText) : props.children));
-};
+});

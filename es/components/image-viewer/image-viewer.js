@@ -1,4 +1,4 @@
-import React, { forwardRef } from 'react';
+import React, { forwardRef, useImperativeHandle, useRef, useState } from 'react';
 import { mergeProps } from '../../utils/with-default-props';
 import { renderToContainer } from '../../utils/render-to-container';
 import Mask from '../mask';
@@ -35,6 +35,16 @@ const multiDefaultProps = Object.assign(Object.assign({}, defaultProps), {
 });
 export const MultiImageViewer = forwardRef((p, ref) => {
   const props = mergeProps(multiDefaultProps, p);
+  const [defaultIndex, setDefaultIndex] = useState(props.defaultIndex);
+  const slidesRef = useRef(null);
+  useImperativeHandle(ref, () => ({
+    swipeTo: (index, immediate) => {
+      var _a;
+
+      setDefaultIndex(index);
+      (_a = slidesRef.current) === null || _a === void 0 ? void 0 : _a.swipeTo(index, immediate);
+    }
+  }));
   const node = React.createElement(Mask, {
     visible: props.visible,
     disableBodyScroll: false,
@@ -43,8 +53,8 @@ export const MultiImageViewer = forwardRef((p, ref) => {
   }, React.createElement("div", {
     className: `${classPrefix}-content`
   }, props.images && React.createElement(Slides, {
-    ref: ref,
-    defaultIndex: props.defaultIndex,
+    ref: slidesRef,
+    defaultIndex: defaultIndex,
     onIndexChange: props.onIndexChange,
     images: props.images,
     onTap: () => {

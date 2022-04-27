@@ -4,14 +4,16 @@ import { mergeProps } from '../../utils/with-default-props';
 import { withNativeProps } from '../../utils/native-props';
 import { usePropsValue } from '../../utils/use-props-value';
 import PickerView from '../picker-view';
-import { useColumns } from '../picker-view/use-columns';
+import { generateColumnsExtend, useColumnsExtend } from '../picker-view/columns-extend';
 import { useConfig } from '../config-provider';
-import { usePickerValueExtend } from '../picker-view/use-picker-value-extend';
 import { useMemoizedFn } from 'ahooks';
 import SafeArea from '../safe-area';
+import { defaultRenderLabel } from './picker-utils';
 const classPrefix = `adm-picker`;
 const defaultProps = {
-  defaultValue: []
+  defaultValue: [],
+  closeOnMaskClick: true,
+  renderLabel: defaultRenderLabel
 };
 export const Picker = memo(p => {
   var _a;
@@ -27,12 +29,11 @@ export const Picker = memo(p => {
     onChange: val => {
       var _a;
 
-      (_a = props.onConfirm) === null || _a === void 0 ? void 0 : _a.call(props, val, generateValueExtend(val));
+      const extend = generateColumnsExtend(props.columns, val);
+      (_a = props.onConfirm) === null || _a === void 0 ? void 0 : _a.call(props, val, extend);
     }
-  })); // TODO: columns generated twice in Picker and PickerView, which can be improved
-
-  const columns = useColumns(props.columns, value);
-  const generateValueExtend = usePickerValueExtend(columns);
+  }));
+  const extend = useColumnsExtend(props.columns, value);
   const [innerValue, setInnerValue] = useState(value);
   useEffect(() => {
     if (innerValue !== value) {
@@ -79,7 +80,9 @@ export const Picker = memo(p => {
     className: `${classPrefix}-body`
   }, React.createElement(PickerView, {
     columns: props.columns,
+    renderLabel: props.renderLabel,
     value: innerValue,
+    mouseWheel: props.mouseWheel,
     onChange: onChange
   }))));
   const popupElement = React.createElement(Popup, {
@@ -89,6 +92,7 @@ export const Picker = memo(p => {
     onMaskClick: () => {
       var _a, _b;
 
+      if (!props.closeOnMaskClick) return;
       (_a = props.onCancel) === null || _a === void 0 ? void 0 : _a.call(props);
       (_b = props.onClose) === null || _b === void 0 ? void 0 : _b.call(props);
     },
@@ -102,6 +106,6 @@ export const Picker = memo(p => {
   }, pickerElement, React.createElement(SafeArea, {
     position: 'bottom'
   }));
-  return React.createElement(React.Fragment, null, popupElement, (_a = props.children) === null || _a === void 0 ? void 0 : _a.call(props, generateValueExtend(value).items));
+  return React.createElement(React.Fragment, null, popupElement, (_a = props.children) === null || _a === void 0 ? void 0 : _a.call(props, extend.items));
 });
 Picker.displayName = 'Picker';

@@ -19,6 +19,12 @@ var _withDefaultProps = require("../../utils/with-default-props");
 
 var _checkIcon = require("../checkbox/check-icon");
 
+var _devLog = require("../../utils/dev-log");
+
+var _isDev = require("../../utils/is-dev");
+
+var _nativeInput = require("../checkbox/native-input");
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function (nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
@@ -44,6 +50,16 @@ const Radio = p => {
   } = props;
 
   if (groupContext && value !== undefined) {
+    if (_isDev.isDev) {
+      if (p.checked !== undefined) {
+        (0, _devLog.devWarning)('Radio', 'When used within `Radio.Group`, the `checked` prop of `Radio` will not work.');
+      }
+
+      if (p.defaultChecked !== undefined) {
+        (0, _devLog.devWarning)('Radio', 'When used within `Radio.Group`, the `defaultChecked` prop of `Radio` will not work.');
+      }
+    }
+
     checked = groupContext.value.includes(value);
 
     setChecked = checked => {
@@ -74,22 +90,15 @@ const Radio = p => {
   };
 
   return (0, _nativeProps.withNativeProps)(props, _react.default.createElement("label", {
-    className: (0, _classnames.default)(classPrefix, props.className, {
+    className: (0, _classnames.default)(classPrefix, {
       [`${classPrefix}-checked`]: checked,
       [`${classPrefix}-disabled`]: disabled,
       [`${classPrefix}-block`]: props.block
-    }),
-    style: props.style
-  }, _react.default.createElement("input", {
+    })
+  }, _react.default.createElement(_nativeInput.NativeInput, {
     type: 'radio',
     checked: checked,
-    onChange: e => {
-      setChecked(e.target.checked);
-    },
-    onClick: e => {
-      e.stopPropagation();
-      e.nativeEvent.stopImmediatePropagation();
-    },
+    onChange: setChecked,
     disabled: disabled,
     id: props.id
   }), renderIcon(), props.children && _react.default.createElement("div", {

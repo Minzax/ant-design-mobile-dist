@@ -7,6 +7,6 @@ export declare type SlidesType = {
     onIndexChange?: (index: number) => void;
 };
 export declare type SlidesRef = {
-    swipeTo: (index: number, immediate: boolean) => void;
+    swipeTo: (index: number, immediate?: boolean) => void;
 };
 export declare const Slides: React.ForwardRefExoticComponent<SlidesType & React.RefAttributes<SlidesRef>>;

@@ -21,11 +21,34 @@ export function useCascaderValueExtend(options) {
       return ret;
     }, val => JSON.stringify(val));
   }, [options]);
+  const generateIsLeaf = useMemo(() => {
+    return memoize(val => {
+      var _a;
+
+      let isLeaf = false;
+
+      for (const v of val) {
+        const target = options.find(option => option.value === v);
+
+        if (!target) {
+          break;
+        }
+
+        isLeaf = ((_a = target.children) === null || _a === void 0 ? void 0 : _a.length) === val.length;
+      }
+
+      return isLeaf;
+    }, val => JSON.stringify(val));
+  }, [options]);
 
   function generateValueExtend(val) {
     return {
       get items() {
         return generateItems(val);
+      },
+
+      get isLeaf() {
+        return generateIsLeaf(val);
       }
 
     };

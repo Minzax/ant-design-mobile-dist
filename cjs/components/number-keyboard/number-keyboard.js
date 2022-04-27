@@ -157,9 +157,6 @@ const NumberKeyboard = p => {
           onBackspacePressEnd();
         }
       },
-      onMouseUp: e => {
-        onKeyPress(e, key);
-      },
       title: key,
       role: 'button'
     }, key === 'BACKSPACE' ? _react.default.createElement(_antdMobileIcons.TextDeletionOutline, null) : key);
@@ -196,13 +193,11 @@ const NumberKeyboard = p => {
       onKeyPress(e, 'BACKSPACE');
       onBackspacePressEnd();
     },
-    onMouseUp: e => onKeyPress(e, 'BACKSPACE'),
     title: 'BACKSPACE',
     role: 'button'
   }, _react.default.createElement(_antdMobileIcons.TextDeletionOutline, null)), _react.default.createElement("div", {
     className: `${classPrefix}-key extra-key ok-key`,
     onTouchEnd: e => onKeyPress(e, 'OK'),
-    onMouseUp: e => onKeyPress(e, 'OK'),
     role: 'button'
   }, confirmText))), props.safeArea && _react.default.createElement("div", {
     className: `${classPrefix}-footer`

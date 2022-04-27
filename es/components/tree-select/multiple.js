@@ -137,7 +137,8 @@ export const Multiple = p => {
       walker(groupKeys);
     }
 
-    groupKeys = groupKeys.filter(i => !unusedKeys.includes(i));
+    groupKeys = groupKeys.filter(i => !unusedKeys.includes(i)); // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+
     const groupOptions = groupKeys.map(i => optionsMap.get(i));
     setValue(groupKeys);
     (_a = props.onChange) === null || _a === void 0 ? void 0 : _a.call(props, groupKeys, groupOptions);

@@ -7,6 +7,10 @@ import { devWarning } from '../../utils/dev-log';
 import { FormContext, NoStyleItemContext } from './context';
 import { toArray } from './utils';
 import List from '../list';
+import Popover from '../popover';
+import { QuestionCircleOutline } from 'antd-mobile-icons';
+import { useConfig } from '../config-provider';
+import { undefinedFallback } from '../../utils/undefined-fallback';
 const NAME_SPLIT = '__SPLIT__';
 const classPrefix = `adm-form-item`;
 const MemoInput = React.memo(({
@@ -25,38 +29,81 @@ const FormItemLayout = props => {
     children,
     htmlFor,
     hidden,
-    errors,
-    arrow
+    arrow,
+    childElementPosition = 'normal'
   } = props;
   const context = useContext(FormContext);
+  const {
+    locale
+  } = useConfig();
   const hasFeedback = props.hasFeedback !== undefined ? props.hasFeedback : context.hasFeedback;
   const layout = props.layout || context.layout;
-  const feedback = hasFeedback && errors && errors.length > 0 ? errors[0] : null;
+
+  const requiredMark = (() => {
+    const {
+      requiredMarkStyle
+    } = context;
+
+    switch (requiredMarkStyle) {
+      case 'asterisk':
+        return required && React.createElement("span", {
+          className: `${classPrefix}-required-asterisk`
+        }, "*");
+
+      case 'text-required':
+        return required && React.createElement("span", {
+          className: `${classPrefix}-required-text`
+        }, "(", locale.Form.required, ")");
+
+      case 'text-optional':
+        return !required && React.createElement("span", {
+          className: `${classPrefix}-required-text`
+        }, "(", locale.Form.optional, ")");
+
+      default:
+        return null;
+    }
+  })();
+
   const labelElement = label ? React.createElement("label", {
     className: `${classPrefix}-label`,
     htmlFor: htmlFor
-  }, label, required && React.createElement("span", {
-    className: `${classPrefix}-label-required`
-  }, "*"), help && React.createElement("span", {
-    className: `${classPrefix}-label-help`
-  }, help)) : null;
-  const descriptionElement = feedback && React.createElement("div", {
-    className: `${classPrefix}-footer`
-  }, feedback);
+  }, label, requiredMark, help && React.createElement(Popover, {
+    content: help,
+    mode: 'dark',
+    trigger: 'click'
+  }, React.createElement("span", {
+    className: `${classPrefix}-label-help`,
+    onClick: e => {
+      e.preventDefault();
+    }
+  }, React.createElement(QuestionCircleOutline, null)))) : null;
+  const description = React.createElement(React.Fragment, null, props.description, hasFeedback && React.createElement(React.Fragment, null, props.errors.map((error, index) => React.createElement("div", {
+    key: `error-${index}`,
+    className: `${classPrefix}-feedback-error`
+  }, error)), props.warnings.map((warning, index) => React.createElement("div", {
+    key: `warning-${index}`,
+    className: `${classPrefix}-feedback-warning`
+  }, warning))));
   return React.createElement(List.Item, {
     style: style,
     title: layout === 'vertical' && labelElement,
     prefix: layout === 'horizontal' && labelElement,
     extra: extra,
-    description: descriptionElement,
-    className: classNames(classPrefix, className, {
+    description: description,
+    className: classNames(classPrefix, className, `${classPrefix}-${layout}`, {
       [`${classPrefix}-hidden`]: hidden,
-      [`${classPrefix}-error`]: feedback !== null
+      [`${classPrefix}-has-error`]: props.errors.length
     }),
     disabled: disabled,
     onClick: props.onClick,
+    clickable: props.clickable,
     arrow: arrow
-  }, children);
+  }, React.createElement("div", {
+    className: classNames(`${classPrefix}-child`, `${classPrefix}-child-position-${childElementPosition}`)
+  }, React.createElement("div", {
+    className: classNames(`${classPrefix}-child-inner`)
+  }, children)));
 };
 
 export const FormItem = props => {
@@ -74,24 +121,30 @@ export const FormItem = props => {
     noStyle,
     hidden,
     layout,
+    childElementPosition,
+    description,
     // Field 相关
     disabled,
     rules,
     children,
     messageVariables,
     trigger = 'onChange',
-    validateTrigger,
+    validateTrigger = trigger,
     onClick,
     shouldUpdate,
     dependencies,
+    clickable,
     arrow
   } = props,
-        fieldProps = __rest(props, ["className", "style", "label", "help", "extra", "hasFeedback", "name", "required", "noStyle", "hidden", "layout", "disabled", "rules", "children", "messageVariables", "trigger", "validateTrigger", "onClick", "shouldUpdate", "dependencies", "arrow"]);
+        fieldProps = __rest(props, ["className", "style", "label", "help", "extra", "hasFeedback", "name", "required", "noStyle", "hidden", "layout", "childElementPosition", "description", "disabled", "rules", "children", "messageVariables", "trigger", "validateTrigger", "onClick", "shouldUpdate", "dependencies", "clickable", "arrow"]);
 
   const {
+    name: formName
+  } = useContext(FormContext);
+  const {
     validateTrigger: contextValidateTrigger
-  } = React.useContext(FieldContext);
-  const mergedValidateTrigger = validateTrigger !== undefined ? validateTrigger : contextValidateTrigger;
+  } = useContext(FieldContext);
+  const mergedValidateTrigger = undefinedFallback(validateTrigger, contextValidateTrigger, trigger);
   const updateRef = React.useRef(0);
   updateRef.current += 1;
   const [subMetas, setSubMetas] = useState({});
@@ -111,7 +164,7 @@ export const FormItem = props => {
   }, [setSubMetas]);
 
   function renderLayout(baseChildren, fieldId, meta, isRequired) {
-    var _a;
+    var _a, _b;
 
     if (noStyle && !hidden) {
       return baseChildren;
@@ -129,20 +182,36 @@ export const FormItem = props => {
 
       return subErrors;
     }, curErrors);
+    const curWarnings = (_b = meta === null || meta === void 0 ? void 0 : meta.warnings) !== null && _b !== void 0 ? _b : [];
+    const warnings = Object.keys(subMetas).reduce((subWarnings, key) => {
+      var _a, _b;
+
+      const warnings = (_b = (_a = subMetas[key]) === null || _a === void 0 ? void 0 : _a.warnings) !== null && _b !== void 0 ? _b : [];
+
+      if (warnings.length) {
+        subWarnings = [...subWarnings, ...warnings];
+      }
+
+      return subWarnings;
+    }, curWarnings);
     return React.createElement(FormItemLayout, {
       className: className,
       style: style,
       label: label,
       extra: extra,
       help: help,
+      description: description,
       required: isRequired,
       disabled: disabled,
       hasFeedback: hasFeedback,
       htmlFor: fieldId,
       errors: errors,
+      warnings: warnings,
       onClick: onClick,
       hidden: hidden,
       layout: layout,
+      childElementPosition: childElementPosition,
+      clickable: clickable,
       arrow: arrow
     }, React.createElement(NoStyleItemContext.Provider, {
       value: onSubMetaChange
@@ -185,14 +254,9 @@ export const FormItem = props => {
     messageVariables: Variables
   }), (control, meta, context) => {
     let childNode = null;
-    const isRequired = required !== undefined ? required : !!(rules && rules.some(rule => {
-      if (rule && typeof rule === 'object' && rule.required) {
-        return true;
-      }
-
-      return false;
-    }));
-    const fieldId = (toArray(name).length && meta ? meta.name : []).join('_');
+    const isRequired = required !== undefined ? required : rules && rules.some(rule => !!(rule && typeof rule === 'object' && rule.required));
+    const nameList = toArray(name).length && meta ? meta.name : [];
+    const fieldId = (nameList.length > 0 && formName ? [formName, ...nameList] : nameList).join('_');
 
     if (shouldUpdate && dependencies) {
       devWarning('Form.Item', "`shouldUpdate` and `dependencies` shouldn't be used together.");

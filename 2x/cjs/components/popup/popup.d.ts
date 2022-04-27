@@ -18,5 +18,6 @@ export declare type PopupProps = {
     maskStyle?: React.CSSProperties;
     onClick?: (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => void;
     stopPropagation?: PropagationEvent[];
+    children?: React.ReactNode;
 } & NativeProps<'--z-index'>;
 export declare const Popup: FC<PopupProps>;

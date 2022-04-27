@@ -1,7 +1,10 @@
-import { FC } from 'react';
+import { FC, ReactNode } from 'react';
 declare type SidebarProps = {
-    indexes: string[];
-    activeIndex: string;
+    indexItems: {
+        index: string;
+        brief: ReactNode;
+    }[];
+    activeIndex: string | null;
     onActive: (index: string) => void;
 };
 export declare const Sidebar: FC<SidebarProps>;

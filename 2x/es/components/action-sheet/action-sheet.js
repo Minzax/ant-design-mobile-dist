@@ -1,11 +1,11 @@
-import React, { createRef, forwardRef, useEffect, useImperativeHandle, useState } from 'react';
+import React from 'react';
 import { withNativeProps } from '../../utils/native-props';
 import { mergeProps } from '../../utils/with-default-props';
 import classNames from 'classnames';
 import Popup from '../popup';
 import Button from '../button';
-import { renderToBody } from '../../utils/render-to-body';
 import SafeArea from '../safe-area';
+import { renderImperatively } from '../../utils/render-imperatively';
 const classPrefix = `adm-action-sheet`;
 const defaultProps = {
   visible: false,
@@ -29,7 +29,8 @@ export const ActionSheet = p => {
       }
     },
     afterClose: props.afterClose,
-    className: `${classPrefix}-popup`,
+    className: classNames(`${classPrefix}-popup`, props.popupClassName),
+    style: props.popupStyle,
     getContainer: props.getContainer
   }, withNativeProps(props, React.createElement("div", {
     className: classPrefix
@@ -83,42 +84,5 @@ export const ActionSheet = p => {
   }))));
 };
 export function showActionSheet(props) {
-  const Wrapper = forwardRef((_, ref) => {
-    const [visible, setVisible] = useState(false);
-    useEffect(() => {
-      setVisible(true);
-    }, []);
-
-    function handleClose() {
-      var _a;
-
-      (_a = props.onClose) === null || _a === void 0 ? void 0 : _a.call(props);
-      setVisible(false);
-    }
-
-    useImperativeHandle(ref, () => ({
-      close: handleClose
-    }));
-    return React.createElement(ActionSheet, Object.assign({}, props, {
-      visible: visible,
-      onClose: handleClose,
-      afterClose: () => {
-        var _a;
-
-        (_a = props.afterClose) === null || _a === void 0 ? void 0 : _a.call(props);
-        unmount();
-      }
-    }));
-  });
-  const ref = createRef();
-  const unmount = renderToBody(React.createElement(Wrapper, {
-    ref: ref
-  }));
-  return {
-    close: () => {
-      var _a;
-
-      (_a = ref.current) === null || _a === void 0 ? void 0 : _a.close();
-    }
-  };
+  return renderImperatively(React.createElement(ActionSheet, Object.assign({}, props)));
 }

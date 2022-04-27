@@ -17,6 +17,7 @@ export const Avatar = p => {
     placeholder: props.fallback,
     alt: props.alt,
     lazy: props.lazy,
+    fit: props.fit,
     onClick: props.onClick,
     onError: props.onError
   }));

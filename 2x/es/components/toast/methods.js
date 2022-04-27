@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { createRef, forwardRef, useEffect, useImperativeHandle, useState } from 'react';
 import { resolveContainer } from '../../utils/get-container';
 import ReactDOM from 'react-dom';
 import { InternalToast } from './toast';
@@ -31,8 +31,7 @@ export function show(p) {
   bodyContainer.appendChild(container);
   clear();
   containers.push(container);
-
-  const TempToast = () => {
+  const TempToast = forwardRef((_, ref) => {
     const [visible, setVisible] = useState(true);
     useEffect(() => {
       return () => {
@@ -53,6 +52,9 @@ export function show(p) {
         window.clearTimeout(timer);
       };
     }, []);
+    useImperativeHandle(ref, () => ({
+      close: () => setVisible(false)
+    }));
     return React.createElement(InternalToast, Object.assign({}, props, {
       getContainer: () => container,
       visible: visible,
@@ -60,9 +62,18 @@ export function show(p) {
         unmount(container);
       }
     }));
-  };
+  });
+  const ref = createRef();
+  ReactDOM.render(React.createElement(TempToast, {
+    ref: ref
+  }), container);
+  return {
+    close: () => {
+      var _a;
 
-  ReactDOM.render(React.createElement(TempToast, null), container);
+      (_a = ref.current) === null || _a === void 0 ? void 0 : _a.close();
+    }
+  };
 }
 export function clear() {
   while (true) {

@@ -1,7 +1,9 @@
 import React from 'react';
-export const DEFAULT_FORM_CONTEXT = {
+export const defaultFormContext = {
+  name: undefined,
   hasFeedback: true,
-  layout: 'vertical'
+  layout: 'vertical',
+  requiredMarkStyle: 'asterisk'
 };
-export const FormContext = React.createContext(DEFAULT_FORM_CONTEXT);
+export const FormContext = React.createContext(defaultFormContext);
 export const NoStyleItemContext = React.createContext(null);

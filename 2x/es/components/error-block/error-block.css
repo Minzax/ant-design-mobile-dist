@@ -14,6 +14,7 @@
   max-width: 100%;
 }
 
+.adm-error-block-image svg,
 .adm-error-block-image img {
   height: 100%;
 }

@@ -22,5 +22,6 @@ export declare type DialogProps = {
     maskStyle?: React.CSSProperties;
     maskClassName?: string;
     stopPropagation?: PropagationEvent[];
+    disableBodyScroll?: boolean;
 } & NativeProps;
 export declare const Dialog: FC<DialogProps>;

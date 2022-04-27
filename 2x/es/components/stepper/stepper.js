@@ -7,11 +7,13 @@ import { mergeProps } from '../../utils/with-default-props';
 import { bound } from '../../utils/bound';
 import Input from '../input';
 import Button from '../button';
+import Big from 'big.js';
 const classPrefix = `adm-stepper`;
 const defaultProps = {
   defaultValue: 0,
   step: 1,
-  disabled: false
+  disabled: false,
+  allowEmpty: false
 };
 export const Stepper = p => {
   const props = mergeProps(defaultProps, p);
@@ -23,13 +25,13 @@ export const Stepper = p => {
     inputReadOnly
   } = props;
   const [value, setValue] = usePropsValue(props);
-  const [inputValue, setInputValue] = useState(() => value.toString());
+  const [inputValue, setInputValue] = useState(() => convertValueToText(value, props.digits));
 
   function setValueWithCheck(v) {
     if (isNaN(v)) return;
     let target = bound(v, props.min, props.max);
 
-    if (props.digits || props.digits === 0) {
+    if (props.digits !== undefined) {
       target = parseFloat(target.toFixed(props.digits));
     }
 
@@ -39,42 +41,58 @@ export const Stepper = p => {
   const [hasFocus, setHasFocus] = useState(false);
   useEffect(() => {
     if (!hasFocus) {
-      setInputValue(value.toString());
+      setInputValue(convertValueToText(value, props.digits));
     }
   }, [hasFocus]);
   useEffect(() => {
     if (!hasFocus) {
-      setInputValue(value.toString());
+      setInputValue(convertValueToText(value, props.digits));
     }
-  }, [value]);
+  }, [value, props.digits]);
 
   const handleInputChange = v => {
     setInputValue(v);
-    setValueWithCheck(parseFloat(v));
+    const value = convertTextToValue(v);
+
+    if (value === null) {
+      if (props.allowEmpty) {
+        setValue(null);
+      } else {
+        setValue(props.defaultValue);
+      }
+    } else {
+      setValueWithCheck(value);
+    }
   };
 
   const handleMinus = () => {
-    setValueWithCheck(value - step);
+    setValueWithCheck(Big(value !== null && value !== void 0 ? value : 0).minus(step).toNumber());
   };
 
   const handlePlus = () => {
-    setValueWithCheck(value + step);
+    setValueWithCheck(Big(value !== null && value !== void 0 ? value : 0).add(step).toNumber());
   };
 
   const minusDisabled = () => {
-    if (min === undefined) {
-      return disabled;
-    } else {
-      return disabled || value <= min;
+    if (disabled) return true;
+    if (value === null) return false;
+
+    if (min !== undefined) {
+      return value <= min;
     }
+
+    return false;
   };
 
   const plusDisabled = () => {
-    if (max === undefined) {
-      return disabled;
-    } else {
-      return disabled || value >= max;
+    if (disabled) return true;
+    if (value === null) return false;
+
+    if (max !== undefined) {
+      return value >= max;
     }
+
+    return false;
   };
 
   return withNativeProps(props, React.createElement("div", {
@@ -119,3 +137,18 @@ export const Stepper = p => {
     color: 'primary'
   }, React.createElement(AddOutline, null))));
 };
+
+function convertValueToText(value, digits) {
+  if (value === null) return '';
+
+  if (digits !== undefined) {
+    return value.toFixed(digits);
+  } else {
+    return value.toString();
+  }
+}
+
+function convertTextToValue(text) {
+  if (text === '') return null;
+  return parseFloat(text);
+}

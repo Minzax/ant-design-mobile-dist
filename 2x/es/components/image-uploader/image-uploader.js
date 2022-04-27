@@ -1,11 +1,11 @@
 import { __awaiter } from "tslib";
-import React, { useLayoutEffect, useRef, useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { AddOutline } from 'antd-mobile-icons';
 import { mergeProps } from '../../utils/with-default-props';
 import ImageViewer from '../image-viewer';
 import PreviewItem from './preview-item';
 import { usePropsValue } from '../../utils/use-props-value';
-import { useMemoizedFn, useUnmount } from 'ahooks';
+import { useIsomorphicLayoutEffect, useMemoizedFn, useUnmount } from 'ahooks';
 import Space from '../space';
 import { withNativeProps } from '../../utils/native-props';
 const classPrefix = `adm-image-uploader`;
@@ -17,7 +17,9 @@ const defaultProps = {
   maxCount: 0,
   defaultValue: [],
   accept: 'image/*',
-  preview: true
+  preview: true,
+  showFailed: true,
+  imageFit: 'cover'
 };
 export const ImageUploader = p => {
   const props = mergeProps(defaultProps, p);
@@ -26,7 +28,7 @@ export const ImageUploader = p => {
     setValue(updater(value));
   });
   const [tasks, setTasks] = useState([]);
-  useLayoutEffect(() => {
+  useIsomorphicLayoutEffect(() => {
     setTasks(prev => prev.filter(task => {
       if (task.url === undefined) return true;
       return !value.some(fileItem => fileItem.url === task.url);
@@ -37,6 +39,17 @@ export const ImageUploader = p => {
     maxCount,
     onPreview
   } = props;
+
+  function processFile(file, fileList) {
+    return __awaiter(this, void 0, void 0, function* () {
+      const {
+        beforeUpload
+      } = props;
+      let transformedFile = file;
+      transformedFile = yield beforeUpload === null || beforeUpload === void 0 ? void 0 : beforeUpload(file, fileList);
+      return transformedFile;
+    });
+  }
 
   function onChange(e) {
     var _a;
@@ -50,7 +63,12 @@ export const ImageUploader = p => {
       let files = [].slice.call(rawFiles);
 
       if (props.beforeUpload) {
-        files = yield props.beforeUpload(files);
+        const postFiles = files.map(file => {
+          return processFile(file, files);
+        });
+        yield Promise.all(postFiles).then(filesList => {
+          files = filesList.filter(Boolean);
+        });
       }
 
       if (files.length === 0) {
@@ -72,6 +90,8 @@ export const ImageUploader = p => {
         file
       }));
       setTasks(prev => [...prev, ...newTasks]);
+      e.target.value = ''; // HACK: fix the same file doesn't trigger onChange
+
       yield Promise.all(newTasks.map(currentTask => __awaiter(this, void 0, void 0, function* () {
         try {
           const result = yield props.upload(currentTask.file);
@@ -105,7 +125,6 @@ export const ImageUploader = p => {
           throw e;
         }
       }))).catch(error => console.error(error));
-      e.target.value = ''; // HACK: fix the same file doesn't trigger onChange
     });
   }
 
@@ -131,7 +150,8 @@ export const ImageUploader = p => {
     className: classPrefix
   }, React.createElement(Space, {
     className: `${classPrefix}-space`,
-    wrap: true
+    wrap: true,
+    block: true
   }, value.map((fileItem, index) => {
     var _a, _b;
 
@@ -139,12 +159,13 @@ export const ImageUploader = p => {
       key: (_a = fileItem.key) !== null && _a !== void 0 ? _a : index,
       url: (_b = fileItem.thumbnailUrl) !== null && _b !== void 0 ? _b : fileItem.url,
       deletable: props.deletable,
+      imageFit: props.imageFit,
       onClick: () => {
         if (props.preview) {
           previewImage(index);
         }
 
-        onPreview && onPreview(index);
+        onPreview && onPreview(index, fileItem);
       },
       onDelete: () => __awaiter(void 0, void 0, void 0, function* () {
         var _c;
@@ -154,15 +175,22 @@ export const ImageUploader = p => {
         setValue(value.filter((x, i) => i !== index));
       })
     });
-  }), tasks.map(task => React.createElement(PreviewItem, {
-    key: task.id,
-    file: task.file,
-    deletable: task.status !== 'pending',
-    status: task.status,
-    onDelete: () => {
-      setTasks(tasks.filter(x => x.id !== task.id));
+  }), tasks.map(task => {
+    if (!props.showFailed && task.status === 'fail') {
+      return null;
     }
-  })), showUpload && React.createElement("div", {
+
+    return React.createElement(PreviewItem, {
+      key: task.id,
+      file: task.file,
+      deletable: task.status !== 'pending',
+      status: task.status,
+      imageFit: props.imageFit,
+      onDelete: () => {
+        setTasks(tasks.filter(x => x.id !== task.id));
+      }
+    });
+  }), showUpload && React.createElement("div", {
     className: `${classPrefix}-upload-button-wrap`
   }, props.children ? props.children : React.createElement("span", {
     className: `${classPrefix}-cell ${classPrefix}-upload-button`,

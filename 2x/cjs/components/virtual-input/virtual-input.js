@@ -17,6 +17,8 @@ var _classnames = _interopRequireDefault(require("classnames"));
 
 var _antdMobileIcons = require("antd-mobile-icons");
 
+var _ahooks = require("ahooks");
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function (nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
@@ -47,7 +49,7 @@ const VirtualInput = (0, _react.forwardRef)((p, ref) => {
     content.scrollLeft = content.clientWidth;
   }
 
-  (0, _react.useLayoutEffect)(() => {
+  (0, _ahooks.useIsomorphicLayoutEffect)(() => {
     scrollToEnd();
   }, [value]);
   (0, _react.useEffect)(() => {
@@ -82,6 +84,30 @@ const VirtualInput = (0, _react.forwardRef)((p, ref) => {
     (_a = props.onBlur) === null || _a === void 0 ? void 0 : _a.call(props);
   }
 
+  const keyboard = props.keyboard;
+
+  const keyboardElement = keyboard && _react.default.cloneElement(keyboard, {
+    onInput: v => {
+      var _a, _b;
+
+      setValue(value + v);
+      (_b = (_a = keyboard.props).onInput) === null || _b === void 0 ? void 0 : _b.call(_a, v);
+    },
+    onDelete: () => {
+      var _a, _b;
+
+      setValue(value.slice(0, -1));
+      (_b = (_a = keyboard.props).onDelete) === null || _b === void 0 ? void 0 : _b.call(_a);
+    },
+    visible: hasFocus,
+    onClose: () => {
+      var _a, _b, _c;
+
+      (_a = rootRef.current) === null || _a === void 0 ? void 0 : _a.blur();
+      (_c = (_b = keyboard.props).onClose) === null || _c === void 0 ? void 0 : _c.call(_b);
+    }
+  });
+
   return (0, _nativeProps.withNativeProps)(props, _react.default.createElement("div", {
     ref: rootRef,
     className: (0, _classnames.default)(classPrefix, {
@@ -109,19 +135,6 @@ const VirtualInput = (0, _react.forwardRef)((p, ref) => {
     }
   }, _react.default.createElement(_antdMobileIcons.CloseCircleFill, null)), !value && _react.default.createElement("div", {
     className: `${classPrefix}-placeholder`
-  }, props.placeholder), props.keyboard && _react.default.cloneElement(props.keyboard, {
-    onInput: v => {
-      setValue(value + v);
-    },
-    onDelete: () => {
-      setValue(value.slice(0, -1));
-    },
-    visible: hasFocus,
-    onClose: () => {
-      var _a;
-
-      (_a = rootRef.current) === null || _a === void 0 ? void 0 : _a.blur();
-    }
-  })));
+  }, props.placeholder), keyboardElement));
 });
 exports.VirtualInput = VirtualInput;

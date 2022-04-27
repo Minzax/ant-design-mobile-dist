@@ -4,6 +4,7 @@ import Badge from '../badge';
 import { withNativeProps } from '../../utils/native-props';
 import { usePropsValue } from '../../utils/use-props-value';
 import { Corner } from './corner';
+import { traverseReactNode } from '../../utils/traverse-react-node';
 const classPrefix = `adm-side-bar`;
 export const SideBarItem = () => {
   return null;
@@ -13,7 +14,7 @@ export const SideBar = props => {
 
   let firstActiveKey = null;
   const items = [];
-  React.Children.forEach(props.children, (child, index) => {
+  traverseReactNode(props.children, (child, index) => {
     if (!React.isValidElement(child)) return;
     const key = child.key;
     if (typeof key !== 'string') return;

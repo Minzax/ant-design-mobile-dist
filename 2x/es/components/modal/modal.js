@@ -13,7 +13,6 @@ import AutoCenter from '../auto-center';
 import { useSpring, animated } from '@react-spring/web';
 import { withNativeProps } from '../../utils/native-props';
 import { CloseOutline } from 'antd-mobile-icons';
-const classPrefix = `adm-modal`;
 const defaultProps = {
   visible: false,
   actions: [],
@@ -21,7 +20,8 @@ const defaultProps = {
   closeOnMaskClick: false,
   stopPropagation: ['click'],
   showCloseButton: false,
-  getContainer: null
+  getContainer: null,
+  disableBodyScroll: true
 };
 export const Modal = p => {
   const props = mergeProps(defaultProps, p);
@@ -30,9 +30,9 @@ export const Modal = p => {
     scale: props.visible ? 1 : 0.8,
     opacity: props.visible ? 1 : 0,
     config: {
-      mass: 1,
+      mass: 1.2,
       tension: 200,
-      friction: 30,
+      friction: 25,
       clamp: true
     },
     onStart: () => {
@@ -52,49 +52,28 @@ export const Modal = p => {
     }
   });
   const [active, setActive] = useState(props.visible);
-  const node = withStopPropagation(props.stopPropagation, withNativeProps(props, React.createElement("div", {
-    className: classPrefix,
-    style: {
-      display: active ? 'unset' : 'none'
-    }
-  }, React.createElement(Mask, {
-    visible: props.visible,
-    onMaskClick: props.closeOnMaskClick ? props.onClose : undefined,
-    style: props.maskStyle,
-    className: classNames(`${classPrefix}-mask`, props.maskClassName)
-  }), React.createElement("div", {
-    className: `${classPrefix}-wrap`,
-    style: {
-      pointerEvents: props.visible ? 'unset' : 'none'
-    }
-  }, React.createElement(animated.div, {
-    style: Object.assign({}, style),
-    onClick: e => e.stopPropagation(),
-    className: `${classPrefix}-main`
+  const body = React.createElement("div", {
+    className: classNames(cls('body'), props.image && cls('with-image'), props.bodyClassName),
+    style: props.bodyStyle
   }, props.showCloseButton && React.createElement("a", {
-    className: classNames(`${classPrefix}-close`, 'adm-plain-anchor'),
+    className: classNames(cls('close'), 'adm-plain-anchor'),
     onClick: props.onClose
   }, React.createElement(CloseOutline, null)), !!props.image && React.createElement("div", {
-    className: `${classPrefix}-image-container`
+    className: cls('image-container')
   }, React.createElement(Image, {
     src: props.image,
     alt: 'modal header image',
     width: '100%'
-  })), React.createElement("div", {
-    style: props.bodyStyle,
-    className: classNames(`${classPrefix}-body`, props.bodyClassName)
-  }, !!props.header && React.createElement("div", {
-    className: `${classPrefix}-body-header-wrapper`
-  }, React.createElement("div", {
-    className: `${classPrefix}-body-header`
-  }, props.header)), !!props.title && React.createElement("div", {
-    className: `${classPrefix}-body-title`
-  }, props.title), !!props.content && React.createElement("div", {
-    className: `${classPrefix}-body-content`
-  }, typeof props.content === 'string' ? React.createElement(AutoCenter, null, props.content) : props.content)), React.createElement(Space, {
+  })), !!props.header && React.createElement("div", {
+    className: cls('header')
+  }, React.createElement(AutoCenter, null, props.header)), !!props.title && React.createElement("div", {
+    className: cls('title')
+  }, props.title), React.createElement("div", {
+    className: cls('content')
+  }, typeof props.content === 'string' ? React.createElement(AutoCenter, null, props.content) : props.content), React.createElement(Space, {
     direction: 'vertical',
     block: true,
-    className: `${classPrefix}-footer`
+    className: classNames(cls('footer'), props.actions.length === 0 && cls('footer-empty'))
   }, props.actions.map((action, index) => {
     return React.createElement(ModalActionButton, {
       key: action.key,
@@ -109,6 +88,29 @@ export const Modal = p => {
         }
       })
     });
-  })))))));
+  })));
+  const node = withStopPropagation(props.stopPropagation, withNativeProps(props, React.createElement("div", {
+    className: cls(),
+    style: {
+      display: active ? 'unset' : 'none'
+    }
+  }, React.createElement(Mask, {
+    visible: props.visible,
+    onMaskClick: props.closeOnMaskClick ? props.onClose : undefined,
+    style: props.maskStyle,
+    className: classNames(cls('mask'), props.maskClassName),
+    disableBodyScroll: props.disableBodyScroll
+  }), React.createElement("div", {
+    className: cls('wrap'),
+    style: {
+      pointerEvents: props.visible ? 'unset' : 'none'
+    }
+  }, React.createElement(animated.div, {
+    style: style
+  }, body)))));
   return renderToContainer(props.getContainer, node);
 };
+
+function cls(name = '') {
+  return 'adm-modal' + (name && '-') + name;
+}

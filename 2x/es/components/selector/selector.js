@@ -10,7 +10,8 @@ import { CheckMark } from './check-mark';
 const classPrefix = `adm-selector`;
 const defaultProps = {
   multiple: false,
-  defaultValue: []
+  defaultValue: [],
+  showCheckMark: true
 };
 export const Selector = p => {
   const props = mergeProps(defaultProps, p);
@@ -55,7 +56,7 @@ export const Selector = p => {
       }
     }, option.label, option.description && React.createElement("div", {
       className: `${classPrefix}-item-description`
-    }, option.description), active && React.createElement("div", {
+    }, option.description), active && props.showCheckMark && React.createElement("div", {
       className: `${classPrefix}-check-mark-wrapper`
     }, React.createElement(CheckMark, null)));
   });

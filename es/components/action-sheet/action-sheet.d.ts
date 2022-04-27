@@ -10,7 +10,7 @@ export declare type Action = {
     onClick?: () => void;
 };
 export declare type ActionSheetProps = {
-    visible: boolean;
+    visible?: boolean;
     actions: Action[];
     extra?: React.ReactNode;
     cancelText?: React.ReactNode;
@@ -22,11 +22,11 @@ export declare type ActionSheetProps = {
     closeOnMaskClick?: boolean;
     getContainer?: GetContainer;
     safeArea?: boolean;
+    popupClassName?: string;
+    popupStyle?: React.CSSProperties;
 } & NativeProps;
 export declare const ActionSheet: FC<ActionSheetProps>;
-export declare type ActionSheetRef = {
+export declare type ActionSheetShowHandler = {
     close: () => void;
 };
-export declare function showActionSheet(props: Omit<ActionSheetProps, 'visible'>): {
-    close: () => void;
-};
+export declare function showActionSheet(props: Omit<ActionSheetProps, 'visible'>): ActionSheetShowHandler;

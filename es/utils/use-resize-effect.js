@@ -1,8 +1,7 @@
-import { useLayoutEffect } from 'react';
-import { useMemoizedFn } from 'ahooks';
+import { useIsomorphicLayoutEffect, useMemoizedFn } from 'ahooks';
 export function useResizeEffect(effect, targetRef) {
   const fn = useMemoizedFn(effect);
-  useLayoutEffect(() => {
+  useIsomorphicLayoutEffect(() => {
     const target = targetRef.current;
     if (!target) return;
 

@@ -23,6 +23,8 @@ var _convertPx = require("../../utils/convert-px");
 
 var _rubberband = require("../../utils/rubberband");
 
+var _configProvider = require("../config-provider");
+
 var _sleep = require("../../utils/sleep");
 
 function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function (nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
@@ -33,7 +35,7 @@ const classPrefix = `adm-pull-to-refresh`;
 const defaultProps = {
   pullingText: '下拉刷新',
   canReleaseText: '释放立即刷新',
-  refreshingText: '加载中……',
+  refreshingText: '加载中...',
   completeText: '刷新成功',
   completeDelay: 500,
   disabled: false,
@@ -44,7 +46,15 @@ exports.defaultProps = defaultProps;
 const PullToRefresh = p => {
   var _a, _b;
 
-  const props = (0, _withDefaultProps.mergeProps)(defaultProps, p);
+  const {
+    locale
+  } = (0, _configProvider.useConfig)();
+  const props = (0, _withDefaultProps.mergeProps)(defaultProps, {
+    refreshingText: `${locale.common.loading}...`,
+    pullingText: locale.PullToRefresh.pulling,
+    canReleaseText: locale.PullToRefresh.canRelease,
+    completeText: locale.PullToRefresh.complete
+  }, p);
   const headHeight = (_a = props.headHeight) !== null && _a !== void 0 ? _a : (0, _convertPx.convertPx)(40);
   const threshold = (_b = props.threshold) !== null && _b !== void 0 ? _b : (0, _convertPx.convertPx)(60);
   const [status, setStatus] = (0, _react2.useState)('pulling');
@@ -59,7 +69,13 @@ const PullToRefresh = p => {
     }
   }));
   const elementRef = (0, _react2.useRef)(null);
-  const pullingRef = (0, _react2.useRef)(false);
+  const pullingRef = (0, _react2.useRef)(false); //防止下拉时抖动
+
+  (0, _react2.useEffect)(() => {
+    var _a;
+
+    (_a = elementRef.current) === null || _a === void 0 ? void 0 : _a.addEventListener('touchmove', () => {});
+  }, []);
 
   function doRefresh() {
     return (0, _tslib.__awaiter)(this, void 0, void 0, function* () {
@@ -120,15 +136,30 @@ const PullToRefresh = p => {
 
     const [, y] = state.movement;
 
-    if (state.first) {
-      const element = elementRef.current;
-      if (!element) return;
-      const scrollParent = (0, _getScrollParent.getScrollParent)(element);
-      if (!scrollParent) return;
-      const top = 'scrollTop' in scrollParent ? scrollParent.scrollTop : scrollParent.pageYOffset;
+    if (state.first && y > 0) {
+      const target = state.event.target;
+      if (!target || !(target instanceof Element)) return;
+      let scrollParent = (0, _getScrollParent.getScrollParent)(target);
 
-      if (top <= 0 && y > 0) {
-        pullingRef.current = true;
+      while (true) {
+        if (!scrollParent) return;
+        const scrollTop = getScrollTop(scrollParent);
+
+        if (scrollTop > 0) {
+          return;
+        }
+
+        if (scrollParent instanceof Window) {
+          break;
+        }
+
+        scrollParent = (0, _getScrollParent.getScrollParent)(scrollParent.parentNode);
+      }
+
+      pullingRef.current = true;
+
+      function getScrollTop(element) {
+        return 'scrollTop' in element ? element.scrollTop : element.scrollY;
       }
     }
 

@@ -3,19 +3,21 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.NoStyleItemContext = exports.FormContext = exports.DEFAULT_FORM_CONTEXT = void 0;
+exports.defaultFormContext = exports.NoStyleItemContext = exports.FormContext = void 0;
 
 var _react = _interopRequireDefault(require("react"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-const DEFAULT_FORM_CONTEXT = {
+const defaultFormContext = {
+  name: undefined,
   hasFeedback: true,
-  layout: 'vertical'
+  layout: 'vertical',
+  requiredMarkStyle: 'asterisk'
 };
-exports.DEFAULT_FORM_CONTEXT = DEFAULT_FORM_CONTEXT;
+exports.defaultFormContext = defaultFormContext;
 
-const FormContext = _react.default.createContext(DEFAULT_FORM_CONTEXT);
+const FormContext = _react.default.createContext(defaultFormContext);
 
 exports.FormContext = FormContext;
 

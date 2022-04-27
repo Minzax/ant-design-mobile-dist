@@ -23,5 +23,6 @@ export declare type ModalProps = {
     maskClassName?: string;
     stopPropagation?: PropagationEvent[];
     showCloseButton?: boolean;
+    disableBodyScroll?: boolean;
 } & NativeProps;
 export declare const Modal: FC<ModalProps>;

@@ -13,11 +13,22 @@ function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "functio
 
 function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
 
+const precisionLengthRecord = {
+  year: 1,
+  month: 2,
+  day: 3,
+  hour: 4,
+  minute: 5,
+  second: 6
+};
+
 const convertDateToStringArray = (date, precision) => {
   if (precision.includes('week')) {
     return weekUtils.convertDateToStringArray(date);
   } else {
-    return dateUtils.convertDateToStringArray(date);
+    const datePrecision = precision;
+    const stringArray = dateUtils.convertDateToStringArray(date);
+    return stringArray.slice(0, precisionLengthRecord[datePrecision]);
   }
 };
 

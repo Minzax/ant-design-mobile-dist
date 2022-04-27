@@ -101,7 +101,7 @@
   opacity: 0.4;
 }
 
-.adm-switch-icon {
+.adm-switch-spin-icon {
   width: 28px;
   height: 28px;
   animation: loading-rotate 1s linear infinite;

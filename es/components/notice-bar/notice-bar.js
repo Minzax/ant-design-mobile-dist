@@ -55,7 +55,7 @@ export const NoticeBar = memo(p => {
     delayLockRef.current = false;
     start();
   }, props.delay);
-  useResizeEffect(text => {
+  useResizeEffect(() => {
     start();
   }, containerRef);
   useMutationEffect(() => {

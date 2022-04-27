@@ -5,13 +5,11 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.useResizeEffect = useResizeEffect;
 
-var _react = require("react");
-
 var _ahooks = require("ahooks");
 
 function useResizeEffect(effect, targetRef) {
   const fn = (0, _ahooks.useMemoizedFn)(effect);
-  (0, _react.useLayoutEffect)(() => {
+  (0, _ahooks.useIsomorphicLayoutEffect)(() => {
     const target = targetRef.current;
     if (!target) return;
 

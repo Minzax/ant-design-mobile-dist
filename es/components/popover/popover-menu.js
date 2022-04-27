@@ -3,7 +3,8 @@ import classNames from 'classnames';
 import { Popover } from './popover';
 const classPrefix = `adm-popover-menu`;
 export const PopoverMenu = forwardRef((props, ref) => {
-  const innerRef = useRef(null);
+  const innerRef = useRef(null); // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+
   useImperativeHandle(ref, () => innerRef.current, []);
   const onClick = useCallback(e => {
     var _a;

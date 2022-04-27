@@ -5,6 +5,8 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.InfiniteScroll = void 0;
 
+var _tslib = require("tslib");
+
 var _withDefaultProps = require("../../utils/with-default-props");
 
 var _react = _interopRequireWildcard(require("react"));
@@ -14,6 +16,8 @@ var _ahooks = require("ahooks");
 var _nativeProps = require("../../utils/native-props");
 
 var _getScrollParent = require("../../utils/get-scroll-parent");
+
+var _configProvider = require("../config-provider");
 
 var _dotLoading = _interopRequireDefault(require("../dot-loading"));
 
@@ -32,7 +36,10 @@ const classPrefix = `adm-infinite-scroll`;
 const InfiniteScrollContent = ({
   hasMore
 }) => {
-  return _react.default.createElement(_react.default.Fragment, null, hasMore ? _react.default.createElement(_react.default.Fragment, null, _react.default.createElement("span", null, "\u52A0\u8F7D\u4E2D"), _react.default.createElement(_dotLoading.default, null)) : _react.default.createElement("span", null, "\u6CA1\u6709\u66F4\u591A\u4E86"));
+  const {
+    locale
+  } = (0, _configProvider.useConfig)();
+  return _react.default.createElement(_react.default.Fragment, null, hasMore ? _react.default.createElement(_react.default.Fragment, null, _react.default.createElement("span", null, locale.common.loading), _react.default.createElement(_dotLoading.default, null)) : _react.default.createElement("span", null, locale.InfiniteScroll.noMore));
 };
 
 const InfiniteScroll = p => {
@@ -41,25 +48,27 @@ const InfiniteScroll = p => {
   }, p);
   const doLoadMore = (0, _ahooks.useLockFn)(() => props.loadMore());
   const elementRef = (0, _react.useRef)(null);
-  const checkTimeoutRef = (0, _react.useRef)();
-  const check = (0, _ahooks.useMemoizedFn)(() => {
-    window.clearTimeout(checkTimeoutRef.current);
-    checkTimeoutRef.current = window.setTimeout(() => {
-      if (!props.hasMore) return;
-      const element = elementRef.current;
-      if (!element) return;
-      if (!element.offsetParent) return;
-      const parent = (0, _getScrollParent.getScrollParent)(element);
-      if (!parent) return;
-      const rect = element.getBoundingClientRect();
-      const elementTop = rect.top;
-      const current = isWindow(parent) ? window.innerHeight : parent.getBoundingClientRect().bottom;
+  const [flag, setFlag] = (0, _react.useState)({});
+  const nextFlagRef = (0, _react.useRef)(flag);
+  const check = (0, _ahooks.useMemoizedFn)(() => (0, _tslib.__awaiter)(void 0, void 0, void 0, function* () {
+    if (nextFlagRef.current !== flag) return;
+    if (!props.hasMore) return;
+    const element = elementRef.current;
+    if (!element) return;
+    if (!element.offsetParent) return;
+    const parent = (0, _getScrollParent.getScrollParent)(element);
+    if (!parent) return;
+    const rect = element.getBoundingClientRect();
+    const elementTop = rect.top;
+    const current = isWindow(parent) ? window.innerHeight : parent.getBoundingClientRect().bottom;
 
-      if (current >= elementTop - props.threshold) {
-        doLoadMore();
-      }
-    });
-  }); // 确保在内容不足时会自动触发加载事件
+    if (current >= elementTop - props.threshold) {
+      const nextFlag = {};
+      nextFlagRef.current = nextFlag;
+      yield doLoadMore();
+      setFlag(nextFlag);
+    }
+  })); // 确保在内容不足时会自动触发加载事件
 
   (0, _react.useEffect)(() => {
     check();

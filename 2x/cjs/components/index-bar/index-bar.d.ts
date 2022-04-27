@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 import { NativeProps } from '../../utils/native-props';
 export declare type IndexBarProps = {
     sticky?: boolean;

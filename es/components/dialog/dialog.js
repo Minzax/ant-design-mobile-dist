@@ -6,20 +6,19 @@ import { useUnmountedRef } from 'ahooks';
 import Mask from '../mask';
 import { DialogActionButton } from './dialog-action-button';
 import Image from '../image';
-import Space from '../space';
 import { renderToContainer } from '../../utils/render-to-container';
 import { withStopPropagation } from '../../utils/with-stop-propagation';
 import AutoCenter from '../auto-center';
 import { useSpring, animated } from '@react-spring/web';
 import { withNativeProps } from '../../utils/native-props';
-const classPrefix = `adm-dialog`;
 const defaultProps = {
   visible: false,
   actions: [],
   closeOnAction: false,
   closeOnMaskClick: false,
   stopPropagation: ['click'],
-  getContainer: null
+  getContainer: null,
+  disableBodyScroll: true
 };
 export const Dialog = p => {
   const props = mergeProps(defaultProps, p);
@@ -28,9 +27,9 @@ export const Dialog = p => {
     scale: props.visible ? 1 : 0.8,
     opacity: props.visible ? 1 : 0,
     config: {
-      mass: 1,
+      mass: 1.2,
       tension: 200,
-      friction: 30,
+      friction: 25,
       clamp: true
     },
     onStart: () => {
@@ -50,51 +49,27 @@ export const Dialog = p => {
     }
   });
   const [active, setActive] = useState(props.visible);
-  const node = withNativeProps(props, React.createElement("div", {
-    className: classPrefix,
-    style: {
-      display: active ? 'unset' : 'none'
-    }
-  }, React.createElement(Mask, {
-    visible: props.visible,
-    onMaskClick: props.closeOnMaskClick ? props.onClose : undefined,
-    style: props.maskStyle,
-    className: classNames(`${classPrefix}-mask`, props.maskClassName)
-  }), React.createElement("div", {
-    className: `${classPrefix}-wrap`,
-    style: {
-      pointerEvents: props.visible ? 'unset' : 'none'
-    }
-  }, React.createElement(animated.div, {
-    style: Object.assign({}, style),
-    onClick: e => e.stopPropagation(),
-    className: `${classPrefix}-main`
+  const body = React.createElement("div", {
+    className: classNames(cls('body'), props.image && cls('with-image'), props.bodyClassName),
+    style: props.bodyStyle
   }, !!props.image && React.createElement("div", {
-    className: `${classPrefix}-image-container`
+    className: cls('image-container')
   }, React.createElement(Image, {
     src: props.image,
     alt: 'dialog header image',
     width: '100%'
-  })), React.createElement("div", {
-    style: props.bodyStyle,
-    className: classNames(`${classPrefix}-body`, props.bodyClassName)
-  }, React.createElement(Space, {
-    direction: 'vertical',
-    block: true
-  }, !!props.header && React.createElement("div", {
-    className: `${classPrefix}-body-header-wrapper`
-  }, React.createElement("div", {
-    className: `${classPrefix}-body-header`
-  }, props.header)), !!props.title && React.createElement("div", {
-    className: `${classPrefix}-body-title`
-  }, props.title), !!props.content && React.createElement("div", {
-    className: `${classPrefix}-body-content`
-  }, typeof props.content === 'string' ? React.createElement(AutoCenter, null, props.content) : props.content))), React.createElement("div", {
-    className: `${classPrefix}-footer`
+  })), !!props.header && React.createElement("div", {
+    className: cls('header')
+  }, React.createElement(AutoCenter, null, props.header)), !!props.title && React.createElement("div", {
+    className: cls('title')
+  }, props.title), React.createElement("div", {
+    className: classNames(cls('content'), !props.content && cls('content-empty'))
+  }, typeof props.content === 'string' ? React.createElement(AutoCenter, null, props.content) : props.content), React.createElement("div", {
+    className: cls('footer')
   }, props.actions.map((row, index) => {
     const actions = Array.isArray(row) ? row : [row];
     return React.createElement("div", {
-      className: `${classPrefix}-action-row`,
+      className: cls('action-row'),
       key: index
     }, actions.map((action, index) => React.createElement(DialogActionButton, {
       key: action.key,
@@ -109,6 +84,29 @@ export const Dialog = p => {
         }
       })
     })));
-  }))))));
+  })));
+  const node = withNativeProps(props, React.createElement("div", {
+    className: cls(),
+    style: {
+      display: active ? 'unset' : 'none'
+    }
+  }, React.createElement(Mask, {
+    visible: props.visible,
+    onMaskClick: props.closeOnMaskClick ? props.onClose : undefined,
+    style: props.maskStyle,
+    className: classNames(cls('mask'), props.maskClassName),
+    disableBodyScroll: props.disableBodyScroll
+  }), React.createElement("div", {
+    className: cls('wrap'),
+    style: {
+      pointerEvents: props.visible ? 'unset' : 'none'
+    }
+  }, React.createElement(animated.div, {
+    style: style
+  }, body))));
   return renderToContainer(props.getContainer, withStopPropagation(props.stopPropagation, node));
 };
+
+function cls(name = '') {
+  return 'adm-dialog' + (name && '-') + name;
+}

@@ -2,9 +2,9 @@
 import './image-viewer.less';
 import { showMultiImageViewer, showImageViewer, clearImageViewer } from './methods';
 export type { ImageViewerProps, MultiImageViewerProps, MultiImageViewerRef, } from './image-viewer';
-export type { ImageViewerHandler } from './methods';
+export type { ImageViewerShowHandler } from './methods';
 declare const _default: import("react").FC<import("./image-viewer").ImageViewerProps> & {
-    Multi: import("react").ForwardRefExoticComponent<Pick<import("./image-viewer").ImageViewerProps, "visible" | "onClose" | "afterClose" | "getContainer" | "maxZoom"> & {
+    Multi: import("react").ForwardRefExoticComponent<Omit<import("./image-viewer").ImageViewerProps, "image"> & {
         images?: string[] | undefined;
         defaultIndex?: number | undefined;
         onIndexChange?: ((index: number) => void) | undefined;

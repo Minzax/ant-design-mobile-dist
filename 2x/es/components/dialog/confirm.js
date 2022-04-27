@@ -1,12 +1,19 @@
 import { __awaiter } from "tslib";
 import { show } from './show';
 import { mergeProps } from '../../utils/with-default-props';
+import { getDefaultConfig } from '../config-provider';
 const defaultProps = {
   confirmText: '确认',
   cancelText: '取消'
 };
 export function confirm(p) {
-  const props = mergeProps(defaultProps, p);
+  const {
+    locale
+  } = getDefaultConfig();
+  const props = mergeProps(defaultProps, {
+    confirmText: locale.common.confirm,
+    cancelText: locale.common.cancel
+  }, p);
   return new Promise(resolve => {
     show(Object.assign(Object.assign({}, props), {
       closeOnAction: true,

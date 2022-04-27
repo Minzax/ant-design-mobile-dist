@@ -1,5 +1,6 @@
 .adm-picker-view {
   --height: 240px;
+  --item-height: 34px;
   --item-font-size: 16px;
   height: var(--height);
   width: 100%;
@@ -20,7 +21,7 @@
   width: 100%;
   cursor: grab;
   position: absolute;
-  top: calc(50% - 17px);
+  top: calc(50% - var(--item-height) / 2);
   left: 0;
 }
 .adm-picker-view-column-wheel::before {
@@ -42,7 +43,7 @@
 .adm-picker-view-column-item {
   font-size: var(--item-font-size);
   padding: 0 6px;
-  height: 34px;
+  height: var(--item-height);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -91,7 +92,7 @@
   flex: auto;
 }
 .adm-picker-view-mask-middle {
-  height: 34px;
+  height: var(--item-height);
   box-sizing: border-box;
   flex: none;
   border-top: solid 1px var(--adm-border-color);

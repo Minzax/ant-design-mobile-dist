@@ -1,6 +1,12 @@
 .adm-selector {
-  --color: var(--adm-color-text);
+  --color: #f5f5f5;
   --checked-color: #e7f1ff;
+  --text-color: var(--adm-color-text);
+  --checked-text-color: var(--adm-color-primary);
+  --border: none;
+  --checked-border: none;
+  --border-radius: 4px;
+  --padding: 16px 32px;
   overflow: hidden;
   font-size: 30px;
   line-height: 1.4;
@@ -11,11 +17,12 @@
 }
 
 .adm-selector-item {
-  padding: 16px 32px;
+  padding: var(--padding);
   position: relative;
-  background-color: #f5f5f5;
-  border-radius: 4px;
-  color: #333;
+  background-color: var(--color);
+  border: var(--border);
+  border-radius: var(--border-radius);
+  color: var(--text-color);
   opacity: 1;
   cursor: pointer;
   display: inline-block;
@@ -31,8 +38,9 @@
 
 .adm-selector-item-active,
 .adm-selector-item-multiple-active {
-  color: var(--adm-color-primary);
+  color: var(--checked-text-color);
   background-color: var(--checked-color);
+  border: var(--checked-border);
 }
 
 .adm-selector-item .adm-selector-check-mark-wrapper {

@@ -129,6 +129,7 @@ const Swiper = (0, _react.forwardRef)((0, _stagedComponents.staged)((p, ref) => 
       },
       onRest: () => {
         if (draggingRef.current) return;
+        if (!loop) return;
         const rawX = position.get();
         const totalWidth = 100 * count;
         const standardPosition = modulus(rawX, totalWidth);
@@ -212,7 +213,7 @@ const Swiper = (0, _react.forwardRef)((0, _stagedComponents.staged)((p, ref) => 
       swipeNext,
       swipePrev
     }));
-    (0, _react.useLayoutEffect)(() => {
+    (0, _ahooks.useIsomorphicLayoutEffect)(() => {
       const maxIndex = validChildren.length - 1;
 
       if (current > maxIndex) {
@@ -258,7 +259,7 @@ const Swiper = (0, _react.forwardRef)((0, _stagedComponents.staged)((p, ref) => 
           style: {
             [isVertical ? 'y' : 'x']: position.to(position => `${-position}%`)
           }
-        }, _react.default.Children.map(validChildren, (child, index) => {
+        }, _react.default.Children.map(validChildren, child => {
           return _react.default.createElement("div", {
             className: 'adm-swiper-slide'
           }, child);

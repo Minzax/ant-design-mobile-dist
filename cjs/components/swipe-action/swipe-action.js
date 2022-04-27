@@ -19,6 +19,8 @@ var _nearest = require("../../utils/nearest");
 
 var _nativeProps = require("../../utils/native-props");
 
+var _withStopPropagation = require("../../utils/with-stop-propagation");
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function (nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
@@ -29,7 +31,8 @@ const defaultProps = {
   rightActions: [],
   leftActions: [],
   closeOnTouchOutside: true,
-  closeOnAction: true
+  closeOnAction: true,
+  stopPropagation: []
 };
 const SwipeAction = (0, _react.forwardRef)((p, ref) => {
   const props = (0, _withDefaultProps.mergeProps)(defaultProps, p);
@@ -187,10 +190,10 @@ const SwipeAction = (0, _react.forwardRef)((p, ref) => {
     style: {
       x
     }
-  }, _react.default.createElement("div", {
+  }, (0, _withStopPropagation.withStopPropagation)(props.stopPropagation, _react.default.createElement("div", {
     className: 'adm-swipe-action-actions adm-swipe-action-actions-left',
     ref: leftRef
-  }, props.leftActions.map(renderAction)), _react.default.createElement("div", {
+  }, props.leftActions.map(renderAction))), _react.default.createElement("div", {
     className: 'adm-swipe-action-content',
     onClickCapture: e => {
       if (x.goal !== 0) {
@@ -205,10 +208,10 @@ const SwipeAction = (0, _react.forwardRef)((p, ref) => {
     style: {
       pointerEvents: x.to(v => v !== 0 && x.goal !== 0 ? 'none' : 'unset')
     }
-  }, props.children)), _react.default.createElement("div", {
+  }, props.children)), (0, _withStopPropagation.withStopPropagation)(props.stopPropagation, _react.default.createElement("div", {
     className: 'adm-swipe-action-actions adm-swipe-action-actions-right',
     ref: rightRef
-  }, props.rightActions.map(renderAction)))));
+  }, props.rightActions.map(renderAction))))));
 });
 exports.SwipeAction = SwipeAction;
 const colorRecord = {

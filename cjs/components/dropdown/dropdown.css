@@ -3,9 +3,10 @@
 }
 .adm-dropdown .adm-dropdown-nav {
   display: flex;
+  border-bottom: 1px solid transparent;
 }
 .adm-dropdown-open .adm-dropdown-nav {
-  border-bottom: 1px solid var(--adm-border-color);
+  border-bottom-color: var(--adm-border-color);
 }
 .adm-dropdown-item {
   display: flex;
@@ -41,9 +42,6 @@
   opacity: 0.7;
 }
 .adm-dropdown-item-highlight {
-  color: var(--adm-color-primary);
-}
-.adm-dropdown-item-active {
   color: var(--adm-color-primary);
 }
 .adm-dropdown-item-active .adm-dropdown-item-title:after {

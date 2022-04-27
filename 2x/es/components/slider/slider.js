@@ -26,7 +26,8 @@ export const Slider = p => {
     disabled,
     marks,
     ticks,
-    step
+    step,
+    icon
   } = props;
 
   function sortValue(val) {
@@ -126,6 +127,7 @@ export const Slider = p => {
 
   const renderThumb = index => {
     return React.createElement(Thumb, {
+      icon: icon,
       key: index,
       value: sliderValue[index],
       min: min,

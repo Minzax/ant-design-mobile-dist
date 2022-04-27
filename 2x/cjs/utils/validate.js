@@ -23,7 +23,7 @@ function isObject(val) {
 }
 
 function isPromise(obj) {
-  return obj && typeof obj === 'object' && typeof obj.then === 'function';
+  return !!obj && typeof obj === 'object' && typeof obj.then === 'function';
 }
 
 function isDate(val) {

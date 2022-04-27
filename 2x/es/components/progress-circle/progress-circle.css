@@ -1,10 +1,10 @@
 /*进度圈*/
 
 .adm-progress-circle {
-  --track-width: 6px;
-  --size: 100px;
-  --track-color: #e5e5e5;
-  --fill-color: #1677ff;
+  --track-width: var(--adm-progress-circle-track-width, 6px);
+  --size: var(--adm-progress-circle-size, 100px);
+  --track-color: var(--adm-progress-circle-track-color, #e5e5e5);
+  --fill-color: var(--adm-progress-circle-fill-color, var(--adm-color-primary));
   --percent: 0;
   --pi: 3.14159265;
   --radius: calc(var(--size) / 2 - var(--track-width) / 2);

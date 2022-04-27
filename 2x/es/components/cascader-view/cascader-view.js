@@ -61,6 +61,13 @@ export const CascaderView = p => {
   useEffect(() => {
     setTabActiveKey(levels.length - 1);
   }, [value]);
+  useEffect(() => {
+    const max = levels.length - 1;
+
+    if (tabActiveKey > max) {
+      setTabActiveKey(max);
+    }
+  }, [tabActiveKey, levels]);
 
   const onItemSelect = (selectValue, depth) => {
     const next = value.slice(0, depth);

@@ -23,7 +23,7 @@ var _renderToContainer = require("../../utils/render-to-container");
 
 var _web = require("@react-spring/web");
 
-var _useShouldRender = require("../../utils/use-should-render");
+var _shouldRender = require("../../utils/should-render");
 
 var _withStopPropagation = require("../../utils/with-stop-propagation");
 
@@ -48,7 +48,7 @@ const Popup = p => {
   const ref = (0, _react.useRef)(null);
   const [active, setActive] = (0, _react.useState)(props.visible);
   (0, _useLockScroll.useLockScroll)(ref, active);
-  const shouldRender = (0, _useShouldRender.useShouldRender)(active, props.forceRender, props.destroyOnClose);
+  const shouldRender = (0, _shouldRender.useShouldRender)(active, props.forceRender, props.destroyOnClose);
   const unmountedRef = (0, _ahooks.useUnmountedRef)();
   const {
     percent

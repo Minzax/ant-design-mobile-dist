@@ -25,6 +25,12 @@ var _useResizeEffect = require("../../utils/use-resize-effect");
 
 var _withDefaultProps = require("../../utils/with-default-props");
 
+var _useIsomorphicUpdateLayoutEffect = require("../../utils/use-isomorphic-update-layout-effect");
+
+var _shouldRender = require("../../utils/should-render");
+
+var _traverseReactNode = require("../../utils/traverse-react-node");
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function (nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
@@ -52,8 +58,7 @@ const Tabs = p => {
   const keyToIndexRecord = {};
   let firstActiveKey = null;
   const panes = [];
-
-  _react.default.Children.forEach(props.children, (child, index) => {
+  (0, _traverseReactNode.traverseReactNode)(props.children, (child, index) => {
     if (!_react.default.isValidElement(child)) return;
     const key = child.key;
     if (typeof key !== 'string') return;
@@ -65,7 +70,6 @@ const Tabs = p => {
     const length = panes.push(child);
     keyToIndexRecord[key] = length - 1;
   });
-
   const [activeKey, setActiveKey] = (0, _usePropsValue.usePropsValue)({
     value: props.activeKey,
     defaultValue: (_a = props.defaultActiveKey) !== null && _a !== void 0 ? _a : firstActiveKey,
@@ -163,17 +167,17 @@ const Tabs = p => {
     });
   }
 
-  (0, _react.useLayoutEffect)(() => {
-    animate(true);
+  (0, _ahooks.useIsomorphicLayoutEffect)(() => {
+    animate(!x.isAnimating);
   }, []);
-  (0, _ahooks.useUpdateLayoutEffect)(() => {
+  (0, _useIsomorphicUpdateLayoutEffect.useIsomorphicUpdateLayoutEffect)(() => {
     animate();
   }, [activeKey]);
   (0, _useResizeEffect.useResizeEffect)(() => {
-    animate(true);
+    animate(!x.isAnimating);
   }, tabListContainerRef);
   (0, _useMutationEffect.useMutationEffect)(() => {
-    animate(true);
+    animate(!x.isAnimating);
   }, tabListContainerRef, {
     subtree: true,
     childList: true,
@@ -197,7 +201,7 @@ const Tabs = p => {
     trailing: true,
     leading: true
   });
-  (0, _react.useLayoutEffect)(() => {
+  (0, _ahooks.useIsomorphicLayoutEffect)(() => {
     updateMask(true);
   }, []);
   return (0, _nativeProps.withNativeProps)(props, _react.default.createElement("div", {
@@ -253,24 +257,18 @@ const Tabs = p => {
       return null;
     }
 
-    if (pane.key === activeKey) {
-      return _react.default.createElement("div", {
-        key: pane.key,
-        className: `${classPrefix}-content`
-      }, pane.props.children);
-    }
-
-    if (pane.props.forceRender) {
-      return _react.default.createElement("div", {
-        key: pane.key,
-        className: `${classPrefix}-content`,
-        style: {
-          display: 'none'
-        }
-      }, pane.props.children);
-    }
-
-    return null;
+    const active = pane.key === activeKey;
+    return _react.default.createElement(_shouldRender.ShouldRender, {
+      key: pane.key,
+      active: active,
+      forceRender: pane.props.forceRender,
+      destroyOnClose: pane.props.destroyOnClose
+    }, _react.default.createElement("div", {
+      className: `${classPrefix}-content`,
+      style: {
+        display: active ? 'block' : 'none'
+      }
+    }, pane.props.children));
   })));
 };
 

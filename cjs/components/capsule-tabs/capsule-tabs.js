@@ -21,6 +21,10 @@ var _useTabListScroll = require("../../utils/use-tab-list-scroll");
 
 var _scrollMask = _interopRequireDefault(require("../scroll-mask"));
 
+var _shouldRender = require("../../utils/should-render");
+
+var _traverseReactNode = require("../../utils/traverse-react-node");
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function (nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
@@ -43,8 +47,7 @@ const CapsuleTabs = props => {
   const keyToIndexRecord = {};
   let firstActiveKey = null;
   const panes = [];
-
-  _react.default.Children.forEach(props.children, (child, index) => {
+  (0, _traverseReactNode.traverseReactNode)(props.children, (child, index) => {
     if (!_react.default.isValidElement(child)) return;
     const key = child.key;
     if (typeof key !== 'string') return;
@@ -56,7 +59,6 @@ const CapsuleTabs = props => {
     const length = panes.push(child);
     keyToIndexRecord[key] = length - 1;
   });
-
   const [activeKey, setActiveKey] = (0, _usePropsValue.usePropsValue)({
     value: props.activeKey,
     defaultValue: (_a = props.defaultActiveKey) !== null && _a !== void 0 ? _a : firstActiveKey,
@@ -110,23 +112,18 @@ const CapsuleTabs = props => {
       return null;
     }
 
-    if (pane.key === activeKey) {
-      return _react.default.createElement("div", {
-        key: pane.key,
-        className: `${classPrefix}-content`
-      }, pane.props.children);
-    }
-
-    if (pane.props.forceRender) {
-      return _react.default.createElement("div", {
-        key: pane.key,
-        style: {
-          display: 'none'
-        }
-      }, pane.props.children);
-    }
-
-    return null;
+    const active = pane.key === activeKey;
+    return _react.default.createElement(_shouldRender.ShouldRender, {
+      key: pane.key,
+      active: active,
+      forceRender: pane.props.forceRender,
+      destroyOnClose: pane.props.destroyOnClose
+    }, _react.default.createElement("div", {
+      className: `${classPrefix}-content`,
+      style: {
+        display: active ? 'block' : 'none'
+      }
+    }, pane.props.children));
   })));
 };
 

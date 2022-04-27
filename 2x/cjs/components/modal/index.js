@@ -13,6 +13,8 @@ var _alert = require("./alert");
 
 var _confirm = require("./confirm");
 
+var _clear = require("./clear");
+
 var _attachPropertiesToComponent = require("../../utils/attach-properties-to-component");
 
 var _modal2 = require("./modal");
@@ -20,7 +22,8 @@ var _modal2 = require("./modal");
 var _default = (0, _attachPropertiesToComponent.attachPropertiesToComponent)(_modal2.Modal, {
   show: _show.show,
   alert: _alert.alert,
-  confirm: _confirm.confirm
+  confirm: _confirm.confirm,
+  clear: _clear.clear
 });
 
 exports.default = _default;

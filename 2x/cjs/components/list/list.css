@@ -1,5 +1,5 @@
 .adm-list {
-  --header-font-size: 28px;
+  --header-font-size: 30px;
   --prefix-width: 'auto';
   --prefix-padding-right: 24px;
   --align-items: center;
@@ -15,9 +15,7 @@
 .adm-list-header {
   color: var(--adm-color-weak);
   font-size: var(--header-font-size);
-  padding-left: var(--padding-left);
-  padding-right: var(--padding-right);
-  margin: 32px 0 8px;
+  padding: 16px var(--padding-right) 16px var(--padding-left);
 }
 
 .adm-list-body {
@@ -43,10 +41,15 @@
   border-radius: 16px;
 }
 
+.adm-list-card .adm-list-header {
+  padding-left: 0;
+}
+
 .adm-list-item {
   display: block;
   padding-left: var(--padding-left);
   position: relative;
+  background-color: #ffffff;
 }
 
 .adm-list-item-title,

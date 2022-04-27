@@ -6,7 +6,7 @@ import { useSpring, animated } from '@react-spring/web';
 import { renderToContainer } from '../../utils/render-to-container';
 import { mergeProps } from '../../utils/with-default-props';
 import { useConfig } from '../config-provider';
-import { useShouldRender } from '../../utils/use-should-render';
+import { useShouldRender } from '../../utils/should-render';
 import { withStopPropagation } from '../../utils/with-stop-propagation';
 const classPrefix = `adm-mask`;
 const opacityRecord = {
@@ -76,7 +76,14 @@ export const Mask = p => {
       opacity
     }, props.style), {
       display: active ? 'unset' : 'none'
-    })
+    }),
+    onClick: e => {
+      var _a;
+
+      if (e.target === e.currentTarget) {
+        (_a = props.onMaskClick) === null || _a === void 0 ? void 0 : _a.call(props, e);
+      }
+    }
   }, props.onMaskClick && React.createElement("div", {
     className: `${classPrefix}-aria-button`,
     role: 'button',

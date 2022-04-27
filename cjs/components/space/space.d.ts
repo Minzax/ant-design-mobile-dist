@@ -7,5 +7,6 @@ export declare type SpaceProps = {
     wrap?: boolean;
     block?: boolean;
     onClick?: (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => void;
+    children?: React.ReactNode;
 } & NativeProps<'--gap' | '--gap-vertical' | '--gap-horizontal'>;
 export declare const Space: FC<SpaceProps>;

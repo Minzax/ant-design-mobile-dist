@@ -1,7 +1,8 @@
-import { FC } from 'react';
+import { FC, ReactNode } from 'react';
 import { NativeProps } from '../../utils/native-props';
-export declare type IndexBarAnchorProps = {
+export declare type IndexBarPanelProps = {
     index: string;
-    title?: string;
+    title?: ReactNode;
+    brief?: ReactNode;
 } & NativeProps;
-export declare const Panel: FC<IndexBarAnchorProps>;
+export declare const Panel: FC<IndexBarPanelProps>;

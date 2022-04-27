@@ -41,7 +41,6 @@ function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "functio
 
 function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
 
-const classPrefix = `adm-modal`;
 const defaultProps = {
   visible: false,
   actions: [],
@@ -49,7 +48,8 @@ const defaultProps = {
   closeOnMaskClick: false,
   stopPropagation: ['click'],
   showCloseButton: false,
-  getContainer: null
+  getContainer: null,
+  disableBodyScroll: true
 };
 
 const Modal = p => {
@@ -59,9 +59,9 @@ const Modal = p => {
     scale: props.visible ? 1 : 0.8,
     opacity: props.visible ? 1 : 0,
     config: {
-      mass: 1,
+      mass: 1.2,
       tension: 200,
-      friction: 30,
+      friction: 25,
       clamp: true
     },
     onStart: () => {
@@ -81,49 +81,29 @@ const Modal = p => {
     }
   });
   const [active, setActive] = (0, _react.useState)(props.visible);
-  const node = (0, _withStopPropagation.withStopPropagation)(props.stopPropagation, (0, _nativeProps.withNativeProps)(props, _react.default.createElement("div", {
-    className: classPrefix,
-    style: {
-      display: active ? 'unset' : 'none'
-    }
-  }, _react.default.createElement(_mask.default, {
-    visible: props.visible,
-    onMaskClick: props.closeOnMaskClick ? props.onClose : undefined,
-    style: props.maskStyle,
-    className: (0, _classnames.default)(`${classPrefix}-mask`, props.maskClassName)
-  }), _react.default.createElement("div", {
-    className: `${classPrefix}-wrap`,
-    style: {
-      pointerEvents: props.visible ? 'unset' : 'none'
-    }
-  }, _react.default.createElement(_web.animated.div, {
-    style: Object.assign({}, style),
-    onClick: e => e.stopPropagation(),
-    className: `${classPrefix}-main`
+
+  const body = _react.default.createElement("div", {
+    className: (0, _classnames.default)(cls('body'), props.image && cls('with-image'), props.bodyClassName),
+    style: props.bodyStyle
   }, props.showCloseButton && _react.default.createElement("a", {
-    className: (0, _classnames.default)(`${classPrefix}-close`, 'adm-plain-anchor'),
+    className: (0, _classnames.default)(cls('close'), 'adm-plain-anchor'),
     onClick: props.onClose
   }, _react.default.createElement(_antdMobileIcons.CloseOutline, null)), !!props.image && _react.default.createElement("div", {
-    className: `${classPrefix}-image-container`
+    className: cls('image-container')
   }, _react.default.createElement(_image.default, {
     src: props.image,
     alt: 'modal header image',
     width: '100%'
-  })), _react.default.createElement("div", {
-    style: props.bodyStyle,
-    className: (0, _classnames.default)(`${classPrefix}-body`, props.bodyClassName)
-  }, !!props.header && _react.default.createElement("div", {
-    className: `${classPrefix}-body-header-wrapper`
-  }, _react.default.createElement("div", {
-    className: `${classPrefix}-body-header`
-  }, props.header)), !!props.title && _react.default.createElement("div", {
-    className: `${classPrefix}-body-title`
-  }, props.title), !!props.content && _react.default.createElement("div", {
-    className: `${classPrefix}-body-content`
-  }, typeof props.content === 'string' ? _react.default.createElement(_autoCenter.default, null, props.content) : props.content)), _react.default.createElement(_space.default, {
+  })), !!props.header && _react.default.createElement("div", {
+    className: cls('header')
+  }, _react.default.createElement(_autoCenter.default, null, props.header)), !!props.title && _react.default.createElement("div", {
+    className: cls('title')
+  }, props.title), _react.default.createElement("div", {
+    className: cls('content')
+  }, typeof props.content === 'string' ? _react.default.createElement(_autoCenter.default, null, props.content) : props.content), _react.default.createElement(_space.default, {
     direction: 'vertical',
     block: true,
-    className: `${classPrefix}-footer`
+    className: (0, _classnames.default)(cls('footer'), props.actions.length === 0 && cls('footer-empty'))
   }, props.actions.map((action, index) => {
     return _react.default.createElement(_modalActionButton.ModalActionButton, {
       key: action.key,
@@ -138,8 +118,32 @@ const Modal = p => {
         }
       })
     });
-  })))))));
+  })));
+
+  const node = (0, _withStopPropagation.withStopPropagation)(props.stopPropagation, (0, _nativeProps.withNativeProps)(props, _react.default.createElement("div", {
+    className: cls(),
+    style: {
+      display: active ? 'unset' : 'none'
+    }
+  }, _react.default.createElement(_mask.default, {
+    visible: props.visible,
+    onMaskClick: props.closeOnMaskClick ? props.onClose : undefined,
+    style: props.maskStyle,
+    className: (0, _classnames.default)(cls('mask'), props.maskClassName),
+    disableBodyScroll: props.disableBodyScroll
+  }), _react.default.createElement("div", {
+    className: cls('wrap'),
+    style: {
+      pointerEvents: props.visible ? 'unset' : 'none'
+    }
+  }, _react.default.createElement(_web.animated.div, {
+    style: style
+  }, body)))));
   return (0, _renderToContainer.renderToContainer)(props.getContainer, node);
 };
 
 exports.Modal = Modal;
+
+function cls(name = '') {
+  return 'adm-modal' + (name && '-') + name;
+}

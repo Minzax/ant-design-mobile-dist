@@ -70,8 +70,7 @@ const DotLoading = (0, _react.memo)(p => {
     begin: `${i * 0.2}s`,
     repeatCount: 'indefinite',
     values: '16; 6; 26; 16; 16',
-    keyTimes: '0; 0.1; 0.3; 0.4; 1',
-    id: 'circ-anim'
+    keyTimes: '0; 0.1; 0.3; 0.4; 1'
   }))))))))));
 });
 exports.DotLoading = DotLoading;

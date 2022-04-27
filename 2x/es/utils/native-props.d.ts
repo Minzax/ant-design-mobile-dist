@@ -5,4 +5,4 @@ export interface NativeProps<S extends string = never> {
     style?: CSSProperties & Partial<Record<S, string>>;
     tabIndex?: number;
 }
-export declare function withNativeProps<P extends NativeProps>(props: P, element: ReactElement): React.ReactElement<any, string | ((props: any) => React.ReactElement<any, any> | null) | (new (props: any) => React.Component<any, any, any>)>;
+export declare function withNativeProps<P extends NativeProps>(props: P, element: ReactElement): React.ReactElement<any, string | React.JSXElementConstructor<any>>;

@@ -11,13 +11,21 @@ var _show = require("./show");
 
 var _withDefaultProps = require("../../utils/with-default-props");
 
+var _configProvider = require("../config-provider");
+
 const defaultProps = {
   confirmText: '确认',
   cancelText: '取消'
 };
 
 function confirm(p) {
-  const props = (0, _withDefaultProps.mergeProps)(defaultProps, p);
+  const {
+    locale
+  } = (0, _configProvider.getDefaultConfig)();
+  const props = (0, _withDefaultProps.mergeProps)(defaultProps, {
+    confirmText: locale.common.confirm,
+    cancelText: locale.common.cancel
+  }, p);
   return new Promise(resolve => {
     (0, _show.show)(Object.assign(Object.assign({}, props), {
       closeOnAction: true,

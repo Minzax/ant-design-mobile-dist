@@ -23,6 +23,10 @@ var _checkIcon = require("./check-icon");
 
 var _indeterminateIcon = require("./indeterminate-icon");
 
+var _isDev = require("../../utils/is-dev");
+
+var _nativeInput = require("./native-input");
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function (nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
@@ -44,23 +48,21 @@ const Checkbox = p => {
     onChange: props.onChange
   });
   let disabled = props.disabled;
-
-  const usageWarning = () => {
-    if (p.checked !== undefined) {
-      (0, _devLog.devWarning)('Checkbox', 'When used with `Checkbox.Group`, the `checked` prop of `Checkbox` will not work if `value` prop of `Checkbox` is not undefined.');
-    }
-
-    if (p.defaultChecked !== undefined) {
-      (0, _devLog.devWarning)('Checkbox', 'When used with `Checkbox.Group`, the `defaultChecked` prop of `Checkbox` will not work if `value` prop of `Checkbox` is not undefined.');
-    }
-  };
-
   const {
     value
   } = props;
 
   if (groupContext && value !== undefined) {
-    usageWarning();
+    if (_isDev.isDev) {
+      if (p.checked !== undefined) {
+        (0, _devLog.devWarning)('Checkbox', 'When used within `Checkbox.Group`, the `checked` prop of `Checkbox` will not work.');
+      }
+
+      if (p.defaultChecked !== undefined) {
+        (0, _devLog.devWarning)('Checkbox', 'When used within `Checkbox.Group`, the `defaultChecked` prop of `Checkbox` will not work.');
+      }
+    }
+
     checked = groupContext.value.includes(value);
 
     setChecked = checked => {
@@ -97,16 +99,10 @@ const Checkbox = p => {
       [`${classPrefix}-disabled`]: disabled,
       [`${classPrefix}-block`]: props.block
     })
-  }, _react.default.createElement("input", {
+  }, _react.default.createElement(_nativeInput.NativeInput, {
     type: 'checkbox',
     checked: checked,
-    onChange: e => {
-      setChecked(e.target.checked);
-    },
-    onClick: e => {
-      e.stopPropagation();
-      e.nativeEvent.stopImmediatePropagation();
-    },
+    onChange: setChecked,
     disabled: disabled,
     id: props.id
   }), renderIcon(), props.children && _react.default.createElement("div", {

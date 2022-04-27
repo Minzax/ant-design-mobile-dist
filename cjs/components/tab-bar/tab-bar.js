@@ -19,6 +19,8 @@ var _safeArea = _interopRequireDefault(require("../safe-area"));
 
 var _usePropsValue = require("../../utils/use-props-value");
 
+var _traverseReactNode = require("../../utils/traverse-react-node");
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 const TabBarItem = () => {
@@ -37,8 +39,7 @@ const TabBar = p => {
   const props = (0, _withDefaultProps.mergeProps)(defaultProps, p);
   let firstActiveKey = null;
   const items = [];
-
-  _react.default.Children.forEach(props.children, (child, index) => {
+  (0, _traverseReactNode.traverseReactNode)(props.children, (child, index) => {
     if (!_react.default.isValidElement(child)) return;
     const key = child.key;
     if (typeof key !== 'string') return;
@@ -49,7 +50,6 @@ const TabBar = p => {
 
     items.push(child);
   });
-
   const [activeKey, setActiveKey] = (0, _usePropsValue.usePropsValue)({
     value: props.activeKey,
     defaultValue: (_a = props.defaultActiveKey) !== null && _a !== void 0 ? _a : firstActiveKey,
@@ -74,7 +74,7 @@ const TabBar = p => {
 
       const titleElement = item.props.title && _react.default.createElement("div", {
         className: `${classPrefix}-item-title`
-      }, item.props.title);
+      }, typeof item.props.title === 'function' ? item.props.title(active) : item.props.title);
 
       if (iconElement) {
         return _react.default.createElement(_react.default.Fragment, null, _react.default.createElement(_badge.default, {

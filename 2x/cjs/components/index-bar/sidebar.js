@@ -49,7 +49,10 @@ const Sidebar = props => {
         props.onActive(index);
       }
     }
-  }, props.indexes.map(index => {
+  }, props.indexItems.map(({
+    index,
+    brief
+  }) => {
     const active = index === props.activeIndex;
     return _react.default.createElement("div", {
       className: `${classPrefix}-sidebar-row`,
@@ -68,12 +71,12 @@ const Sidebar = props => {
       key: index
     }, interacting && active && _react.default.createElement("div", {
       className: `${classPrefix}-sidebar-bubble`
-    }, index), _react.default.createElement("div", {
+    }, brief), _react.default.createElement("div", {
       className: (0, _classnames.default)(`${classPrefix}-sidebar-item`, {
         [`${classPrefix}-sidebar-item-active`]: active
       }),
       "data-index": index
-    }, _react.default.createElement("div", null, index)));
+    }, _react.default.createElement("div", null, brief)));
   }));
 };
 

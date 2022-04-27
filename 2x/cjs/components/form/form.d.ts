@@ -5,13 +5,13 @@ import type { FormProps as RcFormProps, FormInstance as RCFormInstance } from 'r
 import { FormContextType } from './context';
 import type { FormLayout } from '.';
 export declare type FormInstance = Pick<RCFormInstance, 'getFieldValue' | 'getFieldsValue' | 'getFieldError' | 'getFieldsError' | 'isFieldTouched' | 'isFieldsTouched' | 'resetFields' | 'setFields' | 'setFieldsValue' | 'submit' | 'validateFields'>;
-export declare type FormProps = Pick<RcFormProps, 'form' | 'initialValues' | 'name' | 'preserve' | 'validateMessages' | 'validateTrigger' | 'onFieldsChange' | 'onFinish' | 'onFinishFailed' | 'onValuesChange' | 'children'> & NativeProps & Partial<FormContextType> & {
+export declare type FormProps = Pick<RcFormProps, 'form' | 'initialValues' | 'name' | 'preserve' | 'validateMessages' | 'validateTrigger' | 'onFieldsChange' | 'onFinish' | 'onFinishFailed' | 'onValuesChange' | 'children'> & NativeProps<'--border-inner' | '--border-top' | '--border-bottom'> & Partial<FormContextType> & {
     footer?: ReactNode;
     layout?: FormLayout;
     mode?: ListProps['mode'];
 };
-export declare const Form: React.ForwardRefExoticComponent<Pick<RcFormProps<any>, "children" | "form" | "name" | "initialValues" | "preserve" | "validateMessages" | "validateTrigger" | "onFieldsChange" | "onFinish" | "onFinishFailed" | "onValuesChange"> & NativeProps<never> & Partial<FormContextType> & {
+export declare const Form: React.ForwardRefExoticComponent<Pick<RcFormProps<any>, "children" | "form" | "name" | "initialValues" | "preserve" | "validateMessages" | "validateTrigger" | "onFieldsChange" | "onFinish" | "onFinishFailed" | "onValuesChange"> & NativeProps<"--border-inner" | "--border-top" | "--border-bottom"> & Partial<FormContextType> & {
     footer?: ReactNode;
-    layout?: "horizontal" | "vertical" | undefined;
+    layout?: FormLayout | undefined;
     mode?: ListProps['mode'];
-} & React.RefAttributes<Pick<RCFormInstance<any>, "submit" | "getFieldValue" | "getFieldsValue" | "getFieldError" | "getFieldsError" | "isFieldTouched" | "isFieldsTouched" | "resetFields" | "setFields" | "setFieldsValue" | "validateFields">>>;
+} & React.RefAttributes<FormInstance>>;

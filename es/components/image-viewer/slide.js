@@ -1,12 +1,15 @@
 import React, { useRef } from 'react';
-import { useGesture } from '@use-gesture/react';
 import { useSpring, animated } from '@react-spring/web';
+import { rubberbandIfOutOfBounds } from '../../utils/rubberband';
+import { useDragAndPinch } from '../../utils/use-drag-and-pinch';
+import { bound } from '../../utils/bound';
 const classPrefix = `adm-image-viewer`;
 export const Slide = props => {
   const {
     dragLockRef
   } = props;
   const controlRef = useRef(null);
+  const imgRef = useRef(null);
   const [{
     zoom,
     x,
@@ -16,13 +19,40 @@ export const Slide = props => {
     x: 0,
     y: 0,
     config: {
-      tension: 300
+      tension: 200
     }
   }));
   const pinchLockRef = useRef(false);
-  useGesture({
+
+  function boundXY([x, y], rubberband) {
+    const currentZoom = zoom.get();
+    let xOffset = 0,
+        yOffset = 0;
+
+    if (imgRef.current && controlRef.current) {
+      xOffset = ((currentZoom * imgRef.current.width || 0) - controlRef.current.clientWidth) / 2;
+      yOffset = ((currentZoom * imgRef.current.height || 0) - controlRef.current.clientHeight) / 2;
+    }
+
+    xOffset = xOffset > 0 ? xOffset : 0;
+    yOffset = yOffset > 0 ? yOffset : 0;
+    const bounds = {
+      left: -xOffset,
+      right: xOffset,
+      top: -yOffset,
+      bottom: yOffset
+    };
+
+    if (rubberband) {
+      return [rubberbandIfOutOfBounds(x, bounds.left, bounds.right, currentZoom * 50), rubberbandIfOutOfBounds(y, bounds.top, bounds.bottom, currentZoom * 50)];
+    } else {
+      return [bound(x, bounds.left, bounds.right), bound(y, bounds.top, bounds.bottom)];
+    }
+  }
+
+  useDragAndPinch({
     onDrag: state => {
-      if (state.tap && state.elapsedTime > 0) {
+      if (state.tap && state.elapsedTime > 0 && state.elapsedTime < 1000) {
         // 判断点击时间>0是为了过滤掉非正常操作，例如用户长按选择图片之后的取消操作（也是一次点击）
         props.onTap();
         return;
@@ -40,12 +70,20 @@ export const Slide = props => {
           y: 0
         });
       } else {
-        const [x, y] = state.offset;
-        api.start({
-          x,
-          y,
-          immediate: true
-        });
+        if (state.last) {
+          const [x, y] = boundXY([state.offset[0] + state.velocity[0] * state.direction[0] * 200, state.offset[1] + state.velocity[1] * state.direction[1] * 200], false);
+          api.start({
+            x,
+            y
+          });
+        } else {
+          const [x, y] = boundXY(state.offset, true);
+          api.start({
+            x,
+            y,
+            immediate: true
+          });
+        }
       }
     },
     onPinch: state => {
@@ -53,16 +91,15 @@ export const Slide = props => {
 
       pinchLockRef.current = !state.last;
       const [d] = state.offset;
-      if (d < 0) return; // pinch的rubberband不会自动弹回bound，这里手动实现了
-
-      const zoom = state.last ? Math.max(Math.min(d, props.maxZoom), 1) : d;
+      if (d < 0) return;
+      const nextZoom = state.last ? bound(d, 1, props.maxZoom) : d;
       api.start({
-        zoom,
+        zoom: nextZoom,
         immediate: !state.last
       });
-      (_a = props.onZoomChange) === null || _a === void 0 ? void 0 : _a.call(props, zoom);
+      (_a = props.onZoomChange) === null || _a === void 0 ? void 0 : _a.call(props, nextZoom);
 
-      if (state.last && zoom <= 1) {
+      if (state.last && nextZoom <= 1) {
         api.start({
           x: 0,
           y: 0
@@ -81,13 +118,16 @@ export const Slide = props => {
     target: controlRef,
     drag: {
       // filterTaps: true,
-      from: () => [x.get(), y.get()]
+      from: () => [x.get(), y.get()],
+      pointer: {
+        touch: true
+      }
     },
     pinch: {
-      from: () => [zoom.get(), 0]
-    },
-    pointer: {
-      touch: true
+      from: () => [zoom.get(), 0],
+      pointer: {
+        touch: true
+      }
     }
   });
   return React.createElement("div", {
@@ -103,12 +143,14 @@ export const Slide = props => {
   }, React.createElement(animated.div, {
     className: `${classPrefix}-image-wrapper`,
     style: {
-      scale: zoom,
-      x,
-      y
+      translateX: x,
+      translateY: y,
+      scale: zoom
     }
   }, React.createElement("img", {
+    ref: imgRef,
     src: props.image,
-    draggable: false
+    draggable: false,
+    alt: props.image
   }))));
 };

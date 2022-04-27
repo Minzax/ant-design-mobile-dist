@@ -1,7 +1,7 @@
 import React from 'react';
 import type { ReactNode } from 'react';
 import { NativeProps } from '../../utils/native-props';
-export declare type TextAreaProps = Pick<React.DetailedHTMLProps<React.TextareaHTMLAttributes<HTMLTextAreaElement>, HTMLTextAreaElement>, 'autoComplete' | 'disabled' | 'readOnly' | 'onFocus' | 'onBlur' | 'onCompositionStart' | 'onCompositionEnd'> & {
+export declare type TextAreaProps = Pick<React.DetailedHTMLProps<React.TextareaHTMLAttributes<HTMLTextAreaElement>, HTMLTextAreaElement>, 'autoComplete' | 'autoFocus' | 'disabled' | 'readOnly' | 'onFocus' | 'onBlur' | 'onCompositionStart' | 'onCompositionEnd' | 'onClick'> & {
     onChange?: (val: string) => void;
     value?: string;
     defaultValue?: string;
@@ -14,13 +14,13 @@ export declare type TextAreaProps = Pick<React.DetailedHTMLProps<React.TextareaH
         maxRows?: number;
     };
     id?: string;
-} & NativeProps<'--font-size' | '--color' | '--placeholder-color' | '--disabled-color'>;
+} & NativeProps<'--font-size' | '--color' | '--placeholder-color' | '--disabled-color' | '--text-align' | '--count-text-align'>;
 export declare type TextAreaRef = {
     clear: () => void;
     focus: () => void;
     blur: () => void;
 };
-export declare const TextArea: React.ForwardRefExoticComponent<Pick<React.DetailedHTMLProps<React.TextareaHTMLAttributes<HTMLTextAreaElement>, HTMLTextAreaElement>, "disabled" | "onCompositionEnd" | "onCompositionStart" | "onFocus" | "onBlur" | "autoComplete" | "readOnly"> & {
+export declare const TextArea: React.ForwardRefExoticComponent<Pick<React.DetailedHTMLProps<React.TextareaHTMLAttributes<HTMLTextAreaElement>, HTMLTextAreaElement>, "onClick" | "disabled" | "onCompositionEnd" | "onCompositionStart" | "onFocus" | "onBlur" | "autoComplete" | "autoFocus" | "readOnly"> & {
     onChange?: ((val: string) => void) | undefined;
     value?: string | undefined;
     defaultValue?: string | undefined;
@@ -33,4 +33,4 @@ export declare const TextArea: React.ForwardRefExoticComponent<Pick<React.Detail
         maxRows?: number | undefined;
     } | undefined;
     id?: string | undefined;
-} & NativeProps<"--color" | "--font-size" | "--placeholder-color" | "--disabled-color"> & React.RefAttributes<TextAreaRef>>;
+} & NativeProps<"--color" | "--font-size" | "--placeholder-color" | "--text-align" | "--disabled-color" | "--count-text-align"> & React.RefAttributes<TextAreaRef>>;

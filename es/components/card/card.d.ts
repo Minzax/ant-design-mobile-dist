@@ -10,5 +10,6 @@ export declare type CardProps = {
     onClick?: (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => void;
     onBodyClick?: (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => void;
     onHeaderClick?: (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => void;
+    children?: React.ReactNode;
 } & NativeProps;
 export declare const Card: FC<CardProps>;

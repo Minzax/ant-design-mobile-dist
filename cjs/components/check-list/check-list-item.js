@@ -42,7 +42,7 @@ const CheckListItem = props => {
 
   return (0, _nativeProps.withNativeProps)(props, _react.default.createElement(_list.default.Item, {
     title: props.title,
-    className: (0, _classnames.default)(classPrefix, readOnly && `${classPrefix}-readonly`),
+    className: (0, _classnames.default)(classPrefix, readOnly && `${classPrefix}-readonly`, active && `${classPrefix}-active`),
     description: props.description,
     prefix: props.prefix,
     onClick: e => {

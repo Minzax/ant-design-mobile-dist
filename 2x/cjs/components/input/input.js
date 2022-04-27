@@ -17,6 +17,10 @@ var _withDefaultProps = require("../../utils/with-default-props");
 
 var _classnames = _interopRequireDefault(require("classnames"));
 
+var _ahooks = require("ahooks");
+
+var _bound = require("../../utils/bound");
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function (nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
@@ -45,7 +49,12 @@ const Input = (0, _react.forwardRef)((p, ref) => {
       var _a;
 
       (_a = nativeInputRef.current) === null || _a === void 0 ? void 0 : _a.blur();
+    },
+
+    get nativeElement() {
+      return nativeInputRef.current;
     }
+
   }));
 
   const handleKeydown = e => {
@@ -58,7 +67,7 @@ const Input = (0, _react.forwardRef)((p, ref) => {
     (_a = props.onKeyDown) === null || _a === void 0 ? void 0 : _a.call(props, e);
   };
 
-  (0, _react.useLayoutEffect)(() => {
+  (0, _ahooks.useIsomorphicLayoutEffect)(() => {
     var _a;
 
     if (!props.enterKeyHint) return;
@@ -69,6 +78,19 @@ const Input = (0, _react.forwardRef)((p, ref) => {
       (_a = nativeInputRef.current) === null || _a === void 0 ? void 0 : _a.removeAttribute('enterkeyhint');
     };
   }, [props.enterKeyHint]);
+
+  function checkValue() {
+    let nextValue = value;
+
+    if (props.type === 'number') {
+      nextValue = nextValue && (0, _bound.bound)(parseFloat(nextValue), props.min, props.max).toString();
+    }
+
+    if (nextValue !== value) {
+      setValue(nextValue);
+    }
+  }
+
   return (0, _nativeProps.withNativeProps)(props, _react.default.createElement("div", {
     className: (0, _classnames.default)(`${classPrefix}`, props.disabled && `${classPrefix}-disabled`)
   }, _react.default.createElement("input", {
@@ -88,10 +110,10 @@ const Input = (0, _react.forwardRef)((p, ref) => {
       var _a;
 
       setHasFocus(false);
+      checkValue();
       (_a = props.onBlur) === null || _a === void 0 ? void 0 : _a.call(props, e);
     },
     id: props.id,
-    onClick: props.onClick,
     placeholder: props.placeholder,
     disabled: props.disabled,
     readOnly: props.readOnly,
@@ -100,6 +122,7 @@ const Input = (0, _react.forwardRef)((p, ref) => {
     max: props.max,
     min: props.min,
     autoComplete: props.autoComplete,
+    autoFocus: props.autoFocus,
     pattern: props.pattern,
     inputMode: props.inputMode,
     type: props.type,
@@ -108,8 +131,9 @@ const Input = (0, _react.forwardRef)((p, ref) => {
     onKeyDown: handleKeydown,
     onKeyUp: props.onKeyUp,
     onCompositionStart: props.onCompositionStart,
-    onCompositionEnd: props.onCompositionEnd
-  }), props.clearable && !!value && _react.default.createElement("div", {
+    onCompositionEnd: props.onCompositionEnd,
+    onClick: props.onClick
+  }), props.clearable && !!value && !props.readOnly && hasFocus && _react.default.createElement("div", {
     className: `${classPrefix}-clear`,
     onMouseDown: e => {
       e.preventDefault();

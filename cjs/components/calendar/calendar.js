@@ -23,6 +23,12 @@ var _configProvider = require("../config-provider");
 
 var _isoWeek = _interopRequireDefault(require("dayjs/plugin/isoWeek"));
 
+var _ahooks = require("ahooks");
+
+var _usePropsValue = require("../../utils/use-props-value");
+
+var _convert = require("./convert");
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function (nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
@@ -33,10 +39,11 @@ _dayjs.default.extend(_isoWeek.default);
 
 const classPrefix = 'adm-calendar';
 const defaultProps = {
-  weekStartsOn: 'Sunday'
+  weekStartsOn: 'Sunday',
+  defaultValue: null,
+  allowClear: true
 };
-
-const Calendar = p => {
+const Calendar = (0, _react.forwardRef)((p, ref) => {
   const today = (0, _dayjs.default)();
   const props = (0, _withDefaultProps.mergeProps)(defaultProps, p);
   const {
@@ -49,7 +56,45 @@ const Calendar = p => {
     if (item) markItems.unshift(item);
   }
 
-  const [current, setCurrent] = (0, _react.useState)(() => (0, _dayjs.default)().date(1));
+  const [dateRange, setDateRange] = (0, _usePropsValue.usePropsValue)({
+    value: props.value === undefined ? undefined : (0, _convert.convertValueToRange)(props.selectionMode, props.value),
+    defaultValue: (0, _convert.convertValueToRange)(props.selectionMode, props.defaultValue),
+    onChange: v => {
+      var _a, _b;
+
+      if (props.selectionMode === 'single') {
+        (_a = props.onChange) === null || _a === void 0 ? void 0 : _a.call(props, v ? v[0] : null);
+      } else if (props.selectionMode === 'range') {
+        (_b = props.onChange) === null || _b === void 0 ? void 0 : _b.call(props, v);
+      }
+    }
+  });
+  const [intermediate, setIntermediate] = (0, _react.useState)(false);
+  const [current, setCurrent] = (0, _react.useState)(() => (0, _dayjs.default)(dateRange ? dateRange[0] : today).date(1));
+  (0, _ahooks.useUpdateEffect)(() => {
+    var _a;
+
+    (_a = props.onPageChange) === null || _a === void 0 ? void 0 : _a.call(props, current.year(), current.month() + 1);
+  }, [current]);
+  (0, _react.useImperativeHandle)(ref, () => ({
+    jumpTo: pageOrPageGenerator => {
+      let page;
+
+      if (typeof pageOrPageGenerator === 'function') {
+        page = pageOrPageGenerator({
+          year: current.year(),
+          month: current.month() + 1
+        });
+      } else {
+        page = pageOrPageGenerator;
+      }
+
+      setCurrent((0, _dayjs.default)().year(page.year).month(page.month - 1).date(1));
+    },
+    jumpToToday: () => {
+      setCurrent((0, _dayjs.default)().date(1));
+    }
+  }));
 
   const header = _react.default.createElement("div", {
     className: `${classPrefix}-header`
@@ -77,25 +122,6 @@ const Calendar = p => {
     }
   }, _react.default.createElement(_arrowLeftDouble.ArrowLeftDouble, null)));
 
-  const dateRange = (0, _react.useMemo)(() => {
-    var _a, _b, _c, _d;
-
-    if (props.selectionMode === 'single') {
-      const value = (_b = (_a = props.value) !== null && _a !== void 0 ? _a : props.defaultValue) !== null && _b !== void 0 ? _b : null;
-      return [value, value];
-    } else if (props.selectionMode === 'range') {
-      return (_d = (_c = props.value) !== null && _c !== void 0 ? _c : props.defaultValue) !== null && _d !== void 0 ? _d : [null, null];
-    } else {
-      return [null, null];
-    }
-  }, [props.selectionMode, props.value, props.defaultValue]);
-  const [begin, setBegin] = (0, _react.useState)(null);
-  const [end, setEnd] = (0, _react.useState)(null);
-  (0, _react.useLayoutEffect)(() => {
-    setBegin(dateRange[0] ? (0, _dayjs.default)(dateRange[0]) : null);
-    setEnd(dateRange[1] ? (0, _dayjs.default)(dateRange[1]) : null);
-  }, [dateRange[0], dateRange[1]]);
-
   function renderCells() {
     var _a;
 
@@ -108,14 +134,16 @@ const Calendar = p => {
 
     while (cells.length < 6 * 7) {
       const d = iterator;
+      let isSelect = false;
+      let isBegin = false;
+      let isEnd = false;
 
-      const isSelect = (() => {
-        if (!begin) return false;
-        if (d.isSame(begin, 'day')) return true;
-        if (!end) return false;
-        if (d.isSame(end, 'day')) return true;
-        return d.isAfter(begin, 'day') && d.isBefore(end, 'day');
-      })();
+      if (dateRange) {
+        const [begin, end] = dateRange;
+        isBegin = d.isSame(begin, 'day');
+        isEnd = d.isSame(end, 'day');
+        isSelect = isBegin || isEnd || d.isAfter(begin, 'day') && d.isBefore(end, 'day');
+      }
 
       const inThisMonth = d.month() === current.month();
       cells.push(_react.default.createElement("div", {
@@ -123,36 +151,52 @@ const Calendar = p => {
         className: (0, _classnames.default)(`${classPrefix}-cell`, inThisMonth ? `${classPrefix}-cell-in` : `${classPrefix}-cell-out`, inThisMonth && {
           [`${classPrefix}-cell-today`]: d.isSame(today, 'day'),
           [`${classPrefix}-cell-selected`]: isSelect,
-          [`${classPrefix}-cell-selected-begin`]: isSelect && d.isSame(begin, 'day'),
-          [`${classPrefix}-cell-selected-end`]: isSelect && (!end || d.isSame(end, 'day'))
+          [`${classPrefix}-cell-selected-begin`]: isBegin,
+          [`${classPrefix}-cell-selected-end`]: isEnd
         }),
         onClick: () => {
-          var _a, _b, _c;
-
           if (!props.selectionMode) return;
-
-          if (props.selectionMode === 'single') {
-            setBegin(d);
-            setEnd(d);
-            (_a = props.onChange) === null || _a === void 0 ? void 0 : _a.call(props, d.toDate());
-          } else if (props.selectionMode === 'range') {
-            if (begin !== null && end === null) {
-              if (d.isBefore(begin)) {
-                setEnd(begin);
-                setBegin(d);
-                (_b = props.onChange) === null || _b === void 0 ? void 0 : _b.call(props, [d.toDate(), begin.toDate()]);
-              } else {
-                setEnd(d);
-                (_c = props.onChange) === null || _c === void 0 ? void 0 : _c.call(props, [begin.toDate(), d.toDate()]);
-              }
-            } else {
-              setBegin(d);
-              setEnd(null);
-            }
-          }
+          const date = d.toDate();
 
           if (!inThisMonth) {
             setCurrent(d.clone().date(1));
+          }
+
+          function shouldClear() {
+            if (!props.allowClear) return false;
+            if (!dateRange) return false;
+            const [begin, end] = dateRange;
+            return d.isSame(begin, 'date') && d.isSame(end, 'day');
+          }
+
+          if (props.selectionMode === 'single') {
+            if (props.allowClear && shouldClear()) {
+              setDateRange(null);
+              return;
+            }
+
+            setDateRange([date, date]);
+          } else if (props.selectionMode === 'range') {
+            if (!dateRange) {
+              setDateRange([date, date]);
+              setIntermediate(true);
+              return;
+            }
+
+            if (shouldClear()) {
+              setDateRange(null);
+              setIntermediate(false);
+              return;
+            }
+
+            if (intermediate) {
+              const another = dateRange[0];
+              setDateRange(another > date ? [date, another] : [another, date]);
+              setIntermediate(false);
+            } else {
+              setDateRange([date, date]);
+              setIntermediate(true);
+            }
           }
         }
       }, _react.default.createElement("div", {
@@ -180,6 +224,5 @@ const Calendar = p => {
   return (0, _nativeProps.withNativeProps)(props, _react.default.createElement("div", {
     className: classPrefix
   }, header, mark, body));
-};
-
+});
 exports.Calendar = Calendar;

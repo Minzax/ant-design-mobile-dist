@@ -23,6 +23,8 @@ var _panel = require("./panel");
 
 var _devLog = require("../../utils/dev-log");
 
+var _traverseReactNode = require("../../utils/traverse-react-node");
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function (nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
@@ -37,10 +39,11 @@ const IndexBar = (0, _react.forwardRef)((p, ref) => {
   const props = (0, _withDefaultProps.mergeProps)(defaultProps, p);
   const titleHeight = (0, _convertPx.convertPx)(35);
   const bodyRef = (0, _react.useRef)(null);
-  const indexes = [];
+  const indexItems = [];
   const panels = [];
+  (0, _traverseReactNode.traverseReactNode)(props.children, child => {
+    var _a;
 
-  _react.default.Children.forEach(props.children, child => {
     if (!_react.default.isValidElement(child)) return;
 
     if (child.type !== _panel.Panel) {
@@ -48,7 +51,10 @@ const IndexBar = (0, _react.forwardRef)((p, ref) => {
       return;
     }
 
-    indexes.push(child.props.index);
+    indexItems.push({
+      index: child.props.index,
+      brief: (_a = child.props.brief) !== null && _a !== void 0 ? _a : child.props.index.charAt(0)
+    });
     panels.push((0, _nativeProps.withNativeProps)(child.props, _react.default.createElement("div", {
       key: child.props.index,
       "data-index": child.props.index,
@@ -57,8 +63,10 @@ const IndexBar = (0, _react.forwardRef)((p, ref) => {
       className: `${classPrefix}-anchor-title`
     }, child.props.title || child.props.index), child.props.children)));
   });
-
-  const [activeIndex, setActiveIndex] = (0, _react.useState)(indexes[0]);
+  const [activeIndex, setActiveIndex] = (0, _react.useState)(() => {
+    const firstItem = indexItems[0];
+    return firstItem ? firstItem.index : null;
+  });
   (0, _react.useImperativeHandle)(ref, () => ({
     scrollTo
   }));
@@ -110,7 +118,7 @@ const IndexBar = (0, _react.forwardRef)((p, ref) => {
       [`${classPrefix}-sticky`]: props.sticky
     })
   }, _react.default.createElement(_sidebar.Sidebar, {
-    indexes: indexes,
+    indexItems: indexItems,
     activeIndex: activeIndex,
     onActive: index => {
       scrollTo(index);

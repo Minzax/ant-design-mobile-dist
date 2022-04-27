@@ -2,7 +2,7 @@ import { FC, ReactNode } from 'react';
 import type { PickerViewProps } from '../picker-view';
 import { NativeProps } from '../../utils/native-props';
 import type { Precision, DatePickerFilter } from '../date-picker/date-picker-utils';
-export declare type DatePickerViewProps = Pick<PickerViewProps, 'style'> & {
+export declare type DatePickerViewProps = Pick<PickerViewProps, 'style' | 'mouseWheel'> & {
     value?: Date;
     defaultValue?: Date;
     onChange?: (value: Date) => void;

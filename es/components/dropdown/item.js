@@ -1,14 +1,16 @@
 import classNames from 'classnames';
 import React from 'react';
 import { withNativeProps } from '../../utils/native-props';
-import { useShouldRender } from '../../utils/use-should-render';
+import { useShouldRender } from '../../utils/should-render';
 import { DownFill } from 'antd-mobile-icons';
 const classPrefix = `adm-dropdown-item`;
 
 const Item = props => {
+  var _a;
+
   const cls = classNames(classPrefix, {
     [`${classPrefix}-active`]: props.active,
-    [`${classPrefix}-highlight`]: props.highlight
+    [`${classPrefix}-highlight`]: (_a = props.highlight) !== null && _a !== void 0 ? _a : props.active
   });
   return withNativeProps(props, React.createElement("div", {
     className: cls,

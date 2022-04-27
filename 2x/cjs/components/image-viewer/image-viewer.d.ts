@@ -16,7 +16,7 @@ export declare type MultiImageViewerProps = Omit<ImageViewerProps, 'image'> & {
     defaultIndex?: number;
     onIndexChange?: (index: number) => void;
 };
-export declare const MultiImageViewer: React.ForwardRefExoticComponent<Pick<ImageViewerProps, "visible" | "onClose" | "afterClose" | "getContainer" | "maxZoom"> & {
+export declare const MultiImageViewer: React.ForwardRefExoticComponent<Omit<ImageViewerProps, "image"> & {
     images?: string[] | undefined;
     defaultIndex?: number | undefined;
     onIndexChange?: ((index: number) => void) | undefined;

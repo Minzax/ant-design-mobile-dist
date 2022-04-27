@@ -1,8 +1,8 @@
-import { useLayoutEffect } from 'react';
 import { useSpring } from '@react-spring/web';
 import { useMutationEffect } from './use-mutation-effect';
 import { bound } from './bound';
-import { useUpdateLayoutEffect } from 'ahooks';
+import { useIsomorphicLayoutEffect } from 'ahooks';
+import { useIsomorphicUpdateLayoutEffect } from './use-isomorphic-update-layout-effect';
 export const useTabListScroll = (targetRef, activeIndex) => {
   const [{
     scrollLeft
@@ -37,10 +37,10 @@ export const useTabListScroll = (targetRef, activeIndex) => {
     });
   }
 
-  useLayoutEffect(() => {
+  useIsomorphicLayoutEffect(() => {
     animate(true);
   }, []);
-  useUpdateLayoutEffect(() => {
+  useIsomorphicUpdateLayoutEffect(() => {
     animate();
   }, [activeIndex]);
   useMutationEffect(() => {

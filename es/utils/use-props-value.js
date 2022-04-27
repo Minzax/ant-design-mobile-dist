@@ -14,12 +14,14 @@ export function usePropsValue(options) {
   }
 
   const setState = useMemoizedFn(v => {
+    const nextValue = typeof v === 'function' ? v(stateRef.current) : v;
+
     if (value === undefined) {
-      stateRef.current = v;
+      stateRef.current = nextValue;
       update();
     }
 
-    onChange === null || onChange === void 0 ? void 0 : onChange(v);
+    onChange === null || onChange === void 0 ? void 0 : onChange(nextValue);
   });
   return [stateRef.current, setState];
 }

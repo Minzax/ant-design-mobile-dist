@@ -4,8 +4,12 @@ import { attachPropertiesToComponent } from '../../utils/attach-properties-to-co
 import { FormItem } from './form-item';
 import { Header } from './header';
 import { useForm } from 'rc-field-form';
+import { FormSubscribe } from './form-subscribe';
+import { FormArray } from './form-array';
 export default attachPropertiesToComponent(Form, {
   Item: FormItem,
+  Subscribe: FormSubscribe,
   Header,
+  Array: FormArray,
   useForm
 });

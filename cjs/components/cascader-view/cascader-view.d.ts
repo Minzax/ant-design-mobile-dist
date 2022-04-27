@@ -9,6 +9,7 @@ export declare type CascaderOption = {
 };
 export declare type CascaderValueExtend = {
     items: (CascaderOption | null)[];
+    isLeaf: boolean;
 };
 export declare type CascaderViewProps = {
     options: CascaderOption[];

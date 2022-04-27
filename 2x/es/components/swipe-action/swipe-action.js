@@ -5,11 +5,13 @@ import { useDrag } from '@use-gesture/react';
 import Button from '../button';
 import { nearest } from '../../utils/nearest';
 import { withNativeProps } from '../../utils/native-props';
+import { withStopPropagation } from '../../utils/with-stop-propagation';
 const defaultProps = {
   rightActions: [],
   leftActions: [],
   closeOnTouchOutside: true,
-  closeOnAction: true
+  closeOnAction: true,
+  stopPropagation: []
 };
 export const SwipeAction = forwardRef((p, ref) => {
   const props = mergeProps(defaultProps, p);
@@ -167,10 +169,10 @@ export const SwipeAction = forwardRef((p, ref) => {
     style: {
       x
     }
-  }, React.createElement("div", {
+  }, withStopPropagation(props.stopPropagation, React.createElement("div", {
     className: 'adm-swipe-action-actions adm-swipe-action-actions-left',
     ref: leftRef
-  }, props.leftActions.map(renderAction)), React.createElement("div", {
+  }, props.leftActions.map(renderAction))), React.createElement("div", {
     className: 'adm-swipe-action-content',
     onClickCapture: e => {
       if (x.goal !== 0) {
@@ -185,10 +187,10 @@ export const SwipeAction = forwardRef((p, ref) => {
     style: {
       pointerEvents: x.to(v => v !== 0 && x.goal !== 0 ? 'none' : 'unset')
     }
-  }, props.children)), React.createElement("div", {
+  }, props.children)), withStopPropagation(props.stopPropagation, React.createElement("div", {
     className: 'adm-swipe-action-actions adm-swipe-action-actions-right',
     ref: rightRef
-  }, props.rightActions.map(renderAction)))));
+  }, props.rightActions.map(renderAction))))));
 });
 const colorRecord = {
   light: 'var(--adm-color-light)',

@@ -21,8 +21,6 @@ var _dialogActionButton = require("./dialog-action-button");
 
 var _image = _interopRequireDefault(require("../image"));
 
-var _space = _interopRequireDefault(require("../space"));
-
 var _renderToContainer = require("../../utils/render-to-container");
 
 var _withStopPropagation = require("../../utils/with-stop-propagation");
@@ -39,14 +37,14 @@ function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "functio
 
 function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
 
-const classPrefix = `adm-dialog`;
 const defaultProps = {
   visible: false,
   actions: [],
   closeOnAction: false,
   closeOnMaskClick: false,
   stopPropagation: ['click'],
-  getContainer: null
+  getContainer: null,
+  disableBodyScroll: true
 };
 
 const Dialog = p => {
@@ -56,9 +54,9 @@ const Dialog = p => {
     scale: props.visible ? 1 : 0.8,
     opacity: props.visible ? 1 : 0,
     config: {
-      mass: 1,
+      mass: 1.2,
       tension: 200,
-      friction: 30,
+      friction: 25,
       clamp: true
     },
     onStart: () => {
@@ -78,51 +76,28 @@ const Dialog = p => {
     }
   });
   const [active, setActive] = (0, _react.useState)(props.visible);
-  const node = (0, _nativeProps.withNativeProps)(props, _react.default.createElement("div", {
-    className: classPrefix,
-    style: {
-      display: active ? 'unset' : 'none'
-    }
-  }, _react.default.createElement(_mask.default, {
-    visible: props.visible,
-    onMaskClick: props.closeOnMaskClick ? props.onClose : undefined,
-    style: props.maskStyle,
-    className: (0, _classnames.default)(`${classPrefix}-mask`, props.maskClassName)
-  }), _react.default.createElement("div", {
-    className: `${classPrefix}-wrap`,
-    style: {
-      pointerEvents: props.visible ? 'unset' : 'none'
-    }
-  }, _react.default.createElement(_web.animated.div, {
-    style: Object.assign({}, style),
-    onClick: e => e.stopPropagation(),
-    className: `${classPrefix}-main`
+
+  const body = _react.default.createElement("div", {
+    className: (0, _classnames.default)(cls('body'), props.image && cls('with-image'), props.bodyClassName),
+    style: props.bodyStyle
   }, !!props.image && _react.default.createElement("div", {
-    className: `${classPrefix}-image-container`
+    className: cls('image-container')
   }, _react.default.createElement(_image.default, {
     src: props.image,
     alt: 'dialog header image',
     width: '100%'
-  })), _react.default.createElement("div", {
-    style: props.bodyStyle,
-    className: (0, _classnames.default)(`${classPrefix}-body`, props.bodyClassName)
-  }, _react.default.createElement(_space.default, {
-    direction: 'vertical',
-    block: true
-  }, !!props.header && _react.default.createElement("div", {
-    className: `${classPrefix}-body-header-wrapper`
-  }, _react.default.createElement("div", {
-    className: `${classPrefix}-body-header`
-  }, props.header)), !!props.title && _react.default.createElement("div", {
-    className: `${classPrefix}-body-title`
-  }, props.title), !!props.content && _react.default.createElement("div", {
-    className: `${classPrefix}-body-content`
-  }, typeof props.content === 'string' ? _react.default.createElement(_autoCenter.default, null, props.content) : props.content))), _react.default.createElement("div", {
-    className: `${classPrefix}-footer`
+  })), !!props.header && _react.default.createElement("div", {
+    className: cls('header')
+  }, _react.default.createElement(_autoCenter.default, null, props.header)), !!props.title && _react.default.createElement("div", {
+    className: cls('title')
+  }, props.title), _react.default.createElement("div", {
+    className: (0, _classnames.default)(cls('content'), !props.content && cls('content-empty'))
+  }, typeof props.content === 'string' ? _react.default.createElement(_autoCenter.default, null, props.content) : props.content), _react.default.createElement("div", {
+    className: cls('footer')
   }, props.actions.map((row, index) => {
     const actions = Array.isArray(row) ? row : [row];
     return _react.default.createElement("div", {
-      className: `${classPrefix}-action-row`,
+      className: cls('action-row'),
       key: index
     }, actions.map((action, index) => _react.default.createElement(_dialogActionButton.DialogActionButton, {
       key: action.key,
@@ -137,8 +112,32 @@ const Dialog = p => {
         }
       })
     })));
-  }))))));
+  })));
+
+  const node = (0, _nativeProps.withNativeProps)(props, _react.default.createElement("div", {
+    className: cls(),
+    style: {
+      display: active ? 'unset' : 'none'
+    }
+  }, _react.default.createElement(_mask.default, {
+    visible: props.visible,
+    onMaskClick: props.closeOnMaskClick ? props.onClose : undefined,
+    style: props.maskStyle,
+    className: (0, _classnames.default)(cls('mask'), props.maskClassName),
+    disableBodyScroll: props.disableBodyScroll
+  }), _react.default.createElement("div", {
+    className: cls('wrap'),
+    style: {
+      pointerEvents: props.visible ? 'unset' : 'none'
+    }
+  }, _react.default.createElement(_web.animated.div, {
+    style: style
+  }, body))));
   return (0, _renderToContainer.renderToContainer)(props.getContainer, (0, _withStopPropagation.withStopPropagation)(props.stopPropagation, node));
 };
 
 exports.Dialog = Dialog;
+
+function cls(name = '') {
+  return 'adm-dialog' + (name && '-') + name;
+}

@@ -21,7 +21,7 @@ var _withDefaultProps = require("../../utils/with-default-props");
 
 var _configProvider = require("../config-provider");
 
-var _useShouldRender = require("../../utils/use-should-render");
+var _shouldRender = require("../../utils/should-render");
 
 var _withStopPropagation = require("../../utils/with-stop-propagation");
 
@@ -89,7 +89,7 @@ const Mask = p => {
       }
     }
   });
-  const shouldRender = (0, _useShouldRender.useShouldRender)(active, props.forceRender, props.destroyOnClose);
+  const shouldRender = (0, _shouldRender.useShouldRender)(active, props.forceRender, props.destroyOnClose);
   const node = (0, _withStopPropagation.withStopPropagation)(props.stopPropagation, (0, _nativeProps.withNativeProps)(props, _react.default.createElement(_web.animated.div, {
     className: classPrefix,
     ref: ref,
@@ -98,7 +98,14 @@ const Mask = p => {
       opacity
     }, props.style), {
       display: active ? 'unset' : 'none'
-    })
+    }),
+    onClick: e => {
+      var _a;
+
+      if (e.target === e.currentTarget) {
+        (_a = props.onMaskClick) === null || _a === void 0 ? void 0 : _a.call(props, e);
+      }
+    }
   }, props.onMaskClick && _react.default.createElement("div", {
     className: `${classPrefix}-aria-button`,
     role: 'button',

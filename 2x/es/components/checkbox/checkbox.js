@@ -7,6 +7,8 @@ import { mergeProps } from '../../utils/with-default-props';
 import { devWarning } from '../../utils/dev-log';
 import { CheckIcon } from './check-icon';
 import { IndeterminateIcon } from './indeterminate-icon';
+import { isDev } from '../../utils/is-dev';
+import { NativeInput } from './native-input';
 const classPrefix = `adm-checkbox`;
 const defaultProps = {
   defaultChecked: false,
@@ -21,23 +23,21 @@ export const Checkbox = p => {
     onChange: props.onChange
   });
   let disabled = props.disabled;
-
-  const usageWarning = () => {
-    if (p.checked !== undefined) {
-      devWarning('Checkbox', 'When used with `Checkbox.Group`, the `checked` prop of `Checkbox` will not work if `value` prop of `Checkbox` is not undefined.');
-    }
-
-    if (p.defaultChecked !== undefined) {
-      devWarning('Checkbox', 'When used with `Checkbox.Group`, the `defaultChecked` prop of `Checkbox` will not work if `value` prop of `Checkbox` is not undefined.');
-    }
-  };
-
   const {
     value
   } = props;
 
   if (groupContext && value !== undefined) {
-    usageWarning();
+    if (isDev) {
+      if (p.checked !== undefined) {
+        devWarning('Checkbox', 'When used within `Checkbox.Group`, the `checked` prop of `Checkbox` will not work.');
+      }
+
+      if (p.defaultChecked !== undefined) {
+        devWarning('Checkbox', 'When used within `Checkbox.Group`, the `defaultChecked` prop of `Checkbox` will not work.');
+      }
+    }
+
     checked = groupContext.value.includes(value);
 
     setChecked = checked => {
@@ -74,16 +74,10 @@ export const Checkbox = p => {
       [`${classPrefix}-disabled`]: disabled,
       [`${classPrefix}-block`]: props.block
     })
-  }, React.createElement("input", {
+  }, React.createElement(NativeInput, {
     type: 'checkbox',
     checked: checked,
-    onChange: e => {
-      setChecked(e.target.checked);
-    },
-    onClick: e => {
-      e.stopPropagation();
-      e.nativeEvent.stopImmediatePropagation();
-    },
+    onChange: setChecked,
     disabled: disabled,
     id: props.id
   }), renderIcon(), props.children && React.createElement("div", {

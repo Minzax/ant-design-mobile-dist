@@ -2,6 +2,7 @@ import React, { forwardRef, useEffect, useImperativeHandle, useRef } from 'react
 import { withNativeProps } from '../../utils/native-props';
 import { usePropsValue } from '../../utils/use-props-value';
 import { mergeProps } from '../../utils/with-default-props';
+import { devError } from '../../utils/dev-log';
 const classPrefix = 'adm-text-area';
 const defaultProps = {
   rows: 2,
@@ -16,7 +17,14 @@ export const TextArea = forwardRef((p, ref) => {
     showCount,
     maxLength
   } = props;
-  const [value, setValue] = usePropsValue(props);
+  const [value, setValue] = usePropsValue(Object.assign(Object.assign({}, props), {
+    value: props.value === null ? '' : props.value
+  }));
+
+  if (props.value === null) {
+    devError('TextArea', '`value` prop on `TextArea` should not be `null`. Consider using an empty string to clear the component.');
+  }
+
   const nativeTextAreaRef = useRef(null);
   useImperativeHandle(ref, () => ({
     clear: () => {
@@ -74,6 +82,7 @@ export const TextArea = forwardRef((p, ref) => {
     className: `${classPrefix}-element`,
     rows: props.rows,
     value: value,
+    placeholder: props.placeholder,
     onChange: e => {
       let v = e.target.value;
 
@@ -102,10 +111,12 @@ export const TextArea = forwardRef((p, ref) => {
       (_a = props.onCompositionEnd) === null || _a === void 0 ? void 0 : _a.call(props, e);
     },
     autoComplete: props.autoComplete,
+    autoFocus: props.autoFocus,
     disabled: props.disabled,
     readOnly: props.readOnly,
     onFocus: props.onFocus,
-    onBlur: props.onBlur
+    onBlur: props.onBlur,
+    onClick: props.onClick
   }), count));
 });
 TextArea.defaultProps = defaultProps;

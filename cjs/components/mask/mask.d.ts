@@ -14,5 +14,6 @@ export declare type MaskProps = {
     afterShow?: () => void;
     afterClose?: () => void;
     stopPropagation?: PropagationEvent[];
+    children?: React.ReactNode;
 } & NativeProps<'--z-index'>;
 export declare const Mask: React.FC<MaskProps>;

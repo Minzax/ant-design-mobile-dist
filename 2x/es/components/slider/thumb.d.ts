@@ -1,4 +1,4 @@
-import { FC, RefObject } from 'react';
+import React, { FC, RefObject } from 'react';
 declare type ThumbProps = {
     value: number;
     min: number;
@@ -6,6 +6,7 @@ declare type ThumbProps = {
     disabled: boolean;
     onDrag: (value: number, first: boolean, last: boolean) => void;
     trackRef: RefObject<HTMLDivElement>;
+    icon?: React.ReactNode;
 };
 declare const Thumb: FC<ThumbProps>;
 export default Thumb;

@@ -1,4 +1,4 @@
-import React, { forwardRef, useEffect, useImperativeHandle, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import React, { forwardRef, useEffect, useImperativeHandle, useMemo, useRef, useState } from 'react';
 import { withNativeProps } from '../../utils/native-props';
 import { mergeProps } from '../../utils/with-default-props';
 import classNames from 'classnames';
@@ -10,7 +10,7 @@ import PageIndicator from '../page-indicator';
 import { staged } from 'staged-components';
 import { useRefState } from '../../utils/use-ref-state';
 import { bound } from '../../utils/bound';
-import { useUpdateEffect } from 'ahooks';
+import { useIsomorphicLayoutEffect, useUpdateEffect } from 'ahooks';
 const defaultProps = {
   defaultIndex: 0,
   allowTouchMove: true,
@@ -101,6 +101,7 @@ export const Swiper = forwardRef(staged((p, ref) => {
       },
       onRest: () => {
         if (draggingRef.current) return;
+        if (!loop) return;
         const rawX = position.get();
         const totalWidth = 100 * count;
         const standardPosition = modulus(rawX, totalWidth);
@@ -184,7 +185,7 @@ export const Swiper = forwardRef(staged((p, ref) => {
       swipeNext,
       swipePrev
     }));
-    useLayoutEffect(() => {
+    useIsomorphicLayoutEffect(() => {
       const maxIndex = validChildren.length - 1;
 
       if (current > maxIndex) {
@@ -230,7 +231,7 @@ export const Swiper = forwardRef(staged((p, ref) => {
           style: {
             [isVertical ? 'y' : 'x']: position.to(position => `${-position}%`)
           }
-        }, React.Children.map(validChildren, (child, index) => {
+        }, React.Children.map(validChildren, child => {
           return React.createElement("div", {
             className: 'adm-swiper-slide'
           }, child);

@@ -1,4 +1,5 @@
 import { FC, ReactNode } from 'react';
+import React from 'react';
 import { NativeProps } from '../../utils/native-props';
 export declare type SideBarItemProps = {
     title?: ReactNode;
@@ -10,5 +11,6 @@ export declare type SideBarProps = {
     activeKey?: string | null;
     defaultActiveKey?: string | null;
     onChange?: (key: string) => void;
+    children?: React.ReactNode;
 } & NativeProps<'--width' | '--height' | '--item-border-radius' | '--background-color'>;
 export declare const SideBar: FC<SideBarProps>;

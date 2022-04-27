@@ -15,7 +15,7 @@
   max-width: 500px;
   transform: translate(-50%, -50%);
 }
-.adm-dialog-main {
+.adm-dialog-body {
   width: 100%;
   max-height: 70vh;
   font-size: 14px;
@@ -25,26 +25,33 @@
   display: flex;
   flex-direction: column;
 }
-.adm-dialog-main > * {
+.adm-dialog-body > * {
   flex: none;
 }
-.adm-dialog-main > .adm-dialog-image-container {
+.adm-dialog-body > .adm-dialog-content {
   flex: auto;
 }
-.adm-dialog-main .adm-dialog-body {
-  padding: 20px 12px;
+.adm-dialog-body:not(.adm-dialog-with-image) {
+  padding-top: 20px;
 }
-.adm-dialog-main .adm-dialog-body-header-wrapper {
-  display: flex;
-  justify-content: center;
+.adm-dialog-body .adm-dialog-image-container {
+  margin-bottom: 12px;
+  max-height: 40vh;
 }
-.adm-dialog-main .adm-dialog-body-title {
+.adm-dialog-body .adm-dialog-header {
+  margin-bottom: 8px;
+  padding: 0 12px;
+}
+.adm-dialog-body .adm-dialog-title {
+  margin-bottom: 8px;
+  padding: 0 12px;
   font-weight: bold;
   font-size: 18px;
   line-height: 25px;
   text-align: center;
 }
-.adm-dialog-main .adm-dialog-body-content {
+.adm-dialog-body .adm-dialog-content {
+  padding: 0 12px 20px;
   max-height: 70vh;
   overflow-x: hidden;
   overflow-y: auto;
@@ -52,28 +59,32 @@
   line-height: 1.4;
   color: #333;
 }
-.adm-dialog-main .adm-dialog-footer {
+.adm-dialog-body .adm-dialog-content-empty {
+  padding: 0;
+  height: 12px;
+}
+.adm-dialog-body .adm-dialog-footer {
   user-select: none;
 }
-.adm-dialog-main .adm-dialog-footer .adm-dialog-action-row {
+.adm-dialog-body .adm-dialog-footer .adm-dialog-action-row {
   display: flex;
   align-items: stretch;
   border-top: 0.5px solid var(--adm-border-color);
 }
-.adm-dialog-main .adm-dialog-footer .adm-dialog-action-row > * {
+.adm-dialog-body .adm-dialog-footer .adm-dialog-action-row > * {
   flex: 1;
 }
-.adm-dialog-main .adm-dialog-footer .adm-dialog-action-row > .adm-dialog-button {
+.adm-dialog-body .adm-dialog-footer .adm-dialog-action-row > .adm-dialog-button {
   padding: 10px;
   font-size: 18px;
   line-height: 25px;
   border-radius: 0;
   border-right: solid 0.5px var(--adm-border-color);
 }
-.adm-dialog-main .adm-dialog-footer .adm-dialog-action-row > .adm-dialog-button-bold {
+.adm-dialog-body .adm-dialog-footer .adm-dialog-action-row > .adm-dialog-button-bold {
   font-weight: bold;
 }
-.adm-dialog-main .adm-dialog-footer .adm-dialog-action-row > .adm-dialog-button:last-child {
+.adm-dialog-body .adm-dialog-footer .adm-dialog-action-row > .adm-dialog-button:last-child {
   border-right: none;
 }
 .adm-dialog-image-container {

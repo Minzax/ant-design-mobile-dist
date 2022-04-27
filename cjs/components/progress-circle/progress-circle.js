@@ -17,8 +17,7 @@ const classPrefix = `adm-progress-circle`;
 
 const ProgressCircle = p => {
   const props = (0, _withDefaultProps.mergeProps)({
-    percent: 0,
-    strokeColor: '#1677FF'
+    percent: 0
   }, p);
   const style = {
     '--percent': props.percent.toString()

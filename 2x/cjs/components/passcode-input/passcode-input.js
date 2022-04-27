@@ -46,7 +46,7 @@ const PasscodeInput = (0, _react.forwardRef)((p, ref) => {
     if (value.length >= cellLength) {
       (_a = props.onFill) === null || _a === void 0 ? void 0 : _a.call(props, value);
     }
-  }, [props.onFill, value, cellLength]);
+  }, [value, cellLength]);
 
   const onFocus = () => {
     var _a, _b;

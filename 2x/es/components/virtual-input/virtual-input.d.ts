@@ -18,7 +18,7 @@ export declare const VirtualInput: React.ForwardRefExoticComponent<{
     onFocus?: (() => void) | undefined;
     onBlur?: (() => void) | undefined;
     onClick?: ((e: React.MouseEvent<HTMLDivElement>) => void) | undefined;
-    keyboard?: React.ReactElement<NumberKeyboardProps, string | ((props: any) => React.ReactElement<any, any> | null) | (new (props: any) => React.Component<any, any, any>)> | undefined;
+    keyboard?: React.ReactElement<NumberKeyboardProps, string | React.JSXElementConstructor<any>> | undefined;
     clearable?: boolean | undefined;
     onClear?: (() => void) | undefined;
-} & Pick<InputProps, "value" | "disabled" | "onChange" | "placeholder"> & NativeProps<"--color" | "--font-size" | "--placeholder-color" | "--text-align" | "--disabled-color" | "--caret-width" | "--caret-color"> & React.RefAttributes<VirtualInputRef>>;
+} & Pick<InputProps, "value" | "onChange" | "disabled" | "placeholder"> & NativeProps<"--color" | "--font-size" | "--placeholder-color" | "--text-align" | "--disabled-color" | "--caret-width" | "--caret-color"> & React.RefAttributes<VirtualInputRef>>;

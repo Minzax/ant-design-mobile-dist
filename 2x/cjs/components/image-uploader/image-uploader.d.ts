@@ -1,5 +1,6 @@
-import { FC, InputHTMLAttributes } from 'react';
+import React, { FC, InputHTMLAttributes } from 'react';
 import { NativeProps } from '../../utils/native-props';
+import type { ImageProps } from '../image';
 export declare type TaskStatus = 'pending' | 'fail';
 export interface ImageUploadItem {
     key?: string | number;
@@ -19,10 +20,13 @@ export declare type ImageUploaderProps = {
     showUpload?: boolean;
     deletable?: boolean;
     capture?: InputHTMLAttributes<unknown>['capture'];
-    onPreview?: (index: number) => void;
-    beforeUpload?: (file: File[]) => Promise<File[]> | File[];
+    onPreview?: (index: number, item: ImageUploadItem) => void;
+    beforeUpload?: (file: File, files: File[]) => Promise<File | null> | File | null;
     upload: (file: File) => Promise<ImageUploadItem>;
     onDelete?: (item: ImageUploadItem) => boolean | Promise<boolean> | void;
     preview?: boolean;
+    showFailed?: boolean;
+    imageFit?: ImageProps['fit'];
+    children?: React.ReactNode;
 } & NativeProps<'--cell-size'>;
 export declare const ImageUploader: FC<ImageUploaderProps>;

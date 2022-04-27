@@ -29,4 +29,4 @@ export declare const SearchBar: React.ForwardRefExoticComponent<Pick<InputProps,
     onSearch?: ((val: string) => void) | undefined;
     onChange?: ((val: string) => void) | undefined;
     onCancel?: (() => void) | undefined;
-} & NativeProps<"--border-radius" | "--height" | "--padding-left" | "--placeholder-color" | "--background"> & React.RefAttributes<InputRef>>;
+} & NativeProps<"--border-radius" | "--height" | "--padding-left" | "--background" | "--placeholder-color"> & React.RefAttributes<InputRef>>;

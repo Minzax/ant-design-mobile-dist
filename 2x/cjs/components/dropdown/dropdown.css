@@ -4,10 +4,11 @@
 
 .adm-dropdown .adm-dropdown-nav {
   display: flex;
+  border-bottom: 2px solid transparent;
 }
 
 .adm-dropdown-open .adm-dropdown-nav {
-  border-bottom: 2px solid var(--adm-border-color);
+  border-bottom-color: var(--adm-border-color);
 }
 
 .adm-dropdown-item {
@@ -50,10 +51,6 @@
 }
 
 .adm-dropdown-item-highlight {
-  color: var(--adm-color-primary);
-}
-
-.adm-dropdown-item-active {
   color: var(--adm-color-primary);
 }
 

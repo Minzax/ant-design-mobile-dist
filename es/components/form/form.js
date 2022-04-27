@@ -1,16 +1,17 @@
 import { __rest } from "tslib";
-import React, { forwardRef } from 'react';
+import React, { forwardRef, useMemo } from 'react';
 import classNames from 'classnames';
 import List from '../list';
 import RcForm from 'rc-field-form';
-import { FormContext } from './context';
+import { defaultFormContext, FormContext } from './context';
 import { mergeProps } from '../../utils/with-default-props';
 import { Header } from './header';
+import { useConfig } from '../config-provider';
+import merge from 'lodash/merge';
+import { FormArray } from './form-array';
+import { traverseReactNode } from '../../utils/traverse-react-node';
 const classPrefix = 'adm-form';
-const defaultProps = {
-  hasFeedback: true,
-  layout: 'vertical'
-};
+const defaultProps = defaultFormContext;
 export const Form = forwardRef((p, ref) => {
   const props = mergeProps(defaultProps, p);
 
@@ -21,10 +22,15 @@ export const Form = forwardRef((p, ref) => {
     children,
     layout,
     footer,
-    mode
+    mode,
+    requiredMarkStyle
   } = props,
-        formProps = __rest(props, ["className", "style", "hasFeedback", "children", "layout", "footer", "mode"]);
+        formProps = __rest(props, ["className", "style", "hasFeedback", "children", "layout", "footer", "mode", "requiredMarkStyle"]);
 
+  const {
+    locale
+  } = useConfig();
+  const validateMessages = useMemo(() => merge({}, locale.Form.defaultValidateMessages, formProps.validateMessages), [locale.Form.defaultValidateMessages, formProps.validateMessages]);
   const lists = [];
   let currentHeader = null;
   let items = [];
@@ -41,23 +47,36 @@ export const Form = forwardRef((p, ref) => {
     items = [];
   }
 
-  React.Children.forEach(props.children, (child, index) => {
-    if (React.isValidElement(child) && child.type === Header) {
-      collect();
-      currentHeader = child.props.children;
-    } else {
-      items.push(child);
+  traverseReactNode(props.children, child => {
+    if (React.isValidElement(child)) {
+      if (child.type === Header) {
+        collect();
+        currentHeader = child.props.children;
+        return;
+      }
+
+      if (child.type === FormArray) {
+        collect();
+        lists.push(child);
+        return;
+      }
     }
+
+    items.push(child);
   });
   collect();
   return React.createElement(RcForm, Object.assign({
-    className: classNames(classPrefix, `${classPrefix}-${layout}`, className),
+    className: classNames(classPrefix, className),
     style: style,
     ref: ref
-  }, formProps), React.createElement(FormContext.Provider, {
+  }, formProps, {
+    validateMessages: validateMessages
+  }), React.createElement(FormContext.Provider, {
     value: {
-      hasFeedback: hasFeedback,
-      layout
+      name: formProps.name,
+      hasFeedback,
+      layout,
+      requiredMarkStyle
     }
   }, lists), footer && React.createElement("div", {
     className: `${classPrefix}-footer`

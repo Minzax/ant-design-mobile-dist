@@ -59,6 +59,16 @@ const multiDefaultProps = Object.assign(Object.assign({}, defaultProps), {
 });
 const MultiImageViewer = (0, _react.forwardRef)((p, ref) => {
   const props = (0, _withDefaultProps.mergeProps)(multiDefaultProps, p);
+  const [defaultIndex, setDefaultIndex] = (0, _react.useState)(props.defaultIndex);
+  const slidesRef = (0, _react.useRef)(null);
+  (0, _react.useImperativeHandle)(ref, () => ({
+    swipeTo: (index, immediate) => {
+      var _a;
+
+      setDefaultIndex(index);
+      (_a = slidesRef.current) === null || _a === void 0 ? void 0 : _a.swipeTo(index, immediate);
+    }
+  }));
 
   const node = _react.default.createElement(_mask.default, {
     visible: props.visible,
@@ -68,8 +78,8 @@ const MultiImageViewer = (0, _react.forwardRef)((p, ref) => {
   }, _react.default.createElement("div", {
     className: `${classPrefix}-content`
   }, props.images && _react.default.createElement(_slides.Slides, {
-    ref: ref,
-    defaultIndex: props.defaultIndex,
+    ref: slidesRef,
+    defaultIndex: defaultIndex,
     onIndexChange: props.onIndexChange,
     images: props.images,
     onTap: () => {

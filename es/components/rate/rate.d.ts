@@ -9,5 +9,5 @@ export declare type RateProps = {
     readOnly?: boolean;
     value?: number;
     onChange?: (value: number) => void;
-} & NativeProps<'--star-size' | '--active-color'>;
+} & NativeProps<'--star-size' | '--active-color' | '--inactive-color'>;
 export declare const Rate: FC<RateProps>;

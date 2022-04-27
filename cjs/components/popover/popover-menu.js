@@ -19,7 +19,8 @@ function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && 
 
 const classPrefix = `adm-popover-menu`;
 const PopoverMenu = (0, _react.forwardRef)((props, ref) => {
-  const innerRef = (0, _react.useRef)(null);
+  const innerRef = (0, _react.useRef)(null); // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+
   (0, _react.useImperativeHandle)(ref, () => innerRef.current, []);
   const onClick = (0, _react.useCallback)(e => {
     var _a;

@@ -49,7 +49,8 @@ const Slider = p => {
     disabled,
     marks,
     ticks,
-    step
+    step,
+    icon
   } = props;
 
   function sortValue(val) {
@@ -149,6 +150,7 @@ const Slider = p => {
 
   const renderThumb = index => {
     return _react.default.createElement(_thumb.default, {
+      icon: icon,
       key: index,
       value: sliderValue[index],
       min: min,

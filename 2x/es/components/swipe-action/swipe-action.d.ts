@@ -1,5 +1,6 @@
 import React, { ReactNode } from 'react';
 import { NativeProps } from '../../utils/native-props';
+import { PropagationEvent } from '../../utils/with-stop-propagation';
 export declare type SwipeActionRef = {
     close: () => void;
     show: (side?: 'left' | 'right') => void;
@@ -18,6 +19,7 @@ export declare type SwipeActionProps = {
     closeOnTouchOutside?: boolean;
     closeOnAction?: boolean;
     children: ReactNode;
+    stopPropagation?: PropagationEvent[];
 } & NativeProps<'--background'>;
 export declare const SwipeAction: React.ForwardRefExoticComponent<{
     rightActions?: Action[] | undefined;
@@ -26,5 +28,6 @@ export declare const SwipeAction: React.ForwardRefExoticComponent<{
     closeOnTouchOutside?: boolean | undefined;
     closeOnAction?: boolean | undefined;
     children: ReactNode;
+    stopPropagation?: "click"[] | undefined;
 } & NativeProps<"--background"> & React.RefAttributes<SwipeActionRef>>;
 export {};

@@ -17,13 +17,14 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 const classPrefix = `adm-divider`;
 const defaultProps = {
-  contentPosition: 'center'
+  contentPosition: 'center',
+  direction: 'horizontal'
 };
 
 const Divider = p => {
   const props = (0, _withDefaultProps.mergeProps)(defaultProps, p);
   return (0, _nativeProps.withNativeProps)(props, _react.default.createElement("div", {
-    className: (0, _classnames.default)(classPrefix, `${classPrefix}-${props.contentPosition}`)
+    className: (0, _classnames.default)(classPrefix, `${classPrefix}-${props.direction}`, `${classPrefix}-${props.contentPosition}`)
   }, props.children && _react.default.createElement("div", {
     className: `${classPrefix}-content`
   }, props.children)));

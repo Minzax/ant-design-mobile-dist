@@ -1,4 +1,4 @@
-import { FC, ReactNode } from 'react';
+import React, { FC, ReactNode } from 'react';
 import { NativeProps } from '../../utils/native-props';
 export declare type NavBarProps = {
     back?: string | null;
@@ -6,5 +6,6 @@ export declare type NavBarProps = {
     left?: ReactNode;
     right?: ReactNode;
     onBack?: () => void;
+    children?: React.ReactNode;
 } & NativeProps<'--height' | '--border-bottom'>;
 export declare const NavBar: FC<NavBarProps>;

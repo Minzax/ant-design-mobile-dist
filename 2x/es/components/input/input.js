@@ -1,9 +1,11 @@
-import React, { useState, forwardRef, useImperativeHandle, useRef, useLayoutEffect } from 'react';
+import React, { useState, forwardRef, useImperativeHandle, useRef } from 'react';
 import { usePropsValue } from '../../utils/use-props-value';
 import { CloseCircleFill } from 'antd-mobile-icons';
 import { withNativeProps } from '../../utils/native-props';
 import { mergeProps } from '../../utils/with-default-props';
 import classNames from 'classnames';
+import { useIsomorphicLayoutEffect } from 'ahooks';
+import { bound } from '../../utils/bound';
 const classPrefix = `adm-input`;
 const defaultProps = {
   defaultValue: ''
@@ -26,7 +28,12 @@ export const Input = forwardRef((p, ref) => {
       var _a;
 
       (_a = nativeInputRef.current) === null || _a === void 0 ? void 0 : _a.blur();
+    },
+
+    get nativeElement() {
+      return nativeInputRef.current;
     }
+
   }));
 
   const handleKeydown = e => {
@@ -39,7 +46,7 @@ export const Input = forwardRef((p, ref) => {
     (_a = props.onKeyDown) === null || _a === void 0 ? void 0 : _a.call(props, e);
   };
 
-  useLayoutEffect(() => {
+  useIsomorphicLayoutEffect(() => {
     var _a;
 
     if (!props.enterKeyHint) return;
@@ -50,6 +57,19 @@ export const Input = forwardRef((p, ref) => {
       (_a = nativeInputRef.current) === null || _a === void 0 ? void 0 : _a.removeAttribute('enterkeyhint');
     };
   }, [props.enterKeyHint]);
+
+  function checkValue() {
+    let nextValue = value;
+
+    if (props.type === 'number') {
+      nextValue = nextValue && bound(parseFloat(nextValue), props.min, props.max).toString();
+    }
+
+    if (nextValue !== value) {
+      setValue(nextValue);
+    }
+  }
+
   return withNativeProps(props, React.createElement("div", {
     className: classNames(`${classPrefix}`, props.disabled && `${classPrefix}-disabled`)
   }, React.createElement("input", {
@@ -69,10 +89,10 @@ export const Input = forwardRef((p, ref) => {
       var _a;
 
       setHasFocus(false);
+      checkValue();
       (_a = props.onBlur) === null || _a === void 0 ? void 0 : _a.call(props, e);
     },
     id: props.id,
-    onClick: props.onClick,
     placeholder: props.placeholder,
     disabled: props.disabled,
     readOnly: props.readOnly,
@@ -81,6 +101,7 @@ export const Input = forwardRef((p, ref) => {
     max: props.max,
     min: props.min,
     autoComplete: props.autoComplete,
+    autoFocus: props.autoFocus,
     pattern: props.pattern,
     inputMode: props.inputMode,
     type: props.type,
@@ -89,8 +110,9 @@ export const Input = forwardRef((p, ref) => {
     onKeyDown: handleKeydown,
     onKeyUp: props.onKeyUp,
     onCompositionStart: props.onCompositionStart,
-    onCompositionEnd: props.onCompositionEnd
-  }), props.clearable && !!value && React.createElement("div", {
+    onCompositionEnd: props.onCompositionEnd,
+    onClick: props.onClick
+  }), props.clearable && !!value && !props.readOnly && hasFocus && React.createElement("div", {
     className: `${classPrefix}-clear`,
     onMouseDown: e => {
       e.preventDefault();

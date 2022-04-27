@@ -30,6 +30,6 @@ export declare const PasscodeInput: React.ForwardRefExoticComponent<{
     seperated?: boolean | undefined;
     onBlur?: (() => void) | undefined;
     onFocus?: (() => void) | undefined;
-    keyboard?: React.ReactElement<NumberKeyboardProps, string | ((props: any) => React.ReactElement<any, any> | null) | (new (props: any) => React.Component<any, any, any>)> | undefined;
+    keyboard?: React.ReactElement<NumberKeyboardProps, string | React.JSXElementConstructor<any>> | undefined;
     onFill?: ((val: string) => void) | undefined;
 } & NativeProps<"--border-radius" | "--border-color" | "--cell-size" | "--dot-size" | "--cell-gap"> & React.RefAttributes<PasscodeInputRef>>;

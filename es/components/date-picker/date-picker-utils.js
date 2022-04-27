@@ -1,10 +1,20 @@
 import * as dateUtils from './date-picker-date-utils';
 import * as weekUtils from './date-picker-week-utils';
+const precisionLengthRecord = {
+  year: 1,
+  month: 2,
+  day: 3,
+  hour: 4,
+  minute: 5,
+  second: 6
+};
 export const convertDateToStringArray = (date, precision) => {
   if (precision.includes('week')) {
     return weekUtils.convertDateToStringArray(date);
   } else {
-    return dateUtils.convertDateToStringArray(date);
+    const datePrecision = precision;
+    const stringArray = dateUtils.convertDateToStringArray(date);
+    return stringArray.slice(0, precisionLengthRecord[datePrecision]);
   }
 };
 export const convertStringArrayToDate = (value, precision) => {

@@ -1,4 +1,4 @@
-import { FC, ReactNode } from 'react';
+import React, { FC, ReactNode } from 'react';
 export declare type PullStatus = 'pulling' | 'canRelease' | 'refreshing' | 'complete';
 export declare type PullToRefreshProps = {
     onRefresh?: () => Promise<any>;
@@ -11,6 +11,7 @@ export declare type PullToRefreshProps = {
     threshold?: number;
     disabled?: boolean;
     renderText?: (status: PullStatus) => ReactNode;
+    children?: React.ReactNode;
 };
 export declare const defaultProps: {
     pullingText: string;

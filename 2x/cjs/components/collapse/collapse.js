@@ -21,7 +21,11 @@ var _usePropsValue = require("../../utils/use-props-value");
 
 var _ahooks = require("ahooks");
 
-var _useShouldRender = require("../../utils/use-should-render");
+var _shouldRender = require("../../utils/should-render");
+
+var _useIsomorphicUpdateLayoutEffect = require("../../utils/use-isomorphic-update-layout-effect");
+
+var _traverseReactNode = require("../../utils/traverse-react-node");
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -42,12 +46,19 @@ const CollapsePanelContent = props => {
     visible
   } = props;
   const innerRef = (0, _react.useRef)(null);
-  const shouldRender = (0, _useShouldRender.useShouldRender)(visible, props.forceRender, props.destroyOnClose);
+  const shouldRender = (0, _shouldRender.useShouldRender)(visible, props.forceRender, props.destroyOnClose);
   const [{
     height
   }, api] = (0, _web.useSpring)(() => ({
     from: {
       height: 0
+    },
+    config: {
+      precision: 0.01,
+      mass: 1,
+      tension: 200,
+      friction: 25,
+      clamp: true
     }
   }));
   (0, _ahooks.useMount)(() => {
@@ -59,7 +70,7 @@ const CollapsePanelContent = props => {
       immediate: true
     });
   });
-  (0, _ahooks.useUpdateLayoutEffect)(() => {
+  (0, _useIsomorphicUpdateLayoutEffect.useIsomorphicUpdateLayoutEffect)(() => {
     const inner = innerRef.current;
     if (!inner) return;
 
@@ -98,14 +109,12 @@ const Collapse = props => {
   var _a;
 
   const panels = [];
-
-  _react.default.Children.forEach(props.children, child => {
+  (0, _traverseReactNode.traverseReactNode)(props.children, child => {
     if (!_react.default.isValidElement(child)) return;
     const key = child.key;
     if (typeof key !== 'string') return;
     panels.push(child);
   });
-
   const [activeKey, setActiveKey] = (0, _usePropsValue.usePropsValue)(props.accordion ? {
     value: props.activeKey === undefined ? undefined : props.activeKey === null ? [] : [props.activeKey],
     defaultValue: props.defaultActiveKey === undefined || props.defaultActiveKey === null ? [] : [props.defaultActiveKey],

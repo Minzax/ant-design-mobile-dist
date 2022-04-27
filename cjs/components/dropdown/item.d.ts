@@ -9,10 +9,11 @@ export declare type DropdownItemProps = {
     destroyOnClose?: boolean;
     onClick?: (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => void;
     arrow?: React.ReactNode;
+    children?: React.ReactNode;
 } & NativeProps;
 declare const Item: FC<DropdownItemProps>;
 export default Item;
 declare type DropdownItemChildrenWrapProps = {
     onClick?: () => void;
-} & Pick<DropdownItemProps, 'active' | 'forceRender' | 'destroyOnClose'>;
+} & Pick<DropdownItemProps, 'active' | 'forceRender' | 'destroyOnClose' | 'children'>;
 export declare const ItemChildrenWrap: FC<DropdownItemChildrenWrapProps>;

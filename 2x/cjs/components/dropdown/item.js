@@ -11,7 +11,7 @@ var _react = _interopRequireDefault(require("react"));
 
 var _nativeProps = require("../../utils/native-props");
 
-var _useShouldRender = require("../../utils/use-should-render");
+var _shouldRender = require("../../utils/should-render");
 
 var _antdMobileIcons = require("antd-mobile-icons");
 
@@ -20,9 +20,11 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 const classPrefix = `adm-dropdown-item`;
 
 const Item = props => {
+  var _a;
+
   const cls = (0, _classnames.default)(classPrefix, {
     [`${classPrefix}-active`]: props.active,
-    [`${classPrefix}-highlight`]: props.highlight
+    [`${classPrefix}-highlight`]: (_a = props.highlight) !== null && _a !== void 0 ? _a : props.active
   });
   return (0, _nativeProps.withNativeProps)(props, _react.default.createElement("div", {
     className: cls,
@@ -45,7 +47,7 @@ const ItemChildrenWrap = props => {
   const {
     active = false
   } = props;
-  const shouldRender = (0, _useShouldRender.useShouldRender)(active, props.forceRender, props.destroyOnClose);
+  const shouldRender = (0, _shouldRender.useShouldRender)(active, props.forceRender, props.destroyOnClose);
   const cls = (0, _classnames.default)(`${classPrefix}-content`, {
     [`${classPrefix}-content-hidden`]: !active
   });

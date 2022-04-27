@@ -14,7 +14,8 @@ const PreviewItem = props => {
     url,
     file,
     deletable,
-    onDelete
+    onDelete,
+    imageFit
   } = props;
   const src = useMemo(() => {
     if (url) {
@@ -54,7 +55,7 @@ const PreviewItem = props => {
   }, React.createElement(Image, {
     className: `${classPrefix}-cell-image`,
     src: src,
-    fit: 'cover',
+    fit: imageFit,
     onClick: props.onClick
   }), renderLoading(), renderDelete());
 };

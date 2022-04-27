@@ -28,7 +28,8 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 const classPrefix = `adm-selector`;
 const defaultProps = {
   multiple: false,
-  defaultValue: []
+  defaultValue: [],
+  showCheckMark: true
 };
 
 const Selector = p => {
@@ -74,7 +75,7 @@ const Selector = p => {
       }
     }, option.label, option.description && _react.default.createElement("div", {
       className: `${classPrefix}-item-description`
-    }, option.description), active && _react.default.createElement("div", {
+    }, option.description), active && props.showCheckMark && _react.default.createElement("div", {
       className: `${classPrefix}-check-mark-wrapper`
     }, _react.default.createElement(_checkMark.CheckMark, null)));
   });

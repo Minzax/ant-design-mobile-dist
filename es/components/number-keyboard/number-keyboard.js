@@ -134,9 +134,6 @@ export const NumberKeyboard = p => {
           onBackspacePressEnd();
         }
       },
-      onMouseUp: e => {
-        onKeyPress(e, key);
-      },
       title: key,
       role: 'button'
     }, key === 'BACKSPACE' ? React.createElement(TextDeletionOutline, null) : key);
@@ -173,13 +170,11 @@ export const NumberKeyboard = p => {
       onKeyPress(e, 'BACKSPACE');
       onBackspacePressEnd();
     },
-    onMouseUp: e => onKeyPress(e, 'BACKSPACE'),
     title: 'BACKSPACE',
     role: 'button'
   }, React.createElement(TextDeletionOutline, null)), React.createElement("div", {
     className: `${classPrefix}-key extra-key ok-key`,
     onTouchEnd: e => onKeyPress(e, 'OK'),
-    onMouseUp: e => onKeyPress(e, 'OK'),
     role: 'button'
   }, confirmText))), props.safeArea && React.createElement("div", {
     className: `${classPrefix}-footer`

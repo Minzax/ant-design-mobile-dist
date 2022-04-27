@@ -1,5 +1,6 @@
 import React, { useRef } from 'react';
 import { useDrag } from '@use-gesture/react';
+import { ThumbIcon } from './thumb-icon';
 const classPrefix = `adm-slider`;
 
 const Thumb = props => {
@@ -8,7 +9,8 @@ const Thumb = props => {
     min,
     max,
     disabled,
-    onDrag
+    onDrag,
+    icon
   } = props;
   const prevValue = useRef(value);
 
@@ -44,7 +46,9 @@ const Thumb = props => {
     style: currentPosition()
   }, bind()), React.createElement("div", {
     className: `${classPrefix}-thumb`
-  }));
+  }, icon ? icon : React.createElement(ThumbIcon, {
+    className: `${classPrefix}-thumb-icon`
+  })));
 };
 
 export default Thumb;

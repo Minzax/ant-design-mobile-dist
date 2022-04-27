@@ -6,6 +6,8 @@ import { usePropsValue } from '../../utils/use-props-value';
 import { useResizeEffect } from '../../utils/use-resize-effect';
 import { useTabListScroll } from '../../utils/use-tab-list-scroll';
 import ScrollMask from '../scroll-mask';
+import { ShouldRender } from '../../utils/should-render';
+import { traverseReactNode } from '../../utils/traverse-react-node';
 const classPrefix = `adm-capsule-tabs`;
 export const CapsuleTab = () => {
   return null;
@@ -18,7 +20,7 @@ export const CapsuleTabs = props => {
   const keyToIndexRecord = {};
   let firstActiveKey = null;
   const panes = [];
-  React.Children.forEach(props.children, (child, index) => {
+  traverseReactNode(props.children, (child, index) => {
     if (!React.isValidElement(child)) return;
     const key = child.key;
     if (typeof key !== 'string') return;
@@ -83,22 +85,17 @@ export const CapsuleTabs = props => {
       return null;
     }
 
-    if (pane.key === activeKey) {
-      return React.createElement("div", {
-        key: pane.key,
-        className: `${classPrefix}-content`
-      }, pane.props.children);
-    }
-
-    if (pane.props.forceRender) {
-      return React.createElement("div", {
-        key: pane.key,
-        style: {
-          display: 'none'
-        }
-      }, pane.props.children);
-    }
-
-    return null;
+    const active = pane.key === activeKey;
+    return React.createElement(ShouldRender, {
+      key: pane.key,
+      active: active,
+      forceRender: pane.props.forceRender,
+      destroyOnClose: pane.props.destroyOnClose
+    }, React.createElement("div", {
+      className: `${classPrefix}-content`,
+      style: {
+        display: active ? 'block' : 'none'
+      }
+    }, pane.props.children));
   })));
 };

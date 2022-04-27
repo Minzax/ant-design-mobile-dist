@@ -6,7 +6,7 @@ Object.defineProperty(exports, "__esModule", {
 exports.ActionSheet = void 0;
 exports.showActionSheet = showActionSheet;
 
-var _react = _interopRequireWildcard(require("react"));
+var _react = _interopRequireDefault(require("react"));
 
 var _nativeProps = require("../../utils/native-props");
 
@@ -18,15 +18,11 @@ var _popup = _interopRequireDefault(require("../popup"));
 
 var _button = _interopRequireDefault(require("../button"));
 
-var _renderToBody = require("../../utils/render-to-body");
-
 var _safeArea = _interopRequireDefault(require("../safe-area"));
 
+var _renderImperatively = require("../../utils/render-imperatively");
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function (nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
-
-function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
 
 const classPrefix = `adm-action-sheet`;
 const defaultProps = {
@@ -52,7 +48,8 @@ const ActionSheet = p => {
       }
     },
     afterClose: props.afterClose,
-    className: `${classPrefix}-popup`,
+    className: (0, _classnames.default)(`${classPrefix}-popup`, props.popupClassName),
+    style: props.popupStyle,
     getContainer: props.getContainer
   }, (0, _nativeProps.withNativeProps)(props, _react.default.createElement("div", {
     className: classPrefix
@@ -109,42 +106,5 @@ const ActionSheet = p => {
 exports.ActionSheet = ActionSheet;
 
 function showActionSheet(props) {
-  const Wrapper = (0, _react.forwardRef)((_, ref) => {
-    const [visible, setVisible] = (0, _react.useState)(false);
-    (0, _react.useEffect)(() => {
-      setVisible(true);
-    }, []);
-
-    function handleClose() {
-      var _a;
-
-      (_a = props.onClose) === null || _a === void 0 ? void 0 : _a.call(props);
-      setVisible(false);
-    }
-
-    (0, _react.useImperativeHandle)(ref, () => ({
-      close: handleClose
-    }));
-    return _react.default.createElement(ActionSheet, Object.assign({}, props, {
-      visible: visible,
-      onClose: handleClose,
-      afterClose: () => {
-        var _a;
-
-        (_a = props.afterClose) === null || _a === void 0 ? void 0 : _a.call(props);
-        unmount();
-      }
-    }));
-  });
-  const ref = (0, _react.createRef)();
-  const unmount = (0, _renderToBody.renderToBody)(_react.default.createElement(Wrapper, {
-    ref: ref
-  }));
-  return {
-    close: () => {
-      var _a;
-
-      (_a = ref.current) === null || _a === void 0 ? void 0 : _a.close();
-    }
-  };
+  return (0, _renderImperatively.renderImperatively)(_react.default.createElement(ActionSheet, Object.assign({}, props)));
 }

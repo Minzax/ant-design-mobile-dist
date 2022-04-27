@@ -11,5 +11,6 @@ export declare type CheckboxProps = {
     block?: boolean;
     id?: string;
     icon?: (checked: boolean, indeterminate: boolean) => React.ReactNode;
+    children?: React.ReactNode;
 } & NativeProps<'--icon-size' | '--font-size' | '--gap'>;
 export declare const Checkbox: FC<CheckboxProps>;

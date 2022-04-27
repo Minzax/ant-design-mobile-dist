@@ -5,6 +5,7 @@ import { mergeProps } from '../../utils/with-default-props';
 import Badge from '../badge';
 import SafeArea from '../safe-area';
 import { usePropsValue } from '../../utils/use-props-value';
+import { traverseReactNode } from '../../utils/traverse-react-node';
 export const TabBarItem = () => {
   return null;
 };
@@ -18,7 +19,7 @@ export const TabBar = p => {
   const props = mergeProps(defaultProps, p);
   let firstActiveKey = null;
   const items = [];
-  React.Children.forEach(props.children, (child, index) => {
+  traverseReactNode(props.children, (child, index) => {
     if (!React.isValidElement(child)) return;
     const key = child.key;
     if (typeof key !== 'string') return;
@@ -52,7 +53,7 @@ export const TabBar = p => {
       }, typeof item.props.icon === 'function' ? item.props.icon(active) : item.props.icon);
       const titleElement = item.props.title && React.createElement("div", {
         className: `${classPrefix}-item-title`
-      }, item.props.title);
+      }, typeof item.props.title === 'function' ? item.props.title(active) : item.props.title);
 
       if (iconElement) {
         return React.createElement(React.Fragment, null, React.createElement(Badge, {

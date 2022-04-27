@@ -5,8 +5,10 @@ import { DownOutline } from 'antd-mobile-icons';
 import classNames from 'classnames';
 import { useSpring, animated } from '@react-spring/web';
 import { usePropsValue } from '../../utils/use-props-value';
-import { useMount, useUpdateLayoutEffect } from 'ahooks';
-import { useShouldRender } from '../../utils/use-should-render';
+import { useMount } from 'ahooks';
+import { useShouldRender } from '../../utils/should-render';
+import { useIsomorphicUpdateLayoutEffect } from '../../utils/use-isomorphic-update-layout-effect';
+import { traverseReactNode } from '../../utils/traverse-react-node';
 const classPrefix = `adm-collapse`;
 export const CollapsePanel = () => {
   return null;
@@ -23,6 +25,13 @@ const CollapsePanelContent = props => {
   }, api] = useSpring(() => ({
     from: {
       height: 0
+    },
+    config: {
+      precision: 0.01,
+      mass: 1,
+      tension: 200,
+      friction: 25,
+      clamp: true
     }
   }));
   useMount(() => {
@@ -34,7 +43,7 @@ const CollapsePanelContent = props => {
       immediate: true
     });
   });
-  useUpdateLayoutEffect(() => {
+  useIsomorphicUpdateLayoutEffect(() => {
     const inner = innerRef.current;
     if (!inner) return;
 
@@ -73,7 +82,7 @@ export const Collapse = props => {
   var _a;
 
   const panels = [];
-  React.Children.forEach(props.children, child => {
+  traverseReactNode(props.children, child => {
     if (!React.isValidElement(child)) return;
     const key = child.key;
     if (typeof key !== 'string') return;

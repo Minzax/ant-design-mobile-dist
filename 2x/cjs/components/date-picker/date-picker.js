@@ -19,6 +19,8 @@ var _usePropsValue = require("../../utils/use-props-value");
 
 var _datePickerUtils = require("./date-picker-utils");
 
+var _bound = require("../../utils/bound");
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function (nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
@@ -47,7 +49,11 @@ const DatePicker = p => {
     }
   });
   const now = (0, _react.useMemo)(() => new Date(), []);
-  const pickerValue = (0, _react.useMemo)(() => (0, _datePickerUtils.convertDateToStringArray)(value !== null && value !== void 0 ? value : now, props.precision), [value, props.precision]);
+  const pickerValue = (0, _react.useMemo)(() => {
+    let date = value !== null && value !== void 0 ? value : now;
+    date = new Date((0, _bound.bound)(date.getTime(), props.min.getTime(), props.max.getTime()));
+    return (0, _datePickerUtils.convertDateToStringArray)(date, props.precision);
+  }, [value, props.precision, props.min, props.max]);
   const onConfirm = (0, _react.useCallback)(val => {
     setValue((0, _datePickerUtils.convertStringArrayToDate)(val, props.precision));
   }, [setValue, props.precision]);
@@ -73,7 +79,8 @@ const DatePicker = p => {
     afterClose: props.afterClose,
     onClick: props.onClick,
     title: props.title,
-    stopPropagation: props.stopPropagation
+    stopPropagation: props.stopPropagation,
+    mouseWheel: props.mouseWheel
   }, () => {
     var _a;
 

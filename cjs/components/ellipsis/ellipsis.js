@@ -13,6 +13,10 @@ var _nativeProps = require("../../utils/native-props");
 
 var _useResizeEffect = require("../../utils/use-resize-effect");
 
+var _ahooks = require("ahooks");
+
+var _withStopPropagation = require("../../utils/with-stop-propagation");
+
 function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function (nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
 
 function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
@@ -22,7 +26,9 @@ const defaultProps = {
   direction: 'end',
   rows: 1,
   expandText: '',
-  collapseText: ''
+  collapseText: '',
+  stopPropagationForActionButtons: [],
+  onContentClick: () => {}
 };
 
 const Ellipsis = p => {
@@ -129,19 +135,19 @@ const Ellipsis = p => {
   }
 
   (0, _useResizeEffect.useResizeEffect)(calcEllipsised, rootRef);
-  (0, _react.useLayoutEffect)(() => {
+  (0, _ahooks.useIsomorphicLayoutEffect)(() => {
     calcEllipsised();
   }, [props.content, props.direction, props.rows, props.expandText, props.collapseText]);
-  const expandActionElement = exceeded && props.expandText ? _react.default.createElement("a", {
+  const expandActionElement = exceeded && props.expandText ? (0, _withStopPropagation.withStopPropagation)(props.stopPropagationForActionButtons, _react.default.createElement("a", {
     onClick: () => {
       setExpanded(true);
     }
-  }, props.expandText) : null;
-  const collapseActionElement = exceeded && props.expandText ? _react.default.createElement("a", {
+  }, props.expandText)) : null;
+  const collapseActionElement = exceeded && props.expandText ? (0, _withStopPropagation.withStopPropagation)(props.stopPropagationForActionButtons, _react.default.createElement("a", {
     onClick: () => {
       setExpanded(false);
     }
-  }, props.collapseText) : null;
+  }, props.collapseText)) : null;
 
   const renderContent = () => {
     if (!exceeded) {
@@ -157,7 +163,12 @@ const Ellipsis = p => {
 
   return (0, _nativeProps.withNativeProps)(props, _react.default.createElement("div", {
     ref: rootRef,
-    className: classPrefix
+    className: classPrefix,
+    onClick: e => {
+      if (e.target === e.currentTarget) {
+        props.onContentClick(e);
+      }
+    }
   }, renderContent()));
 };
 

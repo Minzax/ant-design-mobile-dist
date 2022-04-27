@@ -17,6 +17,8 @@ var _usePropsValue = require("../../utils/use-props-value");
 
 var _corner = require("./corner");
 
+var _traverseReactNode = require("../../utils/traverse-react-node");
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 const classPrefix = `adm-side-bar`;
@@ -32,8 +34,7 @@ const SideBar = props => {
 
   let firstActiveKey = null;
   const items = [];
-
-  _react.default.Children.forEach(props.children, (child, index) => {
+  (0, _traverseReactNode.traverseReactNode)(props.children, (child, index) => {
     if (!_react.default.isValidElement(child)) return;
     const key = child.key;
     if (typeof key !== 'string') return;
@@ -44,7 +45,6 @@ const SideBar = props => {
 
     items.push(child);
   });
-
   const [activeKey, setActiveKey] = (0, _usePropsValue.usePropsValue)({
     value: props.activeKey,
     defaultValue: (_a = props.defaultActiveKey) !== null && _a !== void 0 ? _a : firstActiveKey,

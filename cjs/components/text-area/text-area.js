@@ -13,6 +13,8 @@ var _usePropsValue = require("../../utils/use-props-value");
 
 var _withDefaultProps = require("../../utils/with-default-props");
 
+var _devLog = require("../../utils/dev-log");
+
 function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function (nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
 
 function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
@@ -31,7 +33,14 @@ const TextArea = (0, _react.forwardRef)((p, ref) => {
     showCount,
     maxLength
   } = props;
-  const [value, setValue] = (0, _usePropsValue.usePropsValue)(props);
+  const [value, setValue] = (0, _usePropsValue.usePropsValue)(Object.assign(Object.assign({}, props), {
+    value: props.value === null ? '' : props.value
+  }));
+
+  if (props.value === null) {
+    (0, _devLog.devError)('TextArea', '`value` prop on `TextArea` should not be `null`. Consider using an empty string to clear the component.');
+  }
+
   const nativeTextAreaRef = (0, _react.useRef)(null);
   (0, _react.useImperativeHandle)(ref, () => ({
     clear: () => {
@@ -89,6 +98,7 @@ const TextArea = (0, _react.forwardRef)((p, ref) => {
     className: `${classPrefix}-element`,
     rows: props.rows,
     value: value,
+    placeholder: props.placeholder,
     onChange: e => {
       let v = e.target.value;
 
@@ -117,10 +127,12 @@ const TextArea = (0, _react.forwardRef)((p, ref) => {
       (_a = props.onCompositionEnd) === null || _a === void 0 ? void 0 : _a.call(props, e);
     },
     autoComplete: props.autoComplete,
+    autoFocus: props.autoFocus,
     disabled: props.disabled,
     readOnly: props.readOnly,
     onFocus: props.onFocus,
-    onBlur: props.onBlur
+    onBlur: props.onBlur,
+    onClick: props.onClick
   }), count));
 });
 exports.TextArea = TextArea;

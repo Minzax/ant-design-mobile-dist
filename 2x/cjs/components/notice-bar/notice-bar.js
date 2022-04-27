@@ -76,7 +76,7 @@ const NoticeBar = (0, _react.memo)(p => {
     delayLockRef.current = false;
     start();
   }, props.delay);
-  (0, _useResizeEffect.useResizeEffect)(text => {
+  (0, _useResizeEffect.useResizeEffect)(() => {
     start();
   }, containerRef);
   (0, _useMutationEffect.useMutationEffect)(() => {

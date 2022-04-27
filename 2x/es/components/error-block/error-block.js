@@ -1,30 +1,28 @@
 import React from 'react';
 import classNames from 'classnames';
-import { iconRecord } from './error';
 import { mergeProps } from '../../utils/with-default-props';
 import { withNativeProps } from '../../utils/native-props';
 import { useConfig } from '../config-provider';
+import { imageRecord } from './images';
 const classPrefix = `adm-error-block`;
 const defaultProps = {
   status: 'default'
 };
 export const ErrorBlock = p => {
   const props = mergeProps(defaultProps, p);
-  const icon = iconRecord[props.status];
   const {
     locale
   } = useConfig();
   const contentPack = locale.ErrorBlock[props.status];
   const des = 'description' in props ? props.description : contentPack.description;
   const title = 'title' in props ? props.title : contentPack.title;
-  let imageNode = React.createElement("img", {
-    src: icon
-  });
+  let imageNode = imageRecord[props.status];
 
   if (props.image) {
     if (typeof props.image === 'string') {
       imageNode = React.createElement("img", {
-        src: props.image
+        src: props.image,
+        alt: 'error block image'
       });
     } else {
       imageNode = props.image;

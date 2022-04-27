@@ -8,6 +8,7 @@ export declare type CollapsePanelProps = {
     destroyOnClose?: boolean;
     onClick?: (event: React.MouseEvent<Element, MouseEvent>) => void;
     arrow?: React.ReactNode | ((active: boolean) => React.ReactNode);
+    children?: React.ReactNode;
 } & NativeProps;
 export declare const CollapsePanel: FC<CollapsePanelProps>;
 declare type ValueProps<T> = {
@@ -20,6 +21,8 @@ export declare type CollapseProps = (({
     accordion?: false;
 } & ValueProps<string[]>) | ({
     accordion: true;
-} & ValueProps<string | null>)) & NativeProps;
+} & ValueProps<string | null>)) & {
+    children?: React.ReactNode;
+} & NativeProps;
 export declare const Collapse: FC<CollapseProps>;
 export {};

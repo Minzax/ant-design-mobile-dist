@@ -6,7 +6,7 @@ export function isObject(val) {
   return val !== null && typeof val === 'object';
 }
 export function isPromise(obj) {
-  return obj && typeof obj === 'object' && typeof obj.then === 'function';
+  return !!obj && typeof obj === 'object' && typeof obj.then === 'function';
 }
 export function isDate(val) {
   return Object.prototype.toString.call(val) === '[object Date]' && !Number.isNaN(val.getTime());

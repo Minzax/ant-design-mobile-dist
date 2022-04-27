@@ -52,8 +52,7 @@ function show(p) {
   bodyContainer.appendChild(container);
   clear();
   containers.push(container);
-
-  const TempToast = () => {
+  const TempToast = (0, _react.forwardRef)((_, ref) => {
     const [visible, setVisible] = (0, _react.useState)(true);
     (0, _react.useEffect)(() => {
       return () => {
@@ -74,6 +73,9 @@ function show(p) {
         window.clearTimeout(timer);
       };
     }, []);
+    (0, _react.useImperativeHandle)(ref, () => ({
+      close: () => setVisible(false)
+    }));
     return _react.default.createElement(_toast.InternalToast, Object.assign({}, props, {
       getContainer: () => container,
       visible: visible,
@@ -81,9 +83,20 @@ function show(p) {
         unmount(container);
       }
     }));
-  };
+  });
+  const ref = (0, _react.createRef)();
 
-  _reactDom.default.render(_react.default.createElement(TempToast, null), container);
+  _reactDom.default.render(_react.default.createElement(TempToast, {
+    ref: ref
+  }), container);
+
+  return {
+    close: () => {
+      var _a;
+
+      (_a = ref.current) === null || _a === void 0 ? void 0 : _a.close();
+    }
+  };
 }
 
 function clear() {

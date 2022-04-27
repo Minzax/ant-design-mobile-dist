@@ -1,4 +1,3 @@
-/// <reference types="react" />
 declare type Direction = '' | 'vertical' | 'horizontal';
 export declare function useTouch(): {
     move: EventListener;

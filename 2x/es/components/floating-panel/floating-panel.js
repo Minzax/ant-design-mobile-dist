@@ -4,9 +4,16 @@ import { useDrag } from '@use-gesture/react';
 import { useSpring, animated } from '@react-spring/web';
 import { supportsPassive } from '../../utils/supports-passive';
 import { nearest } from '../../utils/nearest';
-export const FloatingPanel = forwardRef((props, ref) => {
-  var _a;
+import { mergeProps } from '../../utils/with-default-props';
+import { useLockScroll } from '../../utils/use-lock-scroll';
+import { useMemoizedFn } from 'ahooks';
+const defaultProps = {
+  handleDraggingOfContent: true
+};
+export const FloatingPanel = forwardRef((p, ref) => {
+  var _a, _b;
 
+  const props = mergeProps(defaultProps, p);
   const {
     anchors,
     headerChildren,
@@ -23,6 +30,7 @@ export const FloatingPanel = forwardRef((props, ref) => {
     top: possibles[possibles.length - 1],
     bottom: possibles[0]
   };
+  const onHeightChange = useMemoizedFn((_b = props.onHeightChange) !== null && _b !== void 0 ? _b : () => {});
   const [{
     y
   }, api] = useSpring(() => ({
@@ -31,9 +39,7 @@ export const FloatingPanel = forwardRef((props, ref) => {
       tension: 300
     },
     onChange: result => {
-      var _a;
-
-      (_a = props.onHeightChange) === null || _a === void 0 ? void 0 : _a.call(props, result.value.y, y.isAnimating);
+      onHeightChange(result.value.y, y.isAnimating);
     }
   }));
   useDrag(state => {
@@ -46,6 +52,7 @@ export const FloatingPanel = forwardRef((props, ref) => {
       if (header === target || (header === null || header === void 0 ? void 0 : header.contains(target))) {
         pullingRef.current = true;
       } else {
+        if (!props.handleDraggingOfContent) return;
         const reachedTop = y.goal <= bounds.top;
         const content = contentRef.current;
         if (!content) return;
@@ -104,12 +111,13 @@ export const FloatingPanel = forwardRef((props, ref) => {
       });
     }
   }), [api]);
+  useLockScroll(elementRef, true);
   return withNativeProps(props, React.createElement(animated.div, {
     ref: elementRef,
     className: 'adm-floating-panel',
     style: {
       height: maxHeight,
-      y
+      translateY: y.to(y => `calc(100% + (${y}px))`)
     }
   }, React.createElement("div", {
     className: 'adm-floating-panel-mask',

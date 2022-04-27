@@ -25,7 +25,7 @@ const Badge = props => {
   } = props;
   const isDot = content === dot;
   const badgeCls = (0, _classnames.default)(classPrefix, !!children && `${classPrefix}-fixed`, isDot && `${classPrefix}-dot`, props.bordered && `${classPrefix}-bordered`);
-  const element = content ? (0, _nativeProps.withNativeProps)(props, _react.default.createElement("div", {
+  const element = content || content === 0 ? (0, _nativeProps.withNativeProps)(props, _react.default.createElement("div", {
     className: badgeCls,
     style: {
       '--color': color

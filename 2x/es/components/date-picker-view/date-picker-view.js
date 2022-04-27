@@ -33,6 +33,7 @@ export const DatePickerView = p => {
   return withNativeProps(props, React.createElement(PickerView, {
     columns: selected => generateDatePickerColumns(selected, props.min, props.max, props.precision, props.renderLabel, props.filter),
     value: pickerValue,
+    mouseWheel: props.mouseWheel,
     onChange: onChange
   }));
 };

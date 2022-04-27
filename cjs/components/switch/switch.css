@@ -89,7 +89,7 @@
   cursor: not-allowed;
   opacity: 0.4;
 }
-.adm-switch-icon {
+.adm-switch-spin-icon {
   width: 14px;
   height: 14px;
   animation: loading-rotate 1s linear infinite;

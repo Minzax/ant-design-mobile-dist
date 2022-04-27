@@ -11,13 +11,13 @@ var _classnames = _interopRequireDefault(require("classnames"));
 
 var _react = _interopRequireWildcard(require("react"));
 
-var _spin = _interopRequireDefault(require("../../assets/spin.svg"));
-
 var _nativeProps = require("../../utils/native-props");
 
 var _usePropsValue = require("../../utils/use-props-value");
 
 var _withDefaultProps = require("../../utils/with-default-props");
+
+var _spinIcon = require("./spin-icon");
 
 function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function (nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
 
@@ -75,10 +75,8 @@ const Switch = p => {
     className: `${classPrefix}-checkbox`
   }, _react.default.createElement("div", {
     className: `${classPrefix}-handle`
-  }, (props.loading || changing) && _react.default.createElement("img", {
-    src: _spin.default,
-    className: `${classPrefix}-icon`,
-    alt: 'switch-handle'
+  }, (props.loading || changing) && _react.default.createElement(_spinIcon.SpinIcon, {
+    className: `${classPrefix}-spin-icon`
   })), _react.default.createElement("div", {
     className: `${classPrefix}-inner`
   }, checked ? props.checkedText : props.uncheckedText))));

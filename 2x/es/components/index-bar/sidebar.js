@@ -33,7 +33,10 @@ export const Sidebar = props => {
         props.onActive(index);
       }
     }
-  }, props.indexes.map(index => {
+  }, props.indexItems.map(({
+    index,
+    brief
+  }) => {
     const active = index === props.activeIndex;
     return React.createElement("div", {
       className: `${classPrefix}-sidebar-row`,
@@ -52,11 +55,11 @@ export const Sidebar = props => {
       key: index
     }, interacting && active && React.createElement("div", {
       className: `${classPrefix}-sidebar-bubble`
-    }, index), React.createElement("div", {
+    }, brief), React.createElement("div", {
       className: classNames(`${classPrefix}-sidebar-item`, {
         [`${classPrefix}-sidebar-item-active`]: active
       }),
       "data-index": index
-    }, React.createElement("div", null, index)));
+    }, React.createElement("div", null, brief)));
   }));
 };
